@@ -17,7 +17,7 @@ Get MicroClaw running in a few minutes.
 ### One-line installer (recommended)
 
 ```sh
-curl -fsSL https://openclaw.ai/install.sh | bash
+curl -fsSL https://microclaw.ai/install.sh | bash
 ```
 
 ### Homebrew (macOS)

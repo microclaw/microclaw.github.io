@@ -13,7 +13,7 @@ sidebar_position: 3
 ## One-line installer (recommended)
 
 ```sh
-curl -fsSL https://openclaw.ai/install.sh | bash
+curl -fsSL https://microclaw.ai/install.sh | bash
 ```
 
 The installer tries prebuilt GitHub release binaries first, then falls back to Homebrew (macOS) or `cargo install`.
