@@ -17,8 +17,8 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.188eab16.css">
-<script src="/assets/js/runtime~main.bb6b12e8.js" defer="defer"></script>
-<script src="/assets/js/main.bf58a042.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.8a9bee7d.js" defer="defer"></script>
+<script src="/assets/js/main.a21f5e20.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -29,7 +29,7 @@
 <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">data/groups/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    CLAUDE.md                 # Global memory (shared across all chats)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    {chat_id}/</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        CLAUDE.md             # Per-chat memory</span><br></span></code></pre></div></div>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="how-it-works">How it works<a href="#how-it-works" class="hash-link" aria-label="Direct link to How it works" title="Direct link to How it works" translate="no">​</a></h2>
 <ul>
-<li class="">Claude can read and write memory using <code>read_memory</code> and <code>write_memory</code></li>
+<li class="">LLM can read and write memory using <code>read_memory</code> and <code>write_memory</code></li>
 <li class="">Memory is wrapped in <code>&lt;global_memory&gt;</code> and <code>&lt;chat_memory&gt;</code> tags</li>
 <li class="">The memory files live under <code>DATA_DIR</code> (default <code>./data</code>)</li>
 </ul>

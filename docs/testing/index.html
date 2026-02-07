@@ -17,8 +17,8 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.188eab16.css">
-<script src="/assets/js/runtime~main.bb6b12e8.js" defer="defer"></script>
-<script src="/assets/js/main.bf58a042.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.8a9bee7d.js" defer="defer"></script>
+<script src="/assets/js/main.a21f5e20.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -36,8 +36,8 @@
 <ol>
 <li class="">A working <code>.env</code> file with <code>TELEGRAM_BOT_TOKEN</code>, <code>ANTHROPIC_API_KEY</code>, <code>BOT_USERNAME</code></li>
 <li class="">Bot is running: <code>cargo run -- start</code></li>
-<li class="">A Telegram account with a private chat open to the bot</li>
-<li class="">(For group tests) A Telegram group with the bot added as a member</li>
+<li class="">A chat account with a private chat open to the bot</li>
+<li class="">(For group tests) A chat group with the bot added as a member</li>
 </ol>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-1-basic-conversation">Test 1: Basic conversation<a href="#test-1-basic-conversation" class="hash-link" aria-label="Direct link to Test 1: Basic conversation" title="Direct link to Test 1: Basic conversation" translate="no">​</a></h3>
 <p>Send a simple message in private chat.</p>
@@ -104,11 +104,11 @@
 <hr>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-13-long-response-splitting">Test 13: Long response splitting<a href="#test-13-long-response-splitting" class="hash-link" aria-label="Direct link to Test 13: Long response splitting" title="Direct link to Test 13: Long response splitting" translate="no">​</a></h3>
 <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">You: Write a 5000-character essay about the history of computing</span><br></span></code></pre></div></div>
-<p><strong>Expected</strong>: Response arrives in multiple Telegram messages (split at ~4096 char boundaries).</p>
+<p><strong>Expected</strong>: Response arrives in multiple chat messages (split at ~4096 char boundaries).</p>
 <hr>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="test-14-group-chat-requires-group">Test 14: Group chat (requires group)<a href="#test-14-group-chat-requires-group" class="hash-link" aria-label="Direct link to Test 14: Group chat (requires group)" title="Direct link to Test 14: Group chat (requires group)" translate="no">​</a></h3>
 <ol>
-<li class="">Add the bot to a Telegram group</li>
+<li class="">Add the bot to a chat group</li>
 <li class="">Send several messages from different users without @mentioning the bot</li>
 <li class="">Then: <code>@yourbotname summarize the conversation</code></li>
 </ol>
