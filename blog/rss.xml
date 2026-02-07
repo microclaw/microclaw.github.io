@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="rss.xsl"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>MicroClaw Blog</title>
+        <link>https://microclaw.ai/blog</link>
+        <description>MicroClaw Blog</description>
+        <lastBuildDate>Sat, 07 Feb 2026 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[Building MicroClaw: An Agentic AI Assistant in Rust That Lives in Your Telegram Chats]]></title>
+            <link>https://microclaw.ai/blog/building-microclaw</link>
+            <guid>https://microclaw.ai/blog/building-microclaw</guid>
+            <pubDate>Sat, 07 Feb 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[What if your Telegram chat was a terminal? Not a dumbed-down chatbot that responds with canned text, but an actual AI agent that can run commands on your server, edit your files, search your codebase, browse the web, schedule recurring tasks, and remember what you told it three weeks ago?]]></description>
+            <content:encoded><![CDATA[<p>What if your Telegram chat was a terminal? Not a dumbed-down chatbot that responds with canned text, but an actual AI agent that can run commands on your server, edit your files, search your codebase, browse the web, schedule recurring tasks, and remember what you told it three weeks ago?</p>
+<p>That's MicroClaw -- a Rust implementation of the agentic AI-in-a-chat pattern, connecting Claude to Telegram with full tool execution. It started as a rewrite of nanoclaw (TypeScript/WhatsApp), but was rebuilt from scratch in Rust with a focus on simplicity and additional capabilities.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-idea">The idea<a href="https://microclaw.ai/blog/building-microclaw#the-idea" class="hash-link" aria-label="Direct link to The idea" title="Direct link to The idea" translate="no">​</a></h2>
+<p>Most AI chatbot integrations are thin wrappers. They take a message, forward it to an API, and return the response. One turn, no state, no agency.</p>
+<p>MicroClaw is different. When you send it a message, it enters an agentic loop: Claude receives your message along with a set of tools, decides whether it needs to take action, executes tools if necessary, reads the results, decides if it needs to do more, and keeps going -- up to 25 iterations -- before finally composing a response.</p>
+<p>Ask it to "find all TODO comments in the project and create a summary" and it will:</p>
+<ol>
+<li class="">Run a grep search across your codebase</li>
+<li class="">Read the matching files for context</li>
+<li class="">Synthesize the results into a structured summary</li>
+<li class="">Respond in your Telegram chat</li>
+</ol>
+<p>All of that happens in a single message exchange. You send one message, you get back one answer. The multi-step reasoning happens behind the scenes.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-rust">Why Rust?<a href="https://microclaw.ai/blog/building-microclaw#why-rust" class="hash-link" aria-label="Direct link to Why Rust?" title="Direct link to Why Rust?" translate="no">​</a></h2>
+<p>The original nanoclaw is TypeScript. It works. But I wanted something I could deploy as a single static binary with no runtime dependencies. <code>cargo build --release</code> gives you one file. Copy it to a server, set three environment variables, and it runs.</p>
+<p>Rust also turned out to be a surprisingly good fit for this kind of project:</p>
+<ul>
+<li class="">Enums for the API protocol. Claude's content blocks come in three flavors: text, tool_use, and tool_result. Rust's tagged enums with serde map to this perfectly. No stringly-typed checks, no runtime type confusion.</li>
+<li class="">Trait objects for tools. Each tool implements a <code>Tool</code> trait. The registry holds <code>Vec&lt;Box&lt;dyn Tool&gt;&gt;</code>. Adding a new tool is four lines of wiring.</li>
+<li class="">Async without drama. Tokio + reqwest + teloxide all play nicely together. The entire bot is a single async binary.</li>
+<li class="">Shared state is explicit. <code>Arc&lt;Database&gt;</code> makes it clear exactly which components share database access. The scheduler, the tools, and the message handler all hold their own arc -- no hidden global state.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="architecture">Architecture<a href="https://microclaw.ai/blog/building-microclaw#architecture" class="hash-link" aria-label="Direct link to Architecture" title="Direct link to Architecture" translate="no">​</a></h2>
+<p>The system has eight modules, and the data flows in one direction:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Telegram message</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       |</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       v</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    SQLite (store message, load history)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       |</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       v</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    System prompt (inject memories + chat_id)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       |</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       v</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    Claude API -----&gt; tool_use? -----&gt; Execute tool</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       ^                                    |</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       |                                    |</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       +---- feed result back --------------+</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       |</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       v</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    end_turn? --&gt; Send response to Telegram</span><br></span></code></pre></div></div>
+<p>Meanwhile, running in the background:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Scheduler (every 60s)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       |</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       v</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    Query due tasks from SQLite</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       |</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">       v</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    For each: run agentic loop --&gt; send result to chat</span><br></span></code></pre></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-agentic-loop">The agentic loop<a href="https://microclaw.ai/blog/building-microclaw#the-agentic-loop" class="hash-link" aria-label="Direct link to The agentic loop" title="Direct link to The agentic loop" translate="no">​</a></h3>
+<p>The heart of MicroClaw lives in one function: <code>process_with_claude</code>. Here's what it does:</p>
+<ol>
+<li class="">Load history from SQLite. In private chats, this is the last N messages. In groups, it's everything since the bot's last reply -- the catch-up mechanism that makes group interactions feel natural.</li>
+<li class="">Read any saved memories (global and per-chat CLAUDE.md files) and inject them into the system prompt.</li>
+<li class="">If there's an override prompt (from the scheduler), append it as a user message.</li>
+<li class="">Convert the message history into Claude's message format.</li>
+<li class="">Enter the loop: call the Claude API. If Claude responds with <code>stop_reason: "tool_use"</code>, execute the requested tools, append the results as a <code>tool_result</code> message, and call Claude again. If Claude responds with <code>stop_reason: "end_turn"</code>, extract the text and return it.</li>
+</ol>
+<p>The loop has a safety cap (default 25 iterations). In practice, most interactions use 0-3 tool calls. Complex tasks like "refactor this file" might use 5-10.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-typing-indicator">The typing indicator<a href="https://microclaw.ai/blog/building-microclaw#the-typing-indicator" class="hash-link" aria-label="Direct link to The typing indicator" title="Direct link to The typing indicator" translate="no">​</a></h3>
+<p>A small quality-of-life feature that makes a big difference: the typing indicator stays active for the entire duration of processing. A spawned Tokio task sends <code>ChatAction::Typing</code> every 4 seconds. When the response is ready, the task is aborted.</p>
+<p>Without this, the typing indicator would flash once when the message is received and then disappear, even if Claude is midway through a 10-tool chain. With it, the user always knows the bot is working.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="tools">Tools<a href="https://microclaw.ai/blog/building-microclaw#tools" class="hash-link" aria-label="Direct link to Tools" title="Direct link to Tools" translate="no">​</a></h3>
+<p>MicroClaw ships with sixteen tools across five categories:</p>
+<p>File system: <code>bash</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code></p>
+<p>Memory: <code>read_memory</code>, <code>write_memory</code></p>
+<p>Web: <code>web_search</code>, <code>web_fetch</code></p>
+<p>Messaging: <code>send_message</code></p>
+<p>Scheduling: <code>schedule_task</code>, <code>list_scheduled_tasks</code>, <code>pause_scheduled_task</code>, <code>resume_scheduled_task</code>, <code>cancel_scheduled_task</code></p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="memory">Memory<a href="https://microclaw.ai/blog/building-microclaw#memory" class="hash-link" aria-label="Direct link to Memory" title="Direct link to Memory" translate="no">​</a></h3>
+<p>Tell it "remember that I'm working on project Atlas and the deploy target is staging.example.com" and it will write that to a CLAUDE.md file. Next time you message it, that context is right there in the system prompt.</p>
+<p>Two scopes:</p>
+<ul>
+<li class="">Global memory: <code>data/groups/CLAUDE.md</code></li>
+<li class="">Per-chat memory: <code>data/groups/{chat_id}/CLAUDE.md</code></li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-scheduler">The scheduler<a href="https://microclaw.ai/blog/building-microclaw#the-scheduler" class="hash-link" aria-label="Direct link to The scheduler" title="Direct link to The scheduler" translate="no">​</a></h3>
+<p>The scheduler is a background Tokio task that wakes up every 60 seconds and checks for due tasks. When it finds one:</p>
+<ol>
+<li class="">It calls the same <code>process_with_claude</code> function that handles regular messages, but with the task's prompt as an override.</li>
+<li class="">The agent runs its full tool loop -- a scheduled task can use web search, bash, file operations, anything.</li>
+<li class="">The result is sent to the originating chat.</li>
+<li class="">For cron tasks, the next run time is computed from the cron expression. For one-shot tasks, the status is set to "completed".</li>
+</ol>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="group-chat-catch-up">Group chat catch-up<a href="https://microclaw.ai/blog/building-microclaw#group-chat-catch-up" class="hash-link" aria-label="Direct link to Group chat catch-up" title="Direct link to Group chat catch-up" translate="no">​</a></h3>
+<p>In groups, the bot only responds when @mentioned. But it stores every message. When mentioned, it loads all messages since its last reply in that group.</p>
+<p>This means if 50 messages flew by in a group discussion and someone tags the bot asking "summarize what just happened", the bot sees all 50 messages, not just the most recent ones.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="setup">Setup<a href="https://microclaw.ai/blog/building-microclaw#setup" class="hash-link" aria-label="Direct link to Setup" title="Direct link to Setup" translate="no">​</a></h2>
+<p>Getting started takes about two minutes:</p>
+<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git clone https://github.com/microclaw/microclaw.git</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cd microclaw</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cp .env.example .env</span><br></span></code></pre></div></div>
+<p>Edit <code>.env</code> with three required values:</p>
+<ul>
+<li class=""><code>TELEGRAM_BOT_TOKEN</code> -- get one from @BotFather</li>
+<li class=""><code>ANTHROPIC_API_KEY</code> -- from console.anthropic.com</li>
+<li class=""><code>BOT_USERNAME</code> -- your bot's username (without the @)</li>
+</ul>
+<p>Then:</p>
+<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cargo run -- start</span><br></span></code></pre></div></div>
+<p>Or build a release binary:</p>
+<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cargo build --release</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">./target/release/microclaw start</span><br></span></code></pre></div></div>
+<p>The binary is self-contained. No database server to install (SQLite is bundled), no external dependencies to configure. It creates its <code>data/</code> directory on first run, starts the scheduler automatically, and begins listening for messages.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="whats-different-from-the-original-nanoclaw">What's different from the original nanoclaw<a href="https://microclaw.ai/blog/building-microclaw#whats-different-from-the-original-nanoclaw" class="hash-link" aria-label="Direct link to What's different from the original nanoclaw" title="Direct link to What's different from the original nanoclaw" translate="no">​</a></h2>
+<p>MicroClaw started as a port but has grown beyond feature parity:</p>
+<table><thead><tr><th>Feature</th><th>nanoclaw (TS/WhatsApp)</th><th>MicroClaw (Rust/Telegram)</th></tr></thead><tbody><tr><td>Platform</td><td>WhatsApp</td><td>Telegram</td></tr><tr><td>Language</td><td>TypeScript</td><td>Rust</td></tr><tr><td>Deployment</td><td>Node.js runtime</td><td>Single binary</td></tr><tr><td>Tools</td><td>Similar core set</td><td>16 tools (8 original + 8 new)</td></tr><tr><td>Web search</td><td>--</td><td>DuckDuckGo search + URL fetch</td></tr><tr><td>Scheduling</td><td>Cron reminders</td><td>Full agentic scheduled tasks</td></tr><tr><td>Mid-message sending</td><td>--</td><td>send_message tool</td></tr><tr><td>Group catch-up</td><td>--</td><td>Loads all messages since last reply</td></tr><tr><td>Typing indicator</td><td>Single flash</td><td>Continuous (every 4s)</td></tr></tbody></table>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="limitations">Limitations<a href="https://microclaw.ai/blog/building-microclaw#limitations" class="hash-link" aria-label="Direct link to Limitations" title="Direct link to Limitations" translate="no">​</a></h2>
+<ul>
+<li class="">No image/voice/document support (text messages only)</li>
+<li class="">No streaming (responses arrive all at once)</li>
+<li class="">No permission model (lock down the host machine)</li>
+<li class="">Single-threaded tool execution per turn</li>
+<li class="">Scheduler granularity (60-second polling)</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="final-thoughts">Final thoughts<a href="https://microclaw.ai/blog/building-microclaw#final-thoughts" class="hash-link" aria-label="Direct link to Final thoughts" title="Direct link to Final thoughts" translate="no">​</a></h2>
+<p>The interesting thing about building MicroClaw wasn't the Rust or the Telegram integration -- those are just plumbing. The interesting thing is how little code it takes to go from a chatbot that echoes API responses to an agent that can actually do things.</p>
+<p>The difference is one loop and a tool registry. Everything else -- the database, the memory system, the scheduler, the message handling -- is supporting infrastructure.</p>
+<p>Swap Telegram for Slack, Discord, or a web UI. Swap the tools for whatever your domain needs. The core loop stays the same: receive message, call LLM with tools, execute tools in a loop, return response.</p>]]></content:encoded>
+            <category>Architecture</category>
+            <category>Rust</category>
+            <category>Telegram</category>
+            <category>Agentic AI</category>
+        </item>
+        <item>
+            <title><![CDATA[MicroClaw Release Notes — February 2026]]></title>
+            <link>https://microclaw.ai/blog/release-notes-2026-02</link>
+            <guid>https://microclaw.ai/blog/release-notes-2026-02</guid>
+            <pubDate>Sat, 07 Feb 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[This release focuses on documentation clarity and onboarding. The new site consolidates README, developer guide, and testing references into a single navigable docs experience.]]></description>
+            <content:encoded><![CDATA[<p>This release focuses on documentation clarity and onboarding. The new site consolidates README, developer guide, and testing references into a single navigable docs experience.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="highlights">Highlights<a href="https://microclaw.ai/blog/release-notes-2026-02#highlights" class="hash-link" aria-label="Direct link to Highlights" title="Direct link to Highlights" translate="no">​</a></h2>
+<ul>
+<li class="">Full documentation suite for setup, configuration, and architecture</li>
+<li class="">Dedicated sections for tools, memory, scheduler, and testing</li>
+<li class="">Refined home page to match the MicroClaw visual identity</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="next">Next<a href="https://microclaw.ai/blog/release-notes-2026-02#next" class="hash-link" aria-label="Direct link to Next" title="Direct link to Next" translate="no">​</a></h2>
+<p>The next milestone is a permission model for tool execution and better sandboxing defaults.</p>]]></content:encoded>
+            <category>Rust</category>
+            <category>Telegram</category>
+            <category>Agentic AI</category>
+        </item>
+    </channel>
+</rss>
