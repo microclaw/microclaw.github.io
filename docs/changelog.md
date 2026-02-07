@@ -10,6 +10,8 @@ All notable changes will be documented here.
 
 - Initial public documentation site
 - Core docs for configuration, tools, memory, scheduler, and architecture
+- Setup wizard docs updated for provider/model list pickers
+- Added 20+ preset provider references plus `custom` option guidance
 
 ## 2025-06-01
 

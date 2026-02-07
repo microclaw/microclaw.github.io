@@ -14,6 +14,8 @@ This release focuses on documentation clarity and onboarding. The new site conso
 - Full documentation suite for setup, configuration, and architecture
 - Dedicated sections for tools, memory, scheduler, and testing
 - Refined home page to match the MicroClaw visual identity
+- Setup wizard now documented with visible provider/model list pickers
+- Provider docs expanded to cover 20+ presets and `custom` mode
 
 ## Next
 

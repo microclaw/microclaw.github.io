@@ -8,7 +8,7 @@ sidebar_position: 3
 
 - Rust 1.70+ (2021 edition)
 - macOS, Linux, or Windows
-- Internet access for Telegram + Anthropic APIs
+- Internet access for Telegram + your selected LLM provider API
 
 ## Homebrew (macOS)
 
@@ -37,14 +37,24 @@ cp target/release/microclaw /usr/local/bin/
 cargo run -- start
 ```
 
-## Environment file
+## Setup configuration
 
-Create a `.env` file with required variables:
+Recommended:
+
+```sh
+microclaw setup
+```
+
+Or manually create `.env`:
 
 ```
 TELEGRAM_BOT_TOKEN=...
-ANTHROPIC_API_KEY=...
 BOT_USERNAME=...
+LLM_PROVIDER=anthropic
+LLM_API_KEY=...
+LLM_MODEL=claude-sonnet-4-20250514
 ```
 
-Use `cargo run -- help` to see CLI usage.
+Use `microclaw help` (or `cargo run -- help`) for CLI usage.
+
+The setup wizard now includes provider/model list pickers and 20+ built-in provider presets, plus `custom` for manual configuration.

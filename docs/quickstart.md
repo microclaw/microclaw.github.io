@@ -10,7 +10,7 @@ Get MicroClaw running in a few minutes.
 
 - Rust 1.70+ (2021 edition)
 - Telegram bot token (from @BotFather)
-- Anthropic API key
+- LLM API key (Anthropic/OpenAI/OpenRouter/DeepSeek/etc.)
 
 ## 2. Install
 
@@ -30,18 +30,35 @@ cargo build --release
 cp target/release/microclaw /usr/local/bin/
 ```
 
-## 3. Configure
+## 3. Configure (recommended)
+
+Use the interactive setup wizard:
 
 ```sh
-cp .env.example .env
+microclaw setup
 ```
 
-Edit `.env`:
+<!-- Placeholder: replace with real screenshot later -->
+![Setup Wizard (placeholder)](/img/setup-wizard.svg)
+
+It validates required fields, tests Telegram/LLM connectivity, and writes `.env` with backup.
+It also includes provider/model list pickers (`Enter` open list, `↑/↓` move, `Enter` confirm, `Esc` close).
+
+Built-in provider presets:
+- `openai`, `openrouter`, `anthropic`, `google`, `alibaba`
+- `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`
+- `zhipu`, `minimax`, `cohere`, `baidu`, `tencent`
+- `huawei`, `xai`, `huggingface`, `together`, `perplexity`
+- `custom` (manual provider/model/base URL)
+
+Manual `.env` configuration is still supported:
 
 ```
 TELEGRAM_BOT_TOKEN=123456:ABC-DEF1234...
-ANTHROPIC_API_KEY=sk-ant-...
 BOT_USERNAME=my_bot
+LLM_PROVIDER=anthropic
+LLM_API_KEY=sk-ant-...
+LLM_MODEL=claude-sonnet-4-20250514
 ```
 
 ## 4. Run
@@ -50,7 +67,8 @@ BOT_USERNAME=my_bot
 microclaw start
 ```
 
-That is it. The bot will initialize its SQLite database, start the scheduler, and begin listening for messages.
+That is it. On first launch, if required config is missing, `start` will auto-open setup wizard.
+After setup, the bot initializes SQLite, starts scheduler, and begins listening for messages.
 
 ## Next
 
