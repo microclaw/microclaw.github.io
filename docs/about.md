@@ -9,4 +9,4 @@ sidebar_position: 17
 MicroClaw is maintained by Everett.
 
 - X (Twitter): https://x.com/everettjf
-- Discord: https://discord.gg/eGzEaP6TzR
+- Discord: https://discord.gg/pvmezwkAk5
