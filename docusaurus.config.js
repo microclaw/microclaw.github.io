@@ -178,8 +178,12 @@ const config = {
                 href: 'https://github.com/microclaw/microclaw/releases',
               },
               {
-                label: 'X (Twitter)',
+                label: 'X (Author)',
                 href: 'https://x.com/everettjf',
+              },
+              {
+                label: 'X (MicroClaw)',
+                href: 'https://x.com/microclaw',
               },
               {
                 label: 'Discord',

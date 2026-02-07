@@ -27,12 +27,13 @@ function HomepageHeader() {
             <Link className="button button--primary button--lg" to="/docs/quickstart">
               Get Started
             </Link>
-            <Link className="button button--secondary button--lg" to="/blog">
-              Read the Blog
-            </Link>
-            <Link className={styles.ghostButton} href="https://github.com/microclaw/microclaw">
+            <Link className={styles.githubButton} href="https://github.com/microclaw/microclaw">
               View on GitHub
             </Link>
+          </div>
+          <div className={styles.installBlock}>
+            <span className={styles.installLabel}>One-line install</span>
+            <code className={styles.installCommand}>curl -fsSL https://microclaw.ai/install.sh | bash</code>
           </div>
           <div className={styles.heroMeta}>
             <div>

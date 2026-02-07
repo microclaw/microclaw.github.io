@@ -72,3 +72,27 @@ LLM_MODEL=claude-sonnet-4-20250514
 Use `microclaw help` (or `cargo run -- help`) for CLI usage.
 
 The setup wizard now includes provider/model list pickers and 20+ built-in provider presets, plus `custom` for manual configuration.
+
+## Uninstall
+
+If you installed with the one-line installer, remove the binary from your PATH location:
+
+```sh
+which microclaw
+rm -f "$(which microclaw)"
+```
+
+If installed via Homebrew:
+
+```sh
+brew uninstall microclaw
+brew untap everettjf/tap
+```
+
+Optional cleanup (remove local runtime data):
+
+```sh
+# Keep data/skills, remove everything else under data/
+find ./data -mindepth 1 -maxdepth 1 ! -name skills -exec rm -rf {} +
+rm -rf ~/.microclaw
+```

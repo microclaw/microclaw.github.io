@@ -93,18 +93,73 @@
   margin-top: 2rem;
 }
 
-.ghostButton {
-  border: 1px solid rgba(15, 30, 27, 0.4);
-  border-radius: 999px;
-  padding: 0.6rem 1.2rem;
-  color: var(--mc-ink);
-  font-weight: 600;
-  transition: all 0.2s ease;
+.installBlock {
+  margin-top: 1rem;
+  max-width: 100%;
 }
 
-.ghostButton:hover {
+.installLabel {
+  display: inline-block;
+  margin-bottom: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(15, 30, 27, 0.72);
+}
+
+.installCommand {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.75rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 30, 27, 0.18);
+  background: rgba(255, 255, 255, 0.9);
+  color: #12201c;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.4;
+  box-shadow: 0 8px 20px rgba(12, 25, 22, 0.12);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+:global([data-theme='dark']) .installLabel {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+:global([data-theme='dark']) .installCommand {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(8, 14, 19, 0.8);
+  color: #f6fff9;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+}
+
+.githubButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  border-radius: 999px;
+  padding: 0.7rem 1.8rem;
+  background: linear-gradient(135deg, #0b0f14 0%, #141f2d 55%, #0f3d45 100%);
+  border: 1px solid rgba(69, 224, 159, 0.42);
+  color: #f6fff9;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  box-shadow: 0 10px 26px rgba(7, 14, 20, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease,
+    background 0.2s ease;
+}
+
+.githubButton:hover {
   text-decoration: none;
-  background: rgba(15, 30, 27, 0.08);
+  transform: translateY(-1px);
+  color: #ffffff;
+  border-color: rgba(69, 224, 159, 0.72);
+  background: linear-gradient(135deg, #0d1219 0%, #18273a 55%, #10505b 100%);
+  box-shadow: 0 14px 34px rgba(7, 14, 20, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.14);
 }
 
 .heroMeta {
