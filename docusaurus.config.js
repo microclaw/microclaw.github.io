@@ -128,7 +128,7 @@ const config = {
         title: 'MicroClaw',
         logo: {
           alt: 'MicroClaw Logo',
-          src: 'img/logo.svg',
+          src: 'img/logo.png',
         },
         items: [
           {
