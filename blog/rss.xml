@@ -125,6 +125,8 @@
 <li class="">Full documentation suite for setup, configuration, and architecture</li>
 <li class="">Dedicated sections for tools, memory, scheduler, and testing</li>
 <li class="">Refined home page to match the MicroClaw visual identity</li>
+<li class="">Setup wizard now documented with visible provider/model list pickers</li>
+<li class="">Provider docs expanded to cover 20+ presets and <code>custom</code> mode</li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="next">Next<a href="https://microclaw.ai/blog/release-notes-2026-02#next" class="hash-link" aria-label="Direct link to Next" title="Direct link to Next" translate="no">​</a></h2>
 <p>The next milestone is a permission model for tool execution and better sandboxing defaults.</p>]]></content:encoded>
