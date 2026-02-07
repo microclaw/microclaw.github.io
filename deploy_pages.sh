@@ -2,9 +2,9 @@
 set -euo pipefail
 
 echo "git push"
-git add .
-git commit -m "quick update"
-git push
+git add . || echo "git add failed, continue"
+git commit -m "quick update" || echo "git commit skipped/failed, continue"
+git push || echo "git push failed, continue"
 
 
 echo "deploy"
