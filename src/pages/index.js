@@ -20,7 +20,7 @@ function HomepageHeader() {
           <p className={styles.heroSubtitle}>
             {siteConfig.tagline}
             <span className={styles.noticeBadge}>
-              Private development in progress — going public soon.
+              Under active development; instability is possible.
             </span>
           </p>
           <div className={styles.heroActions}>
