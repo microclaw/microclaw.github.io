@@ -8,7 +8,7 @@ sidebar_position: 3
 
 - Rust 1.70+ (2021 edition)
 - macOS, Linux, or Windows
-- Internet access for Telegram + your selected LLM provider API
+- Internet access for chat + your selected LLM provider API
 
 ## One-line installer (recommended)
 

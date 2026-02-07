@@ -7,7 +7,7 @@ sidebar_position: 9
 ## Data flow
 
 ```
-Telegram message
+chat message
        |
        v
     Store in SQLite (message + chat metadata)
@@ -28,7 +28,7 @@ Telegram message
        |
        v
     Agentic loop (up to MAX_TOOL_ITERATIONS):
-       1. Call Claude API with messages + tool definitions
+       1. Call LLM API with messages + tool definitions
        2. If stop_reason == "tool_use" -> execute tools -> append results -> loop
        3. If stop_reason == "end_turn" -> extract text -> return
        |
@@ -62,7 +62,7 @@ src/
 The core logic lives in `process_with_claude`:
 
 1. Load history and memory
-2. Call Claude with tool definitions
+2. Call LLM with tool definitions
 3. If `stop_reason` is `tool_use`, run tools and feed results back
 4. If `end_turn`, return the text response
 

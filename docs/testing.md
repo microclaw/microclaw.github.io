@@ -42,8 +42,8 @@ These tests require a running bot with valid credentials.
 
 1. A working `.env` file with `TELEGRAM_BOT_TOKEN`, `ANTHROPIC_API_KEY`, `BOT_USERNAME`
 2. Bot is running: `cargo run -- start`
-3. A Telegram account with a private chat open to the bot
-4. (For group tests) A Telegram group with the bot added as a member
+3. A chat account with a private chat open to the bot
+4. (For group tests) A chat group with the bot added as a member
 
 ### Test 1: Basic conversation
 
@@ -213,13 +213,13 @@ You: Create 5 different files in /tmp named microclaw_1.txt through microclaw_5.
 You: Write a 5000-character essay about the history of computing
 ```
 
-**Expected**: Response arrives in multiple Telegram messages (split at ~4096 char boundaries).
+**Expected**: Response arrives in multiple chat messages (split at ~4096 char boundaries).
 
 ---
 
 ### Test 14: Group chat (requires group)
 
-1. Add the bot to a Telegram group
+1. Add the bot to a chat group
 2. Send several messages from different users without @mentioning the bot
 3. Then: `@yourbotname summarize the conversation`
 

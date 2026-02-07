@@ -2,7 +2,7 @@
 slug: /release-notes-2026-02
 title: MicroClaw Release Notes — February 2026
 authors: [microclaw]
-tags: [rust, telegram, agents]
+tags: [rust, chat, agents]
 ---
 
 This release focuses on documentation clarity and onboarding. The new site consolidates README, developer guide, and testing references into a single navigable docs experience.

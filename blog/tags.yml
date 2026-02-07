@@ -4,9 +4,9 @@ architecture:
 rust:
   label: Rust
   permalink: /rust
-telegram:
-  label: Telegram
-  permalink: /telegram
+chat:
+  label: Chat
+  permalink: /chat
 agents:
   label: Agentic AI
   permalink: /agents

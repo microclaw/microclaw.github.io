@@ -13,9 +13,9 @@ function HomepageHeader() {
       <div className="container">
         <div className={styles.heroLayout}>
         <div className={styles.heroContent}>
-          <div className={styles.heroBadge}>Rust + Telegram + Claude</div>
+          <div className={styles.heroBadge}>Rust + Agentic + Tools</div>
           <Heading as="h1" className={styles.heroTitle}>
-            MicroClaw brings agentic AI to your Telegram chats.
+            MicroClaw brings agentic AI to your chats.
           </Heading>
           <p className={styles.heroSubtitle}>
             {siteConfig.tagline}
@@ -112,14 +112,14 @@ export default function Home() {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="MicroClaw is a Rust Telegram bot that connects Claude to chats with agentic tool execution, web browsing, scheduling, and memory.">
+      description="MicroClaw is a Rust-first agent framework for chats with tool execution, web browsing, scheduling, and memory.">
       <HomepageHeader />
       <main>
         <section className={styles.section}>
           <div className="container">
             <div className={styles.sectionHeader}>
               <Heading as="h2">What it can do</Heading>
-              <p>Everything you expect from an agent, embedded directly in Telegram.</p>
+              <p>Everything you expect from an agent, embedded directly in chat.</p>
             </div>
             <div className={styles.featureGrid}>
               {features.map((feature) => (
@@ -145,7 +145,7 @@ export default function Home() {
               </div>
               <div className={styles.stepCard}>
                 <span>02</span>
-                <h3>Call Claude</h3>
+                <h3>Call model</h3>
                 <p>Tool definitions are sent with the prompt for structured tool use.</p>
               </div>
               <div className={styles.stepCard}>
@@ -156,7 +156,7 @@ export default function Home() {
               <div className={styles.stepCard}>
                 <span>04</span>
                 <h3>Respond</h3>
-                <p>Responses are split for Telegram limits and sent back to chat.</p>
+                <p>Responses are split for channel limits and sent back to chat.</p>
               </div>
             </div>
           </div>
@@ -165,8 +165,8 @@ export default function Home() {
           <div className="container">
             <div className={styles.ctaCard}>
               <div>
-                <Heading as="h2">Build your own agentic Telegram bot.</Heading>
-                <p>Get the Quickstart, configure your bot, and ship in minutes.</p>
+                <Heading as="h2">Build your own agentic Rust bot.</Heading>
+                <p>Get the Quickstart, configure your runtime, and ship in minutes.</p>
               </div>
               <div className={styles.ctaActions}>
                 <Link className="button button--primary button--lg" to="/docs/quickstart">

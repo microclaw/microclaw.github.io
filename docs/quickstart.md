@@ -9,7 +9,7 @@ Get MicroClaw running in a few minutes.
 ## 1. Prerequisites
 
 - Rust 1.70+ (2021 edition)
-- Telegram bot token (from @BotFather)
+- chat bot token (from @BotFather)
 - LLM API key (Anthropic/OpenAI/OpenRouter/DeepSeek/etc.)
 
 ## 2. Install
@@ -53,7 +53,7 @@ microclaw setup
 <!-- Placeholder: replace with real screenshot later -->
 ![Setup Wizard (placeholder)](/img/setup-wizard.svg)
 
-It validates required fields, tests Telegram/LLM connectivity, and writes `.env` with backup.
+It validates required fields, tests chat/LLM connectivity, and writes `.env` with backup.
 It also includes provider/model list pickers (`Enter` open list, `↑/↓` move, `Enter` confirm, `Esc` close).
 
 Built-in provider presets:

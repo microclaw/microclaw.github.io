@@ -38,7 +38,7 @@ src/
 | `AppState` | `telegram.rs` | Shared config, bot, db, memory, tools |
 | `Database` | `db.rs` | SQLite wrapper with `Mutex<Connection>` |
 | `ToolRegistry` | `tools/mod.rs` | `Vec<Box<dyn Tool>>` dispatch |
-| `ClaudeClient` | `claude.rs` | HTTP client for Anthropic API |
+| `LlmProvider` | `llm.rs` | Provider abstraction for Anthropic and OpenAI-compatible APIs |
 
 ## Adding a new tool
 

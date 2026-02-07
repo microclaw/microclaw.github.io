@@ -49,7 +49,7 @@ Bot: hello
      done
 ```
 
-**Timeout**: Default 120 seconds. Claude can set a custom timeout for long-running commands.
+**Timeout**: Default 120 seconds. LLM can set a custom timeout for long-running commands.
 
 **Output truncation**: Output longer than 30,000 characters is truncated.
 
@@ -218,7 +218,7 @@ Bot: The deploy key is in /home/deploy/.ssh/id_ed25519
 
 ## Mid-Conversation Messaging (send_message)
 
-Claude can send messages to the chat during tool execution, useful for progress updates on long tasks.
+LLM can send messages to the chat during tool execution, useful for progress updates on long tasks.
 
 ```
 You: Analyze all log files in /var/log and give me a summary
@@ -227,7 +227,7 @@ Bot: [sends "Found 15 log files, analyzing..." as another update]
 Bot: [final summary response]
 ```
 
-You don't need to explicitly ask for this. Claude uses it automatically when working on multi-step tasks.
+You don't need to explicitly ask for this. LLM uses it automatically when working on multi-step tasks.
 
 ---
 
@@ -306,7 +306,7 @@ Bot: [has full context of Alice, Bob, and Charlie's messages]
 
 ## Long Response Splitting
 
-Telegram has a 4096-character message limit. MicroClaw automatically splits long responses at newline boundaries.
+chat has a 4096-character message limit. MicroClaw automatically splits long responses at newline boundaries.
 
 ```
 You: Give me a detailed explanation of the Rust ownership system with examples
@@ -318,7 +318,7 @@ Bot: [message 2 — remaining content]
 
 ## Typing Indicator
 
-While processing your message (calling Claude API, executing tools), the bot shows a "typing..." indicator in the chat. The indicator refreshes every 4 seconds until the response is ready.
+While processing your message (calling LLM API, executing tools), the bot shows a "typing..." indicator in the chat. The indicator refreshes every 4 seconds until the response is ready.
 
 ---
 
@@ -363,7 +363,7 @@ microclaw help        # Show help and all configuration options
 | `TELEGRAM_BOT_TOKEN` | Yes | - | Bot token from @BotFather |
 | `ANTHROPIC_API_KEY` | Yes | - | Anthropic API key |
 | `BOT_USERNAME` | Yes | - | Bot username (without @) |
-| `CLAUDE_MODEL` | No | `claude-sonnet-4-20250514` | Claude model ID |
+| `CLAUDE_MODEL` | No | `claude-sonnet-4-20250514` | LLM model ID |
 | `DATA_DIR` | No | `./data` | Data directory for DB and memory |
 | `MAX_TOKENS` | No | `8192` | Max tokens per response |
 | `MAX_TOOL_ITERATIONS` | No | `25` | Max tool loop iterations |

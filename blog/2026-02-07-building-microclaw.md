@@ -1,13 +1,13 @@
 ---
 slug: /building-microclaw
-title: "Building MicroClaw: An Agentic AI Assistant in Rust That Lives in Your Telegram Chats"
+title: "Building MicroClaw: An Agentic AI Assistant in Rust That Lives in Your Chats"
 authors: [microclaw]
-tags: [architecture, rust, telegram, agents]
+tags: [architecture, rust, chat, agents]
 ---
 
-What if your Telegram chat was a terminal? Not a dumbed-down chatbot that responds with canned text, but an actual AI agent that can run commands on your server, edit your files, search your codebase, browse the web, schedule recurring tasks, and remember what you told it three weeks ago?
+What if your chat was a terminal? Not a dumbed-down chatbot that responds with canned text, but an actual AI agent that can run commands on your server, edit your files, search your codebase, browse the web, schedule recurring tasks, and remember what you told it three weeks ago?
 
-That's MicroClaw -- a Rust implementation of the agentic AI-in-a-chat pattern, connecting Claude to Telegram with full tool execution. It started as a rewrite of nanoclaw (TypeScript/WhatsApp), but was rebuilt from scratch in Rust with a focus on simplicity and additional capabilities.
+That's MicroClaw -- a Rust implementation of the agentic AI-in-a-chat pattern, connecting LLM to chat with full tool execution. It started as a rewrite of nanoclaw (TypeScript/WhatsApp), but was rebuilt from scratch in Rust with a focus on simplicity and additional capabilities.
 
 <!-- truncate -->
 
@@ -15,14 +15,14 @@ That's MicroClaw -- a Rust implementation of the agentic AI-in-a-chat pattern, c
 
 Most AI chatbot integrations are thin wrappers. They take a message, forward it to an API, and return the response. One turn, no state, no agency.
 
-MicroClaw is different. When you send it a message, it enters an agentic loop: Claude receives your message along with a set of tools, decides whether it needs to take action, executes tools if necessary, reads the results, decides if it needs to do more, and keeps going -- up to 25 iterations -- before finally composing a response.
+MicroClaw is different. When you send it a message, it enters an agentic loop: LLM receives your message along with a set of tools, decides whether it needs to take action, executes tools if necessary, reads the results, decides if it needs to do more, and keeps going -- up to 25 iterations -- before finally composing a response.
 
 Ask it to "find all TODO comments in the project and create a summary" and it will:
 
 1. Run a grep search across your codebase
 2. Read the matching files for context
 3. Synthesize the results into a structured summary
-4. Respond in your Telegram chat
+4. Respond in your chat
 
 All of that happens in a single message exchange. You send one message, you get back one answer. The multi-step reasoning happens behind the scenes.
 
@@ -32,7 +32,7 @@ The original nanoclaw is TypeScript. It works. But I wanted something I could de
 
 Rust also turned out to be a surprisingly good fit for this kind of project:
 
-- Enums for the API protocol. Claude's content blocks come in three flavors: text, tool_use, and tool_result. Rust's tagged enums with serde map to this perfectly. No stringly-typed checks, no runtime type confusion.
+- Enums for the API protocol. LLM's content blocks come in three flavors: text, tool_use, and tool_result. Rust's tagged enums with serde map to this perfectly. No stringly-typed checks, no runtime type confusion.
 - Trait objects for tools. Each tool implements a `Tool` trait. The registry holds `Vec<Box<dyn Tool>>`. Adding a new tool is four lines of wiring.
 - Async without drama. Tokio + reqwest + teloxide all play nicely together. The entire bot is a single async binary.
 - Shared state is explicit. `Arc<Database>` makes it clear exactly which components share database access. The scheduler, the tools, and the message handler all hold their own arc -- no hidden global state.
@@ -42,7 +42,7 @@ Rust also turned out to be a surprisingly good fit for this kind of project:
 The system has eight modules, and the data flows in one direction:
 
 ```
-Telegram message
+chat message
        |
        v
     SQLite (store message, load history)
@@ -51,13 +51,13 @@ Telegram message
     System prompt (inject memories + chat_id)
        |
        v
-    Claude API -----> tool_use? -----> Execute tool
+    LLM API -----> tool_use? -----> Execute tool
        ^                                    |
        |                                    |
        +---- feed result back --------------+
        |
        v
-    end_turn? --> Send response to Telegram
+    end_turn? --> Send response to chat
 ```
 
 Meanwhile, running in the background:
@@ -79,8 +79,8 @@ The heart of MicroClaw lives in one function: `process_with_claude`. Here's what
 1. Load history from SQLite. In private chats, this is the last N messages. In groups, it's everything since the bot's last reply -- the catch-up mechanism that makes group interactions feel natural.
 2. Read any saved memories (global and per-chat CLAUDE.md files) and inject them into the system prompt.
 3. If there's an override prompt (from the scheduler), append it as a user message.
-4. Convert the message history into Claude's message format.
-5. Enter the loop: call the Claude API. If Claude responds with `stop_reason: "tool_use"`, execute the requested tools, append the results as a `tool_result` message, and call Claude again. If Claude responds with `stop_reason: "end_turn"`, extract the text and return it.
+4. Convert the message history into LLM's message format.
+5. Enter the loop: call the LLM API. If LLM responds with `stop_reason: "tool_use"`, execute the requested tools, append the results as a `tool_result` message, and call LLM again. If LLM responds with `stop_reason: "end_turn"`, extract the text and return it.
 
 The loop has a safety cap (default 25 iterations). In practice, most interactions use 0-3 tool calls. Complex tasks like "refactor this file" might use 5-10.
 
@@ -88,7 +88,7 @@ The loop has a safety cap (default 25 iterations). In practice, most interaction
 
 A small quality-of-life feature that makes a big difference: the typing indicator stays active for the entire duration of processing. A spawned Tokio task sends `ChatAction::Typing` every 4 seconds. When the response is ready, the task is aborted.
 
-Without this, the typing indicator would flash once when the message is received and then disappear, even if Claude is midway through a 10-tool chain. With it, the user always knows the bot is working.
+Without this, the typing indicator would flash once when the message is received and then disappear, even if LLM is midway through a 10-tool chain. With it, the user always knows the bot is working.
 
 ### Tools
 
@@ -163,9 +163,9 @@ The binary is self-contained. No database server to install (SQLite is bundled),
 
 MicroClaw started as a port but has grown beyond feature parity:
 
-| Feature | nanoclaw (TS/WhatsApp) | MicroClaw (Rust/Telegram) |
+| Feature | nanoclaw (TS/WhatsApp) | MicroClaw (Rust/chat) |
 |---------|----------------------|--------------------------|
-| Platform | WhatsApp | Telegram |
+| Platform | WhatsApp | chat |
 | Language | TypeScript | Rust |
 | Deployment | Node.js runtime | Single binary |
 | Tools | Similar core set | 16 tools (8 original + 8 new) |
@@ -185,8 +185,8 @@ MicroClaw started as a port but has grown beyond feature parity:
 
 ## Final thoughts
 
-The interesting thing about building MicroClaw wasn't the Rust or the Telegram integration -- those are just plumbing. The interesting thing is how little code it takes to go from a chatbot that echoes API responses to an agent that can actually do things.
+The interesting thing about building MicroClaw wasn't the Rust or the chat integration -- those are just plumbing. The interesting thing is how little code it takes to go from a chatbot that echoes API responses to an agent that can actually do things.
 
 The difference is one loop and a tool registry. Everything else -- the database, the memory system, the scheduler, the message handling -- is supporting infrastructure.
 
-Swap Telegram for Slack, Discord, or a web UI. Swap the tools for whatever your domain needs. The core loop stays the same: receive message, call LLM with tools, execute tools in a loop, return response.
+Swap chat for Slack, Discord, or a web UI. Swap the tools for whatever your domain needs. The core loop stays the same: receive message, call LLM with tools, execute tools in a loop, return response.

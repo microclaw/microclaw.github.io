@@ -4,7 +4,7 @@ title: Tools Reference
 sidebar_position: 6
 ---
 
-MicroClaw exposes 16 tools to Claude through JSON Schema definitions. Claude selects and calls tools automatically based on your request.
+MicroClaw exposes 16 tools to LLM through JSON Schema definitions. LLM selects and calls tools automatically based on your request.
 
 ## Tool List
 
@@ -20,7 +20,7 @@ MicroClaw exposes 16 tools to Claude through JSON Schema definitions. Claude sel
 | 8 | `write_memory` | Memory | Write persistent CLAUDE.md memory |
 | 9 | `web_search` | Web | Search via DuckDuckGo (top 8 results) |
 | 10 | `web_fetch` | Web | Fetch a URL and return plain text (max 20KB) |
-| 11 | `send_message` | Telegram | Send a message mid-conversation |
+| 11 | `send_message` | chat | Send a message mid-conversation |
 | 12 | `schedule_task` | Scheduler | Create a recurring or one-time task |
 | 13 | `list_scheduled_tasks` | Scheduler | List active/paused tasks for a chat |
 | 14 | `pause_scheduled_task` | Scheduler | Pause a scheduled task |
@@ -161,7 +161,7 @@ Fetch a URL and return plain text.
 
 ### send_message
 
-Send a Telegram message mid-conversation.
+Send a chat message mid-conversation.
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|

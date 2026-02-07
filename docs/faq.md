@@ -14,7 +14,7 @@ Not yet. MicroClaw currently supports text messages only.
 
 ## Can I restrict who can run commands?
 
-There is no permission model today. If you need access control, run the bot behind a user allowlist or add a permission check in the Telegram handler.
+There is no permission model today. If you need access control, run the bot behind a user allowlist or add a permission check in the chat handler.
 
 ## How does memory work?
 
@@ -26,7 +26,7 @@ The scheduler polls every 60 seconds for due tasks, runs the same agent loop as 
 
 ## Can I add custom tools?
 
-Yes. Implement the `Tool` trait in `src/tools/`, register it in `ToolRegistry::new()`, and it becomes available to Claude automatically.
+Yes. Implement the `Tool` trait in `src/tools/`, register it in `ToolRegistry::new()`, and it becomes available to LLM automatically.
 
 ## What model is used by default?
 

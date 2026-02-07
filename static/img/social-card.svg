@@ -9,6 +9,6 @@
   <circle cx="980" cy="120" r="140" fill="rgba(69,224,159,0.2)"/>
   <circle cx="160" cy="520" r="180" fill="rgba(242,196,90,0.18)"/>
   <text x="96" y="220" fill="#F5F3EE" font-family="Space Grotesk, Arial, sans-serif" font-size="80" font-weight="600">MicroClaw</text>
-  <text x="96" y="320" fill="#D5E9E2" font-family="Space Grotesk, Arial, sans-serif" font-size="36">Agentic AI assistant for Telegram</text>
+  <text x="96" y="320" fill="#D5E9E2" font-family="Space Grotesk, Arial, sans-serif" font-size="36">Agentic AI assistant for modern chat surfaces</text>
   <text x="96" y="380" fill="#D5E9E2" font-family="Space Grotesk, Arial, sans-serif" font-size="28">Rust • Tools • Scheduling • Memory</text>
 </svg>

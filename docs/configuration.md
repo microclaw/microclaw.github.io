@@ -10,7 +10,7 @@ All configuration is via environment variables or a `.env` file.
 
 | Variable | Description |
 |---|---|
-| `TELEGRAM_BOT_TOKEN` | Telegram bot token from @BotFather |
+| `TELEGRAM_BOT_TOKEN` | chat bot token from @BotFather |
 | `LLM_API_KEY` | LLM API key (`ANTHROPIC_API_KEY` also accepted for backward compatibility) |
 | `BOT_USERNAME` | Bot username without the `@` |
 
@@ -22,7 +22,7 @@ All configuration is via environment variables or a `.env` file.
 | `LLM_MODEL` | provider-specific | Model name (`CLAUDE_MODEL` fallback supported) |
 | `LLM_BASE_URL` | provider preset default | Optional custom base URL |
 | `DATA_DIR` | `./data` | Directory for SQLite DB and memory files |
-| `MAX_TOKENS` | `8192` | Max tokens per Claude response |
+| `MAX_TOKENS` | `8192` | Max tokens per LLM response |
 | `MAX_TOOL_ITERATIONS` | `25` | Max tool-use loop iterations per message |
 | `MAX_HISTORY_MESSAGES` | `50` | Number of recent messages sent as context |
 
