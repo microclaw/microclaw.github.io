@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+git add .
+git commit -m "quick update"
+git push
+
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WEBSITE_DIR="$ROOT_DIR/website"
 

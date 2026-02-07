@@ -28,7 +28,9 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'microclaw',
-  projectName: 'microclaw',
+  // Deploy target repo for GitHub Pages.
+  projectName: 'microclaw.github.io',
+  deploymentBranch: 'gh-pages',
 
   onBrokenLinks: 'throw',
 
