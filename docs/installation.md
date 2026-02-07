@@ -10,6 +10,14 @@ sidebar_position: 3
 - macOS, Linux, or Windows
 - Internet access for Telegram + your selected LLM provider API
 
+## One-line installer (recommended)
+
+```sh
+curl -fsSL https://openclaw.ai/install.sh | bash
+```
+
+The installer tries prebuilt GitHub release binaries first, then falls back to Homebrew (macOS) or `cargo install`.
+
 ## Homebrew (macOS)
 
 ```sh
