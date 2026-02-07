@@ -4,6 +4,7 @@ set -euo pipefail
 REPO="${MICROCLAW_REPO:-microclaw/microclaw}"
 BIN_NAME="microclaw"
 API_URL="https://api.github.com/repos/${REPO}/releases/latest"
+INSTALL_METHOD="${MICROCLAW_INSTALL_METHOD:-auto}" # auto|release|homebrew|cargo
 
 log() {
   printf '%s\n' "$*"
@@ -74,12 +75,31 @@ extract_asset_url() {
   local release_json="$1"
   local os="$2"
   local arch="$3"
+  local os_regex arch_regex
+
+  case "$os" in
+    darwin) os_regex="apple-darwin|darwin" ;;
+    linux) os_regex="unknown-linux-gnu|unknown-linux-musl|linux" ;;
+    *)
+      err "Unsupported OS for release matching: $os"
+      return 1
+      ;;
+  esac
+
+  case "$arch" in
+    x86_64) arch_regex="x86_64|amd64" ;;
+    aarch64) arch_regex="aarch64|arm64" ;;
+    *)
+      err "Unsupported architecture for release matching: $arch"
+      return 1
+      ;;
+  esac
 
   printf '%s\n' "$release_json" \
     | grep -Eo 'https://[^"]+' \
     | grep '/releases/download/' \
     | grep -E "/${BIN_NAME}-v?[0-9]+\.[0-9]+\.[0-9]+-.*(apple-darwin|unknown-linux-gnu|unknown-linux-musl|pc-windows-msvc)\.(tar\.gz|zip)$" \
-    | grep -E "${arch}.*(${os}|apple-darwin|unknown-linux)" \
+    | grep -Ei "(${arch_regex}).*(${os_regex})|(${os_regex}).*(${arch_regex})" \
     | head -n1
 }
 
@@ -163,20 +183,50 @@ main() {
   install_dir="$(detect_install_dir)"
 
   log "Installing ${BIN_NAME} for ${os}/${arch}..."
-  release_json="$(download_release_json)"
-  asset_url="$(extract_asset_url "$release_json" "$os" "$arch" || true)"
-
-  if [ -z "$asset_url" ]; then
-    log "No prebuilt binary found for ${os}/${arch} in latest release."
-    fallback_install "$os"
-  else
-    tmpdir="$(mktemp -d)"
-    trap 'rm -rf "$tmpdir"' EXIT
-    archive="$tmpdir/${BIN_NAME}.archive"
-    log "Downloading: $asset_url"
-    download_file "$asset_url" "$archive"
-    install_from_archive "$archive" "$install_dir" "$tmpdir"
-  fi
+  case "$INSTALL_METHOD" in
+    auto|release)
+      release_json="$(download_release_json)"
+      asset_url="$(extract_asset_url "$release_json" "$os" "$arch" || true)"
+      if [ -z "$asset_url" ]; then
+        log "No prebuilt binary found for ${os}/${arch} in latest release."
+        if [ "$INSTALL_METHOD" = "release" ]; then
+          err "MICROCLAW_INSTALL_METHOD=release set, so no fallback installer will be used."
+          exit 1
+        fi
+        fallback_install "$os"
+      else
+        tmpdir="$(mktemp -d)"
+        trap 'rm -rf "$tmpdir"' EXIT
+        archive="$tmpdir/${BIN_NAME}.archive"
+        log "Downloading: $asset_url"
+        download_file "$asset_url" "$archive"
+        install_from_archive "$archive" "$install_dir" "$tmpdir"
+      fi
+      ;;
+    homebrew)
+      if [ "$os" != "darwin" ]; then
+        err "MICROCLAW_INSTALL_METHOD=homebrew is only supported on macOS"
+        exit 1
+      fi
+      if ! need_cmd brew; then
+        err "Homebrew not found"
+        exit 1
+      fi
+      brew tap everettjf/tap
+      brew install microclaw
+      ;;
+    cargo)
+      if ! need_cmd cargo; then
+        err "Cargo not found"
+        exit 1
+      fi
+      cargo install --git "https://github.com/${REPO}.git" "$BIN_NAME"
+      ;;
+    *)
+      err "Unknown MICROCLAW_INSTALL_METHOD: $INSTALL_METHOD (expected auto|release|homebrew|cargo)"
+      exit 1
+      ;;
+  esac
 
   log ""
   log "Installed ${BIN_NAME}."
