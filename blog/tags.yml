@@ -1,0 +1,12 @@
+architecture:
+  label: Architecture
+  permalink: /architecture
+rust:
+  label: Rust
+  permalink: /rust
+telegram:
+  label: Telegram
+  permalink: /telegram
+agents:
+  label: Agentic AI
+  permalink: /agents

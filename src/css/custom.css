@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --ifm-color-primary: #1f7a62;
+  --ifm-color-primary-dark: #1a6a55;
+  --ifm-color-primary-darker: #185f4d;
+  --ifm-color-primary-darkest: #124b3d;
+  --ifm-color-primary-light: #269074;
+  --ifm-color-primary-lighter: #2aa07f;
+  --ifm-color-primary-lightest: #39b08d;
+  --ifm-font-family-base: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --ifm-heading-font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --ifm-font-family-monospace: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --ifm-code-font-size: 92%;
+  --ifm-background-color: #f5f3ee;
+  --ifm-footer-background-color: #0f1e1b;
+  --docusaurus-highlighted-code-line-bg: rgba(15, 30, 27, 0.1);
+
+  --mc-surface: #f5f3ee;
+  --mc-surface-alt: #efeae1;
+  --mc-card: #ffffff;
+  --mc-ink: #0f1e1b;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #45e09f;
+  --ifm-color-primary-dark: #38c98b;
+  --ifm-color-primary-darker: #2fbf81;
+  --ifm-color-primary-darkest: #23a76d;
+  --ifm-color-primary-light: #5ce7b1;
+  --ifm-color-primary-lighter: #6feabb;
+  --ifm-color-primary-lightest: #9bf2d3;
+  --ifm-background-color: #0b1210;
+  --ifm-footer-background-color: #050806;
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.08);
+
+  --mc-surface: #0b1210;
+  --mc-surface-alt: #0f1b18;
+  --mc-card: #121d1a;
+  --mc-ink: #f2f2f2;
+}
+
+body {
+  letter-spacing: -0.01em;
+}
+
+.navbar__title {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.button {
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.footer__title {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+}
