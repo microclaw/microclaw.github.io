@@ -34,7 +34,7 @@
 
 .heroLayout {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1fr 1.1fr;
   gap: 3rem;
   align-items: center;
 }
@@ -120,13 +120,14 @@
 
 .heroPanel {
   margin-top: 3rem;
-  background: rgba(9, 15, 13, 0.9);
+  background: rgba(17, 28, 25, 0.72);
   color: #f4f4f4;
   border-radius: 20px;
-  padding: 1.5rem;
+  padding: 1.8rem;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
   position: relative;
   z-index: 1;
+  backdrop-filter: blur(10px);
 }
 
 .panelHeader {
@@ -150,11 +151,11 @@
 
 .heroVisual {
   position: relative;
-  height: 320px;
+  height: 360px;
   border-radius: 20px;
   background: radial-gradient(circle at 30% 20%, rgba(69, 224, 159, 0.25), transparent 50%),
     radial-gradient(circle at 70% 80%, rgba(242, 196, 90, 0.2), transparent 45%),
-    rgba(6, 10, 9, 0.6);
+    rgba(10, 18, 16, 0.55);
   overflow: hidden;
 }
 
@@ -325,6 +326,11 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
+:global([data-theme='dark']) .heroPanel {
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+}
+
 .ctaCard {
   display: flex;
   flex-direction: column;
@@ -373,7 +379,7 @@
   }
 
   .heroVisual {
-    height: 260px;
+    height: 300px;
   }
 }
 
