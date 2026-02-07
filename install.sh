@@ -117,10 +117,12 @@ install_from_archive() {
   local archive="$1"
   local install_dir="$2"
   local tmpdir="$3"
+  local extracted=0
 
   case "$archive" in
-    *.tar.gz)
+    *.tar.gz|*.tgz)
       tar -xzf "$archive" -C "$tmpdir"
+      extracted=1
       ;;
     *.zip)
       if ! need_cmd unzip; then
@@ -128,12 +130,25 @@ install_from_archive() {
         return 1
       fi
       unzip -q "$archive" -d "$tmpdir"
-      ;;
-    *)
-      err "Unknown archive format: $archive"
-      return 1
+      extracted=1
       ;;
   esac
+
+  if [ "$extracted" -eq 0 ]; then
+    # Fallback: detect by content if extension is missing/changed.
+    if tar -tzf "$archive" >/dev/null 2>&1; then
+      tar -xzf "$archive" -C "$tmpdir"
+      extracted=1
+    elif need_cmd unzip && unzip -tq "$archive" >/dev/null 2>&1; then
+      unzip -q "$archive" -d "$tmpdir"
+      extracted=1
+    fi
+  fi
+
+  if [ "$extracted" -eq 0 ]; then
+    err "Unknown archive format: $archive"
+    return 1
+  fi
 
   local bin_path
   bin_path="$(find "$tmpdir" -type f -name "$BIN_NAME" | head -n1)"
@@ -176,7 +191,7 @@ fallback_install() {
 }
 
 main() {
-  local os arch install_dir release_json asset_url tmpdir archive
+  local os arch install_dir release_json asset_url tmpdir archive asset_filename
 
   os="$(detect_os)"
   arch="$(detect_arch)"
@@ -196,8 +211,13 @@ main() {
         fallback_install "$os"
       else
         tmpdir="$(mktemp -d)"
-        trap 'rm -rf "$tmpdir"' EXIT
-        archive="$tmpdir/${BIN_NAME}.archive"
+        trap 'if [ -n "${tmpdir:-}" ]; then rm -rf "$tmpdir"; fi' EXIT
+        asset_filename="${asset_url##*/}"
+        asset_filename="${asset_filename%%\?*}"
+        if [ -z "$asset_filename" ] || [ "$asset_filename" = "$asset_url" ]; then
+          asset_filename="${BIN_NAME}.archive"
+        fi
+        archive="$tmpdir/$asset_filename"
         log "Downloading: $asset_url"
         download_file "$asset_url" "$archive"
         install_from_archive "$archive" "$install_dir" "$tmpdir"
