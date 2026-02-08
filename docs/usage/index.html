@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.6af503de.css">
-<script src="/assets/js/runtime~main.2f59730d.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.b4036a7d.js" defer="defer"></script>
 <script src="/assets/js/main.3d1382b8.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -95,9 +95,11 @@
 <p>LLM can send messages to the chat during tool execution, useful for progress updates on long tasks.</p>
 <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">You: Analyze all log files in /var/log and give me a summary</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Bot: [sends &quot;Scanning log files...&quot; as a progress update]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Bot: [sends &quot;Found 15 log files, analyzing...&quot; as another update]</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Bot: [final summary response]</span><br></span></code></pre></div></div>
 <p>You don&#x27;t need to explicitly ask for this. LLM uses it automatically when working on multi-step tasks.</p>
+<p>Permission note: cross-chat <code>send_message</code> is allowed only for chats listed in <code>control_chat_ids</code>.</p>
 <hr>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="scheduling">Scheduling<a href="#scheduling" class="hash-link" aria-label="Direct link to Scheduling" title="Direct link to Scheduling" translate="no">​</a></h2>
 <p>MicroClaw has a background scheduler that polls every 60 seconds.</p>
+<p>Permission note: scheduling/listing/managing tasks for another chat is allowed only for <code>control_chat_ids</code>.</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="schedule-a-recurring-task-cron">Schedule a recurring task (cron)<a href="#schedule-a-recurring-task-cron" class="hash-link" aria-label="Direct link to Schedule a recurring task (cron)" title="Direct link to Schedule a recurring task (cron)" translate="no">​</a></h3>
 <p>Uses 6-field cron format: <code>sec min hour dom month dow</code></p>
 <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">You: Every 5 minutes, tell me a random fun fact</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Bot: Task #1 scheduled. Next run: 2025-06-15T12:05:00+00:00</span><br></span></code></pre></div></div>

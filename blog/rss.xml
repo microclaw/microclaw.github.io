@@ -95,12 +95,11 @@
 <p>The binary is self-contained. No database server to install (SQLite is bundled), no external dependencies to configure. It creates its <code>microclaw.data/</code> directory on first run, starts the scheduler automatically, and begins listening for messages.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="whats-different-from-the-original-nanoclaw">What's different from the original nanoclaw<a href="https://microclaw.ai/blog/building-microclaw#whats-different-from-the-original-nanoclaw" class="hash-link" aria-label="Direct link to What's different from the original nanoclaw" title="Direct link to What's different from the original nanoclaw" translate="no">​</a></h2>
 <p>MicroClaw started as a port but has grown beyond feature parity:</p>
-<table><thead><tr><th>Feature</th><th>nanoclaw (TS/WhatsApp)</th><th>MicroClaw (Rust/chat)</th></tr></thead><tbody><tr><td>Platform</td><td>WhatsApp</td><td>chat</td></tr><tr><td>Language</td><td>TypeScript</td><td>Rust</td></tr><tr><td>Deployment</td><td>Node.js runtime</td><td>Single binary</td></tr><tr><td>Tools</td><td>Similar core set</td><td>16 tools (8 original + 8 new)</td></tr><tr><td>Web search</td><td>--</td><td>DuckDuckGo search + URL fetch</td></tr><tr><td>Scheduling</td><td>Cron reminders</td><td>Full agentic scheduled tasks</td></tr><tr><td>Mid-message sending</td><td>--</td><td>send_message tool</td></tr><tr><td>Group catch-up</td><td>--</td><td>Loads all messages since last reply</td></tr><tr><td>Typing indicator</td><td>Single flash</td><td>Continuous (every 4s)</td></tr></tbody></table>
+<table><thead><tr><th>Feature</th><th>nanoclaw (TS/WhatsApp)</th><th>MicroClaw (Rust/chat)</th></tr></thead><tbody><tr><td>Platform</td><td>WhatsApp</td><td>chat</td></tr><tr><td>Language</td><td>TypeScript</td><td>Rust</td></tr><tr><td>Deployment</td><td>Node.js runtime</td><td>Single binary</td></tr><tr><td>Tools</td><td>Similar core set</td><td>22 tools</td></tr><tr><td>Web search</td><td>--</td><td>DuckDuckGo search + URL fetch</td></tr><tr><td>Scheduling</td><td>Cron reminders</td><td>Full agentic scheduled tasks</td></tr><tr><td>Mid-message sending</td><td>--</td><td>send_message tool</td></tr><tr><td>Group catch-up</td><td>--</td><td>Loads all messages since last reply</td></tr><tr><td>Typing indicator</td><td>Single flash</td><td>Continuous (every 4s)</td></tr></tbody></table>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="limitations">Limitations<a href="https://microclaw.ai/blog/building-microclaw#limitations" class="hash-link" aria-label="Direct link to Limitations" title="Direct link to Limitations" translate="no">​</a></h2>
 <ul>
-<li class="">No image/voice/document support (text messages only)</li>
 <li class="">No streaming (responses arrive all at once)</li>
-<li class="">No permission model (lock down the host machine)</li>
+<li class="">Shell/file tools run on host; prefer locked-down deployment</li>
 <li class="">Single-threaded tool execution per turn</li>
 <li class="">Scheduler granularity (60-second polling)</li>
 </ul>
@@ -129,7 +128,7 @@
 <li class="">Provider docs expanded to cover 20+ presets and <code>custom</code> mode</li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="next">Next<a href="https://microclaw.ai/blog/release-notes-2026-02#next" class="hash-link" aria-label="Direct link to Next" title="Direct link to Next" translate="no">​</a></h2>
-<p>The next milestone is a permission model for tool execution and better sandboxing defaults.</p>]]></content:encoded>
+<p>Recent updates added a multi-chat permission model (<code>control_chat_ids</code>) for cross-chat tool authorization. Next milestone is stricter runtime sandboxing defaults for host command/file access.</p>]]></content:encoded>
             <category>Rust</category>
             <category>Chat</category>
             <category>Agentic AI</category>
