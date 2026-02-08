@@ -124,11 +124,6 @@ export default function Home() {
         'DuckDuckGo HTML search with page fetching and HTML stripping for clean summaries.',
     },
     {
-      title: 'Group Catch-up',
-      description:
-        'In groups, MicroClaw loads all messages since its last reply for full context.',
-    },
-    {
       title: 'Single Binary',
       description:
         'Rust build produces a self-contained binary with bundled SQLite.',

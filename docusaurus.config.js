@@ -178,14 +178,6 @@ const config = {
                 href: 'https://github.com/microclaw/microclaw/releases',
               },
               {
-                label: 'X (Author)',
-                href: 'https://x.com/everettjf',
-              },
-              {
-                label: 'X (MicroClaw)',
-                href: 'https://x.com/microclaw',
-              },
-              {
                 label: 'Discord',
                 href: 'https://discord.gg/pvmezwkAk5',
               },
@@ -201,6 +193,14 @@ const config = {
               {
                 label: 'License',
                 to: '/docs/license',
+              },
+              {
+                label: 'X (Author)',
+                href: 'https://x.com/everettjf',
+              },
+              {
+                label: 'X (MicroClaw)',
+                href: 'https://x.com/microclaw',
               },
             ],
           },
