@@ -16,13 +16,8 @@ sidebar_position: 3
 curl -fsSL https://microclaw.ai/install.sh | bash
 ```
 
-Release-only install (skip Homebrew/Cargo fallback):
-
-```sh
-curl -fsSL https://microclaw.ai/install.sh | MICROCLAW_INSTALL_METHOD=release bash
-```
-
-The installer tries prebuilt GitHub release binaries first, then falls back to Homebrew (macOS) or `cargo install`.
+The installer only installs prebuilt GitHub release binaries.
+It does not fall back to Homebrew or Cargo automatically.
 
 ## Homebrew (macOS)
 

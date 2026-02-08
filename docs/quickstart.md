@@ -20,11 +20,7 @@ Get MicroClaw running in a few minutes.
 curl -fsSL https://microclaw.ai/install.sh | bash
 ```
 
-Release-only install (skip Homebrew/Cargo fallback):
-
-```sh
-curl -fsSL https://microclaw.ai/install.sh | MICROCLAW_INSTALL_METHOD=release bash
-```
+This installer only installs prebuilt GitHub release binaries.
 
 ### Homebrew (macOS)
 
