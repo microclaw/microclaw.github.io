@@ -15,6 +15,7 @@ All notable changes will be documented here.
 - Multi-chat permission model via `control_chat_ids`
 - Cross-chat authorization for `send_message`, scheduler tools, `export_chat`, `todo_*`, and chat-scoped memory
 - Added permission-focused unit tests for deny/allow paths
+- Added new bundled skills: `apple-notes`, `apple-reminders`, `apple-calendar`, and `weather`
 
 ## 2025-06-01
 

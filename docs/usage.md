@@ -216,6 +216,24 @@ Bot: The deploy key is in /home/deploy/.ssh/id_ed25519
 
 ---
 
+## Agent Skills
+
+MicroClaw auto-discovers local skills from `microclaw.data/skills/*/SKILL.md`.  
+Use `/skills` in chat to list all available skills.
+
+See the dedicated skills reference for per-skill details: [Skills](./skills).
+
+Built-in examples now include:
+
+- `apple-notes` (macOS Apple Notes via `memo`)
+- `apple-reminders` (macOS Apple Reminders via `remindctl`)
+- `apple-calendar` (macOS Calendar via `icalBuddy` + `osascript`)
+- `weather` (quick weather lookup via `wttr.in`)
+
+If a request matches a skill, the model can call `activate_skill` and then follow that skill's detailed workflow.
+
+---
+
 ## Mid-Conversation Messaging (send_message)
 
 LLM can send messages to the chat during tool execution, useful for progress updates on long tasks.

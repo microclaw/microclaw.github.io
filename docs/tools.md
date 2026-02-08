@@ -6,6 +6,8 @@ sidebar_position: 6
 
 MicroClaw exposes 22 tools to LLM through JSON Schema definitions. LLM selects and calls tools automatically based on your request.
 
+Skill workflows are provided by local `SKILL.md` files (for example `apple-notes`, `apple-reminders`, `apple-calendar`, `weather`) and loaded through `activate_skill`.
+
 ## Tool List
 
 | # | Tool | Category | Description |
