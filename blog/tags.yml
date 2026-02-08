@@ -10,3 +10,6 @@ chat:
 agents:
   label: Agentic AI
   permalink: /agents
+telegram:
+  label: Telegram
+  permalink: /telegram
