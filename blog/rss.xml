@@ -28,7 +28,7 @@
 </ol>
 <p>All of that happens in a single message exchange. You send one message, you get back one answer. The multi-step reasoning happens behind the scenes.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-rust">Why Rust?<a href="https://microclaw.ai/blog/building-microclaw#why-rust" class="hash-link" aria-label="Direct link to Why Rust?" title="Direct link to Why Rust?" translate="no">​</a></h2>
-<p>The original nanoclaw is TypeScript. It works. But I wanted something I could deploy as a single static binary with no runtime dependencies. <code>cargo build --release</code> gives you one file. Copy it to a server, set three environment variables, and it runs.</p>
+<p>The original nanoclaw is TypeScript. It works. But I wanted something I could deploy as a single static binary with no runtime dependencies. <code>cargo build --release</code> gives you one file. Copy it to a server, create a config file, and it runs.</p>
 <p>Rust also turned out to be a surprisingly good fit for this kind of project:</p>
 <ul>
 <li class="">Enums for the API protocol. LLM's content blocks come in three flavors: text, tool_use, and tool_result. Rust's tagged enums with serde map to this perfectly. No stringly-typed checks, no runtime type confusion.</li>
@@ -65,8 +65,8 @@
 <p>Tell it "remember that I'm working on project Atlas and the deploy target is staging.example.com" and it will write that to a CLAUDE.md file. Next time you message it, that context is right there in the system prompt.</p>
 <p>Two scopes:</p>
 <ul>
-<li class="">Global memory: <code>data/groups/CLAUDE.md</code></li>
-<li class="">Per-chat memory: <code>data/groups/{chat_id}/CLAUDE.md</code></li>
+<li class="">Global memory: <code>microclaw.data/runtime/groups/CLAUDE.md</code></li>
+<li class="">Per-chat memory: <code>microclaw.data/runtime/groups/{chat_id}/CLAUDE.md</code></li>
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-scheduler">The scheduler<a href="https://microclaw.ai/blog/building-microclaw#the-scheduler" class="hash-link" aria-label="Direct link to The scheduler" title="Direct link to The scheduler" translate="no">​</a></h3>
 <p>The scheduler is a background Tokio task that wakes up every 60 seconds and checks for due tasks. When it finds one:</p>
@@ -81,18 +81,18 @@
 <p>This means if 50 messages flew by in a group discussion and someone tags the bot asking "summarize what just happened", the bot sees all 50 messages, not just the most recent ones.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="setup">Setup<a href="https://microclaw.ai/blog/building-microclaw#setup" class="hash-link" aria-label="Direct link to Setup" title="Direct link to Setup" translate="no">​</a></h2>
 <p>Getting started takes about two minutes:</p>
-<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git clone https://github.com/microclaw/microclaw.git</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cd microclaw</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cp .env.example .env</span><br></span></code></pre></div></div>
-<p>Edit <code>.env</code> with three required values:</p>
+<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git clone https://github.com/microclaw/microclaw.git</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cd microclaw</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cp microclaw.config.example.yaml microclaw.config.yaml</span><br></span></code></pre></div></div>
+<p>Edit <code>microclaw.config.yaml</code> with three required values:</p>
 <ul>
-<li class=""><code>TELEGRAM_BOT_TOKEN</code> -- get one from @BotFather</li>
-<li class=""><code>ANTHROPIC_API_KEY</code> -- from console.anthropic.com</li>
-<li class=""><code>BOT_USERNAME</code> -- your bot's username (without the @)</li>
+<li class=""><code>telegram_bot_token</code> -- get one from @BotFather</li>
+<li class=""><code>api_key</code> -- from your LLM provider</li>
+<li class=""><code>bot_username</code> -- your bot's username (without the @)</li>
 </ul>
 <p>Then:</p>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cargo run -- start</span><br></span></code></pre></div></div>
 <p>Or build a release binary:</p>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cargo build --release</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">./target/release/microclaw start</span><br></span></code></pre></div></div>
-<p>The binary is self-contained. No database server to install (SQLite is bundled), no external dependencies to configure. It creates its <code>data/</code> directory on first run, starts the scheduler automatically, and begins listening for messages.</p>
+<p>The binary is self-contained. No database server to install (SQLite is bundled), no external dependencies to configure. It creates its <code>microclaw.data/</code> directory on first run, starts the scheduler automatically, and begins listening for messages.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="whats-different-from-the-original-nanoclaw">What's different from the original nanoclaw<a href="https://microclaw.ai/blog/building-microclaw#whats-different-from-the-original-nanoclaw" class="hash-link" aria-label="Direct link to What's different from the original nanoclaw" title="Direct link to What's different from the original nanoclaw" translate="no">​</a></h2>
 <p>MicroClaw started as a port but has grown beyond feature parity:</p>
 <table><thead><tr><th>Feature</th><th>nanoclaw (TS/WhatsApp)</th><th>MicroClaw (Rust/chat)</th></tr></thead><tbody><tr><td>Platform</td><td>WhatsApp</td><td>chat</td></tr><tr><td>Language</td><td>TypeScript</td><td>Rust</td></tr><tr><td>Deployment</td><td>Node.js runtime</td><td>Single binary</td></tr><tr><td>Tools</td><td>Similar core set</td><td>16 tools (8 original + 8 new)</td></tr><tr><td>Web search</td><td>--</td><td>DuckDuckGo search + URL fetch</td></tr><tr><td>Scheduling</td><td>Cron reminders</td><td>Full agentic scheduled tasks</td></tr><tr><td>Mid-message sending</td><td>--</td><td>send_message tool</td></tr><tr><td>Group catch-up</td><td>--</td><td>Loads all messages since last reply</td></tr><tr><td>Typing indicator</td><td>Single flash</td><td>Continuous (every 4s)</td></tr></tbody></table>
