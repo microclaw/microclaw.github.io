@@ -375,6 +375,11 @@ Bot: [bash: lsof -i :8080 -> read_file: /etc/nginx/nginx.conf -> analysis]
 
 ```sh
 microclaw start       # Start the bot
+microclaw gateway install # Install + enable persistent gateway service
+microclaw gateway status  # Show gateway service status
+microclaw gateway stop    # Stop gateway service
+microclaw gateway logs 200 # Show recent runtime logs
+microclaw gateway uninstall # Remove gateway service
 microclaw help        # Show help and all configuration options
 ```
 

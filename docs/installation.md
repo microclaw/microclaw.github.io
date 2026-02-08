@@ -73,6 +73,25 @@ Use `microclaw help` (or `cargo run -- help`) for CLI usage.
 
 The setup wizard now includes provider/model list pickers and 20+ built-in provider presets, plus `custom` for manual configuration.
 
+## Gateway persistent service
+
+MicroClaw supports a persistent gateway service manager:
+
+```sh
+microclaw gateway install
+microclaw gateway status
+microclaw gateway start
+microclaw gateway stop
+microclaw gateway logs 200
+microclaw gateway uninstall
+```
+
+Platform behavior:
+- macOS: `launchd` user agent
+- Linux: `systemd --user` unit
+- Logs: hourly files in `microclaw.data/runtime/logs/` as `microclaw-YYYY-MM-DD-HH.log`
+- Retention: files older than 30 days are auto-deleted
+
 ## Uninstall
 
 If you installed with the one-line installer, remove the binary from your PATH location:

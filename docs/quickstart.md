@@ -84,6 +84,22 @@ microclaw start
 That is it. On first launch, if required config is missing, `start` will auto-open setup wizard.
 After setup, the bot initializes SQLite, starts scheduler, and begins listening for messages.
 
+## 5. Optional: run as persistent gateway service
+
+```sh
+microclaw gateway install
+microclaw gateway status
+```
+
+Lifecycle commands:
+
+```sh
+microclaw gateway start
+microclaw gateway stop
+microclaw gateway logs 200
+microclaw gateway uninstall
+```
+
 ## Next
 
 - Read Configuration to see all config keys

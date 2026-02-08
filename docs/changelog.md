@@ -16,6 +16,9 @@ All notable changes will be documented here.
 - Cross-chat authorization for `send_message`, scheduler tools, `export_chat`, `todo_*`, and chat-scoped memory
 - Added permission-focused unit tests for deny/allow paths
 - Added new bundled skills: `apple-notes`, `apple-reminders`, `apple-calendar`, and `weather`
+- Added `microclaw gateway <install|uninstall|start|stop|status>` for persistent service management (macOS `launchd`, Linux `systemd --user`)
+- Added hourly log rotation (`microclaw-YYYY-MM-DD-HH.log`) with 30-day retention cleanup
+- Added `microclaw gateway logs [N]` to inspect recent runtime logs
 
 ## 2025-06-01
 
