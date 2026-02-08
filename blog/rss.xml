@@ -4,10 +4,38 @@
         <title>MicroClaw Blog</title>
         <link>https://microclaw.ai/blog</link>
         <description>MicroClaw Blog</description>
-        <lastBuildDate>Sat, 07 Feb 2026 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 08 Feb 2026 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[MicroClaw vs NanoClaw: A Practical Comparison]]></title>
+            <link>https://microclaw.ai/blog/microclaw-vs-nanoclaw</link>
+            <guid>https://microclaw.ai/blog/microclaw-vs-nanoclaw</guid>
+            <pubDate>Sun, 08 Feb 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[MicroClaw was inspired by NanoClaw. They share the same core idea: an AI assistant that can execute tools from chat.]]></description>
+            <content:encoded><![CDATA[<p>MicroClaw was inspired by <a href="https://github.com/gavrielc/nanoclaw/" target="_blank" rel="noopener noreferrer" class="">NanoClaw</a>. They share the same core idea: an AI assistant that can execute tools from chat.</p>
+<p>This post compares the two projects from an engineering and product perspective, based on current public documentation.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="scope-note">Scope note<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw#scope-note" class="hash-link" aria-label="Direct link to Scope note" title="Direct link to Scope note" translate="no">​</a></h2>
+<p>The NanoClaw side of this comparison is based on its official README as of February 8, 2026. If NanoClaw changes later, some rows may evolve.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="comparison-table">Comparison table<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw#comparison-table" class="hash-link" aria-label="Direct link to Comparison table" title="Direct link to Comparison table" translate="no">​</a></h2>
+<table><thead><tr><th>Dimension</th><th>NanoClaw</th><th>MicroClaw</th></tr></thead><tbody><tr><td>Project orientation</td><td>Minimal, single-user, "small enough to understand"</td><td>Broader chat-agent feature set for practical daily use</td></tr><tr><td>Relationship</td><td>Original project</td><td>Inspired by NanoClaw and expanded for Rust + Telegram workflows</td></tr><tr><td>Default channel</td><td>WhatsApp-first</td><td>Telegram-first (with optional WhatsApp Cloud webhook support)</td></tr><tr><td>Multi-channel philosophy</td><td>Prefer transformation skills (for example <code>/add-telegram</code>) over built-in multi-channel complexity</td><td>Built as a chat-surface bot with Telegram as primary experience</td></tr><tr><td>Primary stack</td><td>Node.js + Claude Agent SDK + container runtime</td><td>Rust + Tokio + teloxide + reqwest</td></tr><tr><td>Model/provider strategy</td><td>Tied to Claude Code / Agent SDK workflow</td><td>Native Anthropic + OpenAI-compatible provider abstraction</td></tr><tr><td>Tool system</td><td>README describes major capabilities (web, scheduling, etc.)</td><td>Explicit tool registry with file, shell, web, memory, scheduler, export, sub-agent, todo, and skills tools</td></tr><tr><td>Agent execution loop</td><td>Agent runs through containerized Claude workflow</td><td>Explicit <code>tool_use</code> / <code>tool_result</code> loop with iteration cap</td></tr><tr><td>Security posture emphasis</td><td>OS-level isolation via Apple Container/Docker sandboxes</td><td>In-app tool authorization + deployment hardening strategies</td></tr><tr><td>Host access model</td><td>Commands run inside container with mounted scope</td><td>Commands/tools run in runtime environment; boundaries enforced by auth and ops controls</td></tr><tr><td>Persistence</td><td>SQLite</td><td>SQLite (messages, chats, sessions, scheduled tasks, etc.)</td></tr><tr><td>Session continuity</td><td>Persistent behavior implied; less emphasis on tool-block replay details in README</td><td>Full session resume including tool interaction context</td></tr><tr><td>Context compaction</td><td>Mentioned as a skill direction (<code>/add-clear</code>)</td><td>Built-in context compaction for oversized sessions</td></tr><tr><td>Memory structure</td><td>Per-group <code>CLAUDE.md</code> with isolation focus</td><td>Global + per-chat <code>CLAUDE.md</code> scopes</td></tr><tr><td>Scheduler</td><td>Recurring task support</td><td>One-shot + cron recurring tasks with management tools</td></tr><tr><td>Sub-agent capability</td><td>Not explicitly documented in README</td><td>Built-in <code>sub_agent</code> with restricted tool set</td></tr><tr><td>Planning/todo tools</td><td>Not explicitly documented in README</td><td>Built-in todo read/write tools</td></tr><tr><td>Extensibility model</td><td>"Skills over features" is a core principle</td><td>Supports skill activation while also shipping broader built-in capabilities</td></tr><tr><td>Configuration philosophy</td><td>Fewer knobs; customize by code changes</td><td>Config-driven runtime with provider/model/authorization options</td></tr><tr><td>Deployment shape</td><td>Claude Code-centric + container requirements</td><td>Single-binary Rust deployment path (<code>cargo build --release</code>)</td></tr><tr><td>Best fit</td><td>Users who want container-isolated, minimal, deeply personalized forks</td><td>Users who want rich Telegram-native agent workflows with built-in operational features</td></tr></tbody></table>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="bottom-line">Bottom line<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw#bottom-line" class="hash-link" aria-label="Direct link to Bottom line" title="Direct link to Bottom line" translate="no">​</a></h2>
+<p>NanoClaw optimizes for minimalism and container isolation first.</p>
+<p>MicroClaw optimizes for built-in capability breadth and Telegram-first agent workflows.</p>
+<p>Both are valid choices. The right one depends on whether your top priority is minimal isolated substrate (NanoClaw) or broader integrated functionality out of the box (MicroClaw).</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="references">References<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw#references" class="hash-link" aria-label="Direct link to References" title="Direct link to References" translate="no">​</a></h2>
+<ul>
+<li class="">NanoClaw repository: <a href="https://github.com/gavrielc/nanoclaw/" target="_blank" rel="noopener noreferrer" class="">https://github.com/gavrielc/nanoclaw/</a></li>
+<li class="">NanoClaw README (raw): <a href="https://raw.githubusercontent.com/gavrielc/nanoclaw/main/README.md" target="_blank" rel="noopener noreferrer" class="">https://raw.githubusercontent.com/gavrielc/nanoclaw/main/README.md</a></li>
+<li class="">MicroClaw repository: <a href="https://github.com/microclaw/microclaw" target="_blank" rel="noopener noreferrer" class="">https://github.com/microclaw/microclaw</a></li>
+<li class="">MicroClaw docs: <a href="https://microclaw.ai/docs/overview" target="_blank" rel="noopener noreferrer" class="">https://microclaw.ai/docs/overview</a></li>
+</ul>]]></content:encoded>
+            <category>Architecture</category>
+            <category>Rust</category>
+            <category>Chat</category>
+            <category>Agentic AI</category>
+        </item>
         <item>
             <title><![CDATA[Introducing MicroClaw: An Agentic AI Assistant for Telegram]]></title>
             <link>https://microclaw.ai/blog/building-microclaw</link>
@@ -63,7 +91,7 @@
 </ul>]]></content:encoded>
             <category>Architecture</category>
             <category>Rust</category>
-            <category>telegram</category>
+            <category>Telegram</category>
             <category>Agentic AI</category>
         </item>
     </channel>
