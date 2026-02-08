@@ -4,7 +4,7 @@ title: Tools Reference
 sidebar_position: 6
 ---
 
-MicroClaw exposes 22 tools to LLM through JSON Schema definitions. LLM selects and calls tools automatically based on your request.
+MicroClaw exposes 23 tools to LLM through JSON Schema definitions. LLM selects and calls tools automatically based on your request.
 
 Skill workflows are provided by local `SKILL.md` files (for example `apple-notes`, `apple-reminders`, `apple-calendar`, `weather`) and loaded through `activate_skill`.
 
@@ -13,7 +13,8 @@ Skill workflows are provided by local `SKILL.md` files (for example `apple-notes
 | # | Tool | Category | Description |
 |---|---|---|---|
 | 1 | `bash` | Shell | Execute shell commands with configurable timeout |
-| 2 | `read_file` | File I/O | Read files with line numbers, optional offset/limit |
+| 2 | `browser` | Web | Headless browser automation via agent-browser CLI |
+| 3 | `read_file` | File I/O | Read files with line numbers, optional offset/limit |
 | 3 | `write_file` | File I/O | Create or overwrite files (auto-creates directories) |
 | 4 | `edit_file` | File I/O | Find-and-replace with uniqueness validation |
 | 5 | `glob` | Search | Find files by glob pattern (`**/*.rs`) |
@@ -59,6 +60,32 @@ Execute a shell command.
 | `timeout_secs` | integer | No | Timeout in seconds (default: 120) |
 
 **Behavior**: Returns stdout + stderr. Output truncated at 30,000 characters. Non-zero exit codes are reported as errors.
+
+---
+
+### browser
+
+Headless browser automation via [agent-browser](https://github.com/vercel-labs/agent-browser) CLI. Requires `agent-browser` to be installed (see [Installation](/docs/installation#optional-browser-automation)).
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `command` | string | Yes | The agent-browser command to run |
+| `timeout_secs` | integer | No | Timeout in seconds (default: 30) |
+
+**Common commands**:
+
+| Command | Description |
+|---|---|
+| `open <url>` | Navigate to a URL |
+| `snapshot -i` | Get interactive elements with refs (`@e1`, `@e2`, ...) |
+| `click @e1` | Click an element by ref |
+| `fill @e2 "text"` | Type text into an input field |
+| `get text @e3` | Extract text content from an element |
+| `screenshot` | Capture a visual screenshot |
+| `tabs` | List open tabs |
+| `tab <n>` | Switch to tab n |
+
+**Behavior**: Browser state (cookies, page, tabs) persists across tool calls within a conversation via the `--session microclaw` flag. Output truncated at 30,000 characters. Always run `snapshot -i` after navigation or interaction to see the updated page state.
 
 ---
 

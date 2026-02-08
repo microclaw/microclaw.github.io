@@ -92,6 +92,17 @@ Platform behavior:
 - Logs: hourly files in `microclaw.data/runtime/logs/` as `microclaw-YYYY-MM-DD-HH.log`
 - Retention: files older than 30 days are auto-deleted
 
+## Optional: browser automation
+
+To enable the `browser` tool (headless browser automation), install [agent-browser](https://github.com/vercel-labs/agent-browser):
+
+```sh
+npm install -g agent-browser
+agent-browser install
+```
+
+This lets MicroClaw interact with JavaScript-rendered pages, fill forms, click buttons, and navigate multi-step web flows. If `agent-browser` is not installed, the `browser` tool will return an error when called — all other tools work normally.
+
 ## Uninstall
 
 If you installed with the one-line installer, remove the binary from your PATH location:

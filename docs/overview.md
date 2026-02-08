@@ -46,7 +46,7 @@ MicroClaw enters an agentic loop for every message. LLM can call tools, inspect 
 ## Core capabilities
 
 - Agentic tool use (bash, file I/O, glob, grep)
-- Web search and fetch
+- Web search, fetch, and browser automation
 - Scheduling with cron expressions
 - Mid-conversation messaging for progress updates
 - Persistent memory (global + per-chat)
