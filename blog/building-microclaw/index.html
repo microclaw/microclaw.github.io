@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.6af503de.css">
-<script src="/assets/js/runtime~main.c620cb62.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.6c55573d.js" defer="defer"></script>
 <script src="/assets/js/main.d78fb5a9.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -61,8 +61,8 @@
 <p>Sessions are persisted in SQLite with full tool context (<code>tool_use</code> and <code>tool_result</code> blocks).<br>
 <!-- -->When a new message arrives, the assistant can resume from real prior execution state, not just a truncated chat summary.</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-memory-that-can-evolve-over-time">2) Memory that can evolve over time<a href="#2-memory-that-can-evolve-over-time" class="hash-link" aria-label="Direct link to 2) Memory that can evolve over time" title="Direct link to 2) Memory that can evolve over time" translate="no">​</a></h3>
-<p>MicroClaw supports global and per-chat <code>CLAUDE.md</code> memory.<br>
-<!-- -->The assistant can read and update memory through tools, so preferences and project context survive across days or weeks.</p>
+<p>MicroClaw supports global and per-chat <code>AGENTS.md</code> memory.
+The assistant can read and update memory through tools, so preferences and project context survive across days or weeks.</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-operational-features-built-in">3) Operational features built in<a href="#3-operational-features-built-in" class="hash-link" aria-label="Direct link to 3) Operational features built in" title="Direct link to 3) Operational features built in" translate="no">​</a></h3>
 <p>It includes production-relevant features out of the box:</p>
 <ul>
@@ -80,7 +80,7 @@
 <li class="">Chat-native tool execution (<code>bash</code>, file operations, <code>glob</code>, <code>grep</code>, web search/fetch)</li>
 <li class="">Persistent session resume including tool interaction history</li>
 <li class="">Context compaction for long-running sessions</li>
-<li class="">Global + per-chat persistent memory via <code>CLAUDE.md</code></li>
+<li class="">Global + per-chat persistent memory via <code>AGENTS.md</code></li>
 <li class="">Scheduler for cron and one-time tasks</li>
 <li class="">Skill activation for domain-specific instructions</li>
 <li class="">Todo/plan tools for structured multi-step execution</li>
