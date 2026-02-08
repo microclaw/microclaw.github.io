@@ -15,6 +15,7 @@ MicroClaw is a Rust chat bot that connects LLM to your chats with agentic tool e
 - Long-lived memory backed by CLAUDE.md files
 - Built-in scheduler for cron and one-time tasks
 - Group chat catch-up: reads all messages since last reply
+- Multi-chat permission model (`control_chat_ids`) for cross-chat tool authorization
 
 ## How it works
 

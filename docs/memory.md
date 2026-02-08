@@ -20,6 +20,7 @@ microclaw.data/runtime/groups/
 - LLM can read and write memory using `read_memory` and `write_memory`
 - Memory is wrapped in `<global_memory>` and `<chat_memory>` tags
 - The memory files live under `DATA_DIR/runtime` (default `./microclaw.data/runtime`)
+- `write_memory` to `scope: "global"` requires the caller chat to be in `control_chat_ids`
 
 ## Example
 

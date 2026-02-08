@@ -12,6 +12,9 @@ All notable changes will be documented here.
 - Core docs for configuration, tools, memory, scheduler, and architecture
 - Setup wizard docs updated for provider/model list pickers
 - Added 20+ preset provider references plus `custom` option guidance
+- Multi-chat permission model via `control_chat_ids`
+- Cross-chat authorization for `send_message`, scheduler tools, `export_chat`, `todo_*`, and chat-scoped memory
+- Added permission-focused unit tests for deny/allow paths
 
 ## 2025-06-01
 

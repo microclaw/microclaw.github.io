@@ -229,11 +229,15 @@ Bot: [final summary response]
 
 You don't need to explicitly ask for this. LLM uses it automatically when working on multi-step tasks.
 
+Permission note: cross-chat `send_message` is allowed only for chats listed in `control_chat_ids`.
+
 ---
 
 ## Scheduling
 
 MicroClaw has a background scheduler that polls every 60 seconds.
+
+Permission note: scheduling/listing/managing tasks for another chat is allowed only for `control_chat_ids`.
 
 ### Schedule a recurring task (cron)
 

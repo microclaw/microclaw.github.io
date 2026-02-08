@@ -6,7 +6,7 @@ sidebar_position: 11
 
 ## Unit Tests
 
-MicroClaw has 103 unit tests covering all core modules. Run them with:
+MicroClaw has 200+ unit tests covering core modules and permission paths. Run them with:
 
 ```sh
 cargo test
@@ -29,8 +29,8 @@ cargo test
 | `tools/edit_file.rs` | 5 | Successful edit, file not found, string not found, multiple matches, missing params |
 | `tools/glob.rs` | 3 | File matching, no matches, missing params |
 | `tools/grep.rs` | 7 | Content matching, no matches, file glob filter, invalid regex, hidden dir skipping |
-| `tools/memory.rs` | 7 | Global/chat read and write, missing params, invalid scope, empty files |
-| `tools/schedule.rs` | 13 | cron next_run computation, task creation (cron/once), validation, listing, pause/resume/cancel lifecycle |
+| `tools/memory.rs` | 10+ | Global/chat read and write, missing params, invalid scope, empty files, permission deny/allow paths |
+| `tools/schedule.rs` | 15+ | cron next_run computation, task creation (cron/once), validation, listing, pause/resume/cancel lifecycle, cross-chat authorization |
 
 ---
 
@@ -207,7 +207,27 @@ You: Create 5 different files in /tmp named microclaw_1.txt through microclaw_5.
 
 ---
 
-### Test 13: Long response splitting
+### Test 13: Multi-chat permission model (deny path)
+
+From a non-control chat, ask the bot to operate on another `chat_id`:
+
+```
+You: Send a message to chat_id 123456 saying "hello"
+```
+
+**Expected**: Tool call fails with a permission error.
+
+---
+
+### Test 14: Multi-chat permission model (allow path)
+
+Add current chat to `control_chat_ids`, restart bot, then retry cross-chat operation.
+
+**Expected**: Permission layer allows the operation (final success still depends on target chat reachability/tool behavior).
+
+---
+
+### Test 15: Long response splitting
 
 ```
 You: Write a 5000-character essay about the history of computing
@@ -217,7 +237,7 @@ You: Write a 5000-character essay about the history of computing
 
 ---
 
-### Test 14: Group chat (requires group)
+### Test 16: Group chat (requires group)
 
 1. Add the bot to a chat group
 2. Send several messages from different users without @mentioning the bot
@@ -227,7 +247,7 @@ You: Write a 5000-character essay about the history of computing
 
 ---
 
-### Test 15: Combined workflow
+### Test 17: Combined workflow
 
 ```
 You: Search the web for "Rust error handling best practices", fetch the first result, and save a one-sentence summary to your memory

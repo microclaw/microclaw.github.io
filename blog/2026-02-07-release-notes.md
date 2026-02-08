@@ -19,4 +19,4 @@ This release focuses on documentation clarity and onboarding. The new site conso
 
 ## Next
 
-The next milestone is a permission model for tool execution and better sandboxing defaults.
+Recent updates added a multi-chat permission model (`control_chat_ids`) for cross-chat tool authorization. Next milestone is stricter runtime sandboxing defaults for host command/file access.

@@ -25,10 +25,21 @@ All configuration is via `microclaw.config.yaml`.
 | `max_tokens` | `8192` | Max tokens per LLM response |
 | `max_tool_iterations` | `25` | Max tool-use loop iterations per message |
 | `max_history_messages` | `50` | Number of recent messages sent as context |
+| `control_chat_ids` | `[]` | Chat IDs allowed to perform cross-chat tool actions |
+| `max_session_messages` | `40` | Message threshold that triggers context compaction |
+| `compact_keep_recent` | `20` | Number of recent messages kept verbatim during compaction |
 
 ## Supported `llm_provider` values
 
 `openai`, `openrouter`, `anthropic`, `google`, `alibaba`, `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`, `zhipu`, `minimax`, `cohere`, `tencent`, `xai`, `huggingface`, `together`, `custom`.
+
+## Multi-chat permissions
+
+`control_chat_ids` defines which chats can perform cross-chat tool actions.
+
+- non-control chats: only their own `chat_id`
+- control chats: can operate across chats
+- global memory writes require control-chat privileges
 
 ## Setup wizard
 

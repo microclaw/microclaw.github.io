@@ -10,11 +10,15 @@ MicroClaw is under active development. It is stable enough for personal and smal
 
 ## Does it support images, voice, or files?
 
-Not yet. MicroClaw currently supports text messages only.
+Telegram supports text + images. Voice messages are transcribed when `openai_api_key` is configured. File operations are available through tools (`read_file`, `write_file`, `edit_file`).
 
 ## Can I restrict who can run commands?
 
-There is no permission model today. If you need access control, run the bot behind a user allowlist or add a permission check in the chat handler.
+Yes. Configure `control_chat_ids` in `microclaw.config.yaml`:
+
+- non-control chats can only operate on their own `chat_id`
+- control chats can perform cross-chat actions
+- global memory writes are limited to control chats
 
 ## How does memory work?
 

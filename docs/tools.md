@@ -4,7 +4,7 @@ title: Tools Reference
 sidebar_position: 6
 ---
 
-MicroClaw exposes 16 tools to LLM through JSON Schema definitions. LLM selects and calls tools automatically based on your request.
+MicroClaw exposes 22 tools to LLM through JSON Schema definitions. LLM selects and calls tools automatically based on your request.
 
 ## Tool List
 
@@ -26,10 +26,26 @@ MicroClaw exposes 16 tools to LLM through JSON Schema definitions. LLM selects a
 | 14 | `pause_scheduled_task` | Scheduler | Pause a scheduled task |
 | 15 | `resume_scheduled_task` | Scheduler | Resume a paused task |
 | 16 | `cancel_scheduled_task` | Scheduler | Cancel a scheduled task |
+| 17 | `get_task_history` | Scheduler | View execution history for a task |
+| 18 | `export_chat` | chat | Export chat history to markdown |
+| 19 | `sub_agent` | Agent | Delegate a bounded sub-task to a restricted sub-agent |
+| 20 | `activate_skill` | Skills | Load specialized local skill instructions |
+| 21 | `todo_read` | Planning | Read persistent todo list for a chat |
+| 22 | `todo_write` | Planning | Write/replace persistent todo list for a chat |
 
 ---
 
 ## Detailed Parameters
+
+## Permission model
+
+Tool calls are authorized by caller chat:
+
+- Non-control chats can only operate on their own `chat_id`
+- Control chats (`control_chat_ids`) can operate across chats
+- Global memory writes (`write_memory` with `scope = "global"`) require control-chat privileges
+
+This applies to `send_message`, scheduler tools, `export_chat`, `todo_*`, and chat-scoped memory access.
 
 ### bash
 

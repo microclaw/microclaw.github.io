@@ -168,7 +168,7 @@ MicroClaw started as a port but has grown beyond feature parity:
 | Platform | WhatsApp | chat |
 | Language | TypeScript | Rust |
 | Deployment | Node.js runtime | Single binary |
-| Tools | Similar core set | 16 tools (8 original + 8 new) |
+| Tools | Similar core set | 22 tools |
 | Web search | -- | DuckDuckGo search + URL fetch |
 | Scheduling | Cron reminders | Full agentic scheduled tasks |
 | Mid-message sending | -- | send_message tool |
@@ -177,9 +177,8 @@ MicroClaw started as a port but has grown beyond feature parity:
 
 ## Limitations
 
-- No image/voice/document support (text messages only)
 - No streaming (responses arrive all at once)
-- No permission model (lock down the host machine)
+- Shell/file tools run on host; prefer locked-down deployment
 - Single-threaded tool execution per turn
 - Scheduler granularity (60-second polling)
 
