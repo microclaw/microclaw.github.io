@@ -72,20 +72,35 @@ Headless browser automation via [agent-browser](https://github.com/vercel-labs/a
 | `command` | string | Yes | The agent-browser command to run |
 | `timeout_secs` | integer | No | Timeout in seconds (default: 30) |
 
-**Common commands**:
+**Commands by category**:
 
-| Command | Description |
+| Category | Commands |
 |---|---|
-| `open <url>` | Navigate to a URL |
-| `snapshot -i` | Get interactive elements with refs (`@e1`, `@e2`, ...) |
-| `click @e1` | Click an element by ref |
-| `fill @e2 "text"` | Type text into an input field |
-| `get text @e3` | Extract text content from an element |
-| `screenshot` | Capture a visual screenshot |
-| `tabs` | List open tabs |
-| `tab <n>` | Switch to tab n |
+| Navigation | `open <url>`, `back`, `forward`, `reload`, `close` |
+| Snapshot | `snapshot` (`-i` interactive only, `-c` compact) |
+| Interaction | `click`, `dblclick`, `fill`, `type`, `press`, `hover`, `select`, `check`, `uncheck`, `upload`, `drag` |
+| Data extraction | `get text/html/value/attr/title/url/count/box <sel>` |
+| State checks | `is visible/enabled/checked <sel>` |
+| Screenshot/PDF | `screenshot [path]` (`--full` for full page), `pdf <path>` |
+| JavaScript | `eval <js>` |
+| Cookies | `cookies`, `cookies set <name> <val>`, `cookies clear` |
+| Storage | `storage local [key]`, `storage local set <k> <v>`, `storage local clear` (same for `session`) |
+| Tabs | `tab`, `tab new [url]`, `tab <n>`, `tab close [n]` |
+| Frames | `frame <sel>`, `frame main` |
+| Dialogs | `dialog accept [text]`, `dialog dismiss` |
+| Viewport | `set viewport <w> <h>`, `set device <name>`, `set media dark/light` |
+| Network | `network route <url>` (`--abort`, `--body <json>`), `network requests` |
+| Wait | `wait <sel\|ms\|--text\|--url\|--load\|--fn>` |
+| Auth state | `state save <path>`, `state load <path>` |
+| Semantic find | `find role/text/label/placeholder <value> <action> [input]` |
+| Scrolling | `scroll <dir> [px]`, `scrollintoview <sel>` |
 
-**Behavior**: Browser state (cookies, page, tabs) persists across tool calls within a conversation via the `--session microclaw` flag. Output truncated at 30,000 characters. Always run `snapshot -i` after navigation or interaction to see the updated page state.
+**State persistence**: Browser state persists at two levels:
+
+- **Within a conversation** (`--session`): cookies, page state, and tabs stay alive across tool calls
+- **Across conversations** (`--profile`): cookies, localStorage, IndexedDB, and login sessions are saved to disk per chat at `<data_dir>/groups/<chat_id>/browser-profile/`
+
+Output truncated at 30,000 characters. Always run `snapshot -i` after navigation or interaction to see the updated page state.
 
 ---
 
