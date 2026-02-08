@@ -8,6 +8,116 @@
     <subtitle>MicroClaw Blog</subtitle>
     <icon>https://microclaw.ai/img/favicon.ico</icon>
     <entry>
+        <title type="html"><![CDATA[MicroClaw vs NanoClaw vs OpenClaw: Three Paths from Minimalism to Platform]]></title>
+        <id>https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw</id>
+        <link href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw"/>
+        <updated>2026-02-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[If you are building a personal AI assistant that lives inside chat apps, you usually end up on one of three paths:]]></summary>
+        <content type="html"><![CDATA[<p>If you are building a personal AI assistant that lives inside chat apps, you usually end up on one of three paths:</p>
+<ol>
+<li class="">Minimal and understandable, with isolation first</li>
+<li class="">Feature-rich and multi-platform, with ecosystem breadth first</li>
+<li class="">A middle path with practical built-ins and controlled complexity</li>
+</ol>
+<p>MicroClaw, NanoClaw, and OpenClaw each sit at different points on that spectrum.</p>
+<p>This post compares the three from an engineering perspective, based on publicly available repositories and docs as of February 8, 2026.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="tldr">TL;DR<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw#tldr" class="hash-link" aria-label="Direct link to TL;DR" title="Direct link to TL;DR" translate="no">​</a></h2>
+<ul>
+<li class="">If your top priority is minimal code and container isolation, NanoClaw is a strong fit.</li>
+<li class="">If you want a full personal AI platform (many channels, nodes, voice, canvas, control plane), OpenClaw is stronger.</li>
+<li class="">If you want a Telegram-first assistant that is practical, maintainable, and feature-complete for daily use, MicroClaw is the more balanced choice.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="at-a-glance-engineering-view">At a Glance (Engineering View)<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw#at-a-glance-engineering-view" class="hash-link" aria-label="Direct link to At a Glance (Engineering View)" title="Direct link to At a Glance (Engineering View)" translate="no">​</a></h2>
+<table><thead><tr><th>Dimension</th><th>NanoClaw</th><th>OpenClaw</th><th>MicroClaw</th></tr></thead><tbody><tr><td>Product orientation</td><td>Single-user, minimal, highly understandable</td><td>Personal AI platform (control plane + multi-surface ecosystem)</td><td>Practical chat agent, Telegram-first</td></tr><tr><td>Primary stack</td><td>Node.js + Claude Agent SDK</td><td>TypeScript/Node.js platform architecture</td><td>Rust + Tokio + teloxide</td></tr><tr><td>Default channel</td><td>WhatsApp-first</td><td>Multi-channel (WA/Telegram/Slack/Discord/...)</td><td>Telegram-first (optional WhatsApp webhook, Discord)</td></tr><tr><td>Model strategy</td><td>Closely coupled to Claude Code/Agent SDK workflow</td><td>Multi-provider strategy with failover concepts</td><td>Native Anthropic + OpenAI-compatible abstraction</td></tr><tr><td>Tool execution</td><td>Containerized execution as core principle</td><td>Broad tool ecosystem (browser/canvas/nodes/cron, etc.)</td><td>Built-in tool registry + sub-agent + skills + todo</td></tr><tr><td>Session model</td><td>README emphasizes simplicity/isolation</td><td>Platform-level session/gateway/WS control plane</td><td>Full session persistence (including <code>tool_use</code> / <code>tool_result</code>)</td></tr><tr><td>Context management</td><td>More skill-driven extension approach</td><td>Built-in pruning/session management capabilities</td><td>Built-in context compaction for long sessions</td></tr><tr><td>Security emphasis</td><td>OS-level isolation (Apple Container/Docker)</td><td>Gateway policy + pairing/allowlist + platform controls</td><td>App-level auth + chat-level access control + hardening path</td></tr><tr><td>Deployment shape</td><td>Claude-driven setup + container dependency</td><td>CLI + daemon + companion app/node</td><td>Rust single-binary deployment</td></tr><tr><td>Best fit</td><td>Builders who want full control of a minimal core</td><td>Users who want a maximal capability platform</td><td>Developers who want practical features with maintainable complexity</td></tr></tbody></table>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-microclaw-is-not-another-openclaw">Why MicroClaw Is Not “Another OpenClaw”<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw#why-microclaw-is-not-another-openclaw" class="hash-link" aria-label="Direct link to Why MicroClaw Is Not “Another OpenClaw”" title="Direct link to Why MicroClaw Is Not “Another OpenClaw”" translate="no">​</a></h2>
+<p>OpenClaw has gone very deep on the “personal AI platform” direction: multi-channel support, gateway control plane, nodes, voice, canvas, web surfaces, remote access, and skill ecosystem.</p>
+<p>That is not inherently good or bad. It is a complexity budget decision.</p>
+<p>MicroClaw makes different tradeoffs:</p>
+<ul>
+<li class="">It does not try to cover every surface at once; it optimizes the Telegram path first.</li>
+<li class="">It does not build a heavy control plane first; it prioritizes a robust agent loop, tool execution, session recovery, scheduling, and memory.</li>
+<li class="">It uses Rust and a straightforward process model to reduce hidden runtime state.</li>
+</ul>
+<p>So it is not copying OpenClaw. It is optimizing for a different complexity tier.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-microclaw-is-not-nanoclaw-in-rust">Why MicroClaw Is Not “NanoClaw in Rust”<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw#why-microclaw-is-not-nanoclaw-in-rust" class="hash-link" aria-label="Direct link to Why MicroClaw Is Not “NanoClaw in Rust”" title="Direct link to Why MicroClaw Is Not “NanoClaw in Rust”" translate="no">​</a></h2>
+<p>NanoClaw’s value proposition is clear: keep the core tiny, understandable, and isolation-first, then customize through skills instead of bloating the base.</p>
+<p>MicroClaw shares the “personal assistant should be controllable” philosophy, but applies it differently:</p>
+<ul>
+<li class="">NanoClaw emphasizes minimizing infrastructure.</li>
+<li class="">MicroClaw emphasizes practical built-ins for daily use, including:<!-- -->
+<ul>
+<li class="">Full session resume with tool interaction context</li>
+<li class="">Built-in context compaction</li>
+<li class="">Sub-agents with restricted tool sets</li>
+<li class="">Planning/todo tools</li>
+<li class="">On-demand skill activation</li>
+</ul>
+</li>
+</ul>
+<p>In short: NanoClaw pushes minimal core purity; MicroClaw adds one practical layer above that core.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-core-difference-where-you-place-complexity">The Core Difference: Where You Place Complexity<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw#the-core-difference-where-you-place-complexity" class="hash-link" aria-label="Direct link to The Core Difference: Where You Place Complexity" title="Direct link to The Core Difference: Where You Place Complexity" translate="no">​</a></h2>
+<p>In personal AI assistants, complexity does not disappear. You choose where it lives.</p>
+<ul>
+<li class="">NanoClaw puts complexity into your fork-level customization workflow.</li>
+<li class="">OpenClaw puts complexity into platform breadth and ecosystem depth.</li>
+<li class="">MicroClaw puts complexity into built-in high-frequency features while keeping the architecture traceable.</li>
+</ul>
+<p>That is why all three can succeed and coexist.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="selection-guide-by-real-use-case">Selection Guide by Real Use Case<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw#selection-guide-by-real-use-case" class="hash-link" aria-label="Direct link to Selection Guide by Real Use Case" title="Direct link to Selection Guide by Real Use Case" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="choose-nanoclaw-if">Choose NanoClaw if:<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw#choose-nanoclaw-if" class="hash-link" aria-label="Direct link to Choose NanoClaw if:" title="Direct link to Choose NanoClaw if:" translate="no">​</a></h3>
+<ul>
+<li class="">You strongly prioritize container isolation boundaries.</li>
+<li class="">You are comfortable adding capabilities via skills and fork-level changes.</li>
+<li class="">You want to understand the core code path quickly.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="choose-openclaw-if">Choose OpenClaw if:<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw#choose-openclaw-if" class="hash-link" aria-label="Direct link to Choose OpenClaw if:" title="Direct link to Choose OpenClaw if:" translate="no">​</a></h3>
+<ul>
+<li class="">You need unified access across many channels and device nodes.</li>
+<li class="">You care about voice, canvas, remote gateway, and platform-grade automation.</li>
+<li class="">You are willing to pay higher ops/config complexity for a higher feature ceiling.</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="choose-microclaw-if">Choose MicroClaw if:<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw#choose-microclaw-if" class="hash-link" aria-label="Direct link to Choose MicroClaw if:" title="Direct link to Choose MicroClaw if:" translate="no">​</a></h3>
+<ul>
+<li class="">Telegram is your primary interface and you want fast time-to-value.</li>
+<li class="">You need tool execution + automation, but also robust session recovery and context management.</li>
+<li class="">You want a better balance between capability and maintainability.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-microclaw-should-do-next">What MicroClaw Should Do Next<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw#what-microclaw-should-do-next" class="hash-link" aria-label="Direct link to What MicroClaw Should Do Next" title="Direct link to What MicroClaw Should Do Next" translate="no">​</a></h2>
+<p>Based on this comparison, the next high-leverage steps for MicroClaw are not random feature additions:</p>
+<ol>
+<li class="">Strengthen default safety boundaries for high-risk tools</li>
+<li class="">Improve behavior consistency across channels (Telegram/WhatsApp/Discord)</li>
+<li class="">Clarify skill/tool boundaries to reduce prompt overhead and misuse</li>
+<li class="">Improve observability for scheduler/session/tool failures</li>
+</ol>
+<p>The goal is not to become OpenClaw. The goal is to make the “mid-complexity, high-utility assistant” category more reliable.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="final-take">Final Take<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw#final-take" class="hash-link" aria-label="Direct link to Final Take" title="Direct link to Final Take" translate="no">​</a></h2>
+<p>This is not a “which one is best” debate. It is a “what kind of assistant do you want to operate” decision.</p>
+<ul>
+<li class="">If you want a controllable scalpel: NanoClaw</li>
+<li class="">If you want a powerful workstation platform: OpenClaw</li>
+<li class="">If you want a dependable daily engineering vehicle: MicroClaw</li>
+</ul>
+<p>Choosing the right path matters more than chasing feature trends.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="references">References<a href="https://microclaw.ai/blog/microclaw-vs-nanoclaw-openclaw#references" class="hash-link" aria-label="Direct link to References" title="Direct link to References" translate="no">​</a></h2>
+<ul>
+<li class="">NanoClaw: <a href="https://github.com/gavrielc/nanoclaw" target="_blank" rel="noopener noreferrer" class="">https://github.com/gavrielc/nanoclaw</a></li>
+<li class="">NanoClaw README: <a href="https://raw.githubusercontent.com/gavrielc/nanoclaw/main/README.md" target="_blank" rel="noopener noreferrer" class="">https://raw.githubusercontent.com/gavrielc/nanoclaw/main/README.md</a></li>
+<li class="">OpenClaw: <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer" class="">https://github.com/openclaw/openclaw</a></li>
+<li class="">OpenClaw Docs: <a href="https://docs.openclaw.ai/" target="_blank" rel="noopener noreferrer" class="">https://docs.openclaw.ai</a></li>
+<li class="">MicroClaw: <a href="https://github.com/microclaw/microclaw" target="_blank" rel="noopener noreferrer" class="">https://github.com/microclaw/microclaw</a></li>
+</ul>]]></content>
+        <author>
+            <name>Everett</name>
+            <uri>https://github.com/microclaw</uri>
+        </author>
+        <category label="Architecture" term="Architecture"/>
+        <category label="Rust" term="Rust"/>
+        <category label="Telegram" term="Telegram"/>
+        <category label="Agentic AI" term="Agentic AI"/>
+        <category label="comparison" term="comparison"/>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[MicroClaw vs NanoClaw: A Practical Comparison]]></title>
         <id>https://microclaw.ai/blog/microclaw-vs-nanoclaw</id>
         <link href="https://microclaw.ai/blog/microclaw-vs-nanoclaw"/>
