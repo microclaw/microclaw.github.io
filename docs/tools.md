@@ -19,8 +19,8 @@ Skill workflows are provided by local `SKILL.md` files (for example `apple-notes
 | 4 | `edit_file` | File I/O | Find-and-replace with uniqueness validation |
 | 5 | `glob` | Search | Find files by glob pattern (`**/*.rs`) |
 | 6 | `grep` | Search | Regex search across file contents |
-| 7 | `read_memory` | Memory | Read persistent CLAUDE.md memory |
-| 8 | `write_memory` | Memory | Write persistent CLAUDE.md memory |
+| 7 | `read_memory` | Memory | Read persistent AGENTS.md memory |
+| 8 | `write_memory` | Memory | Write persistent AGENTS.md memory |
 | 9 | `web_search` | Web | Search via DuckDuckGo (top 8 results) |
 | 10 | `web_fetch` | Web | Fetch a URL and return plain text (max 20KB) |
 | 11 | `send_message` | chat | Send a message mid-conversation |
@@ -174,7 +174,7 @@ Search file contents with regex.
 
 ### read_memory
 
-Read persistent CLAUDE.md memory file.
+Read persistent AGENTS.md memory file.
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
@@ -185,7 +185,7 @@ Read persistent CLAUDE.md memory file.
 
 ### write_memory
 
-Write to CLAUDE.md memory file.
+Write to AGENTS.md memory file.
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|

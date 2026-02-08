@@ -205,10 +205,10 @@ Bot: [fetches and displays the JSON response]
 
 ## Memory System
 
-MicroClaw has persistent memory stored in `CLAUDE.md` files. Two scopes:
+MicroClaw has persistent memory stored in `AGENTS.md` files. Two scopes:
 
-- **Global memory**: Shared across all chats (`microclaw.data/runtime/groups/CLAUDE.md`)
-- **Chat memory**: Specific to one chat (`microclaw.data/runtime/groups/{chat_id}/CLAUDE.md`)
+- **Global memory**: Shared across all chats (`microclaw.data/runtime/groups/AGENTS.md`)
+- **Chat memory**: Specific to one chat (`microclaw.data/runtime/groups/{chat_id}/AGENTS.md`)
 
 Memory is automatically injected into the system prompt on every request.
 
@@ -233,7 +233,7 @@ Bot: [reads memory and responds with stored info]
 
 ```
 You: Show me your global memory
-Bot: [reads and displays CLAUDE.md content]
+Bot: [reads and displays AGENTS.md content]
 ```
 
 ### Memory persists across conversations

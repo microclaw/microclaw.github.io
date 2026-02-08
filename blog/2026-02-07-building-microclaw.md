@@ -59,7 +59,7 @@ When a new message arrives, the assistant can resume from real prior execution s
 
 ### 2) Memory that can evolve over time
 
-MicroClaw supports global and per-chat `CLAUDE.md` memory.  
+MicroClaw supports global and per-chat `AGENTS.md` memory.
 The assistant can read and update memory through tools, so preferences and project context survive across days or weeks.
 
 ### 3) Operational features built in
@@ -82,7 +82,7 @@ This allows decomposition of complex work while keeping clear safety boundaries.
 - Chat-native tool execution (`bash`, file operations, `glob`, `grep`, web search/fetch)
 - Persistent session resume including tool interaction history
 - Context compaction for long-running sessions
-- Global + per-chat persistent memory via `CLAUDE.md`
+- Global + per-chat persistent memory via `AGENTS.md`
 - Scheduler for cron and one-time tasks
 - Skill activation for domain-specific instructions
 - Todo/plan tools for structured multi-step execution

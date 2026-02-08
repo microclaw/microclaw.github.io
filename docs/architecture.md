@@ -52,7 +52,7 @@ src/
     telegram.rs      # Message handler + agent loop
     claude.rs        # Anthropic API client
     db.rs            # SQLite tables + queries
-    memory.rs        # CLAUDE.md memory system
+    memory.rs        # AGENTS.md memory system
     scheduler.rs     # Background scheduler
     tools/           # Tool trait + implementations
 ```

@@ -111,7 +111,7 @@ export default function Home() {
     {
       title: 'Persistent Memory',
       description:
-        'Global and per-chat CLAUDE.md memories are injected into every system prompt.',
+        'Global and per-chat AGENTS.md memories are injected into every system prompt.',
     },
     {
       title: 'Scheduling',
@@ -161,7 +161,7 @@ export default function Home() {
               <div className={styles.stepCard}>
                 <span>01</span>
                 <h3>Load context</h3>
-                <p>Chat history and memory are loaded from SQLite and CLAUDE.md files.</p>
+                <p>Chat history and memory are loaded from SQLite and AGENTS.md files.</p>
               </div>
               <div className={styles.stepCard}>
                 <span>02</span>

@@ -4,15 +4,15 @@ title: Memory System
 sidebar_position: 7
 ---
 
-MicroClaw keeps persistent memory in `CLAUDE.md` files and injects that content into the system prompt on every request.
+MicroClaw keeps persistent memory in `AGENTS.md` files and injects that content into the system prompt on every request.
 
 ## Scopes
 
 ```
 microclaw.data/runtime/groups/
-    CLAUDE.md                 # Global memory (shared across all chats)
+    AGENTS.md                 # Global memory (shared across all chats)
     {chat_id}/
-        CLAUDE.md             # Per-chat memory
+        AGENTS.md             # Per-chat memory
 ```
 
 ## How it works

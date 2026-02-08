@@ -32,7 +32,7 @@ The NanoClaw side of this comparison is based on its official README as of Febru
 | Persistence | SQLite | SQLite (messages, chats, sessions, scheduled tasks, etc.) |
 | Session continuity | Persistent behavior implied; less emphasis on tool-block replay details in README | Full session resume including tool interaction context |
 | Context compaction | Mentioned as a skill direction (`/add-clear`) | Built-in context compaction for oversized sessions |
-| Memory structure | Per-group `CLAUDE.md` with isolation focus | Global + per-chat `CLAUDE.md` scopes |
+| Memory structure | Per-group `CLAUDE.md` with isolation focus | Global + per-chat `AGENTS.md` scopes |
 | Scheduler | Recurring task support | One-shot + cron recurring tasks with management tools |
 | Sub-agent capability | Not explicitly documented in README | Built-in `sub_agent` with restricted tool set |
 | Planning/todo tools | Not explicitly documented in README | Built-in todo read/write tools |
