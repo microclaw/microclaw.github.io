@@ -11,8 +11,8 @@ This guide summarizes the internal structure and extension points.
 ```sh
 git clone <repo-url>
 cd microclaw
-cp .env.example .env
-# Edit .env with your credentials
+cp microclaw.config.example.yaml microclaw.config.yaml
+# Edit microclaw.config.yaml with your credentials
 cargo run -- start
 ```
 
@@ -21,7 +21,7 @@ cargo run -- start
 ```
 src/
     main.rs          # CLI, bootstraps app
-    config.rs        # Loads env vars / .env
+    config.rs        # Loads microclaw.config.yaml
     error.rs         # MicroClawError
     telegram.rs      # Message handler + agent loop
     claude.rs        # Anthropic Messages API client

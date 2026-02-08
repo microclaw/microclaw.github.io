@@ -40,7 +40,7 @@ These tests require a running bot with valid credentials.
 
 ### Prerequisites
 
-1. A working `.env` file with `TELEGRAM_BOT_TOKEN`, `ANTHROPIC_API_KEY`, `BOT_USERNAME`
+1. A working `microclaw.config.yaml` file with `telegram_bot_token`, `api_key`, `bot_username`
 2. Bot is running: `cargo run -- start`
 3. A chat account with a private chat open to the bot
 4. (For group tests) A chat group with the bot added as a member
@@ -242,14 +242,14 @@ You: Search the web for "Rust error handling best practices", fetch the first re
 After running tests, verify data was stored correctly:
 
 ```sh
-sqlite3 data/microclaw.db "SELECT COUNT(*) FROM messages;"
-sqlite3 data/microclaw.db "SELECT * FROM scheduled_tasks;"
-sqlite3 data/microclaw.db "SELECT * FROM chats;"
+sqlite3 microclaw.data/runtime/microclaw.db "SELECT COUNT(*) FROM messages;"
+sqlite3 microclaw.data/runtime/microclaw.db "SELECT * FROM scheduled_tasks;"
+sqlite3 microclaw.data/runtime/microclaw.db "SELECT * FROM chats;"
 ```
 
 ## Cleanup
 
 ```sh
 rm -f /tmp/microclaw_test.txt /tmp/microclaw_*.txt
-sqlite3 data/microclaw.db "UPDATE scheduled_tasks SET status='cancelled' WHERE status='active';"
+sqlite3 microclaw.data/runtime/microclaw.db "UPDATE scheduled_tasks SET status='cancelled' WHERE status='active';"
 ```

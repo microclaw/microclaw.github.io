@@ -28,7 +28,7 @@ All of that happens in a single message exchange. You send one message, you get 
 
 ## Why Rust?
 
-The original nanoclaw is TypeScript. It works. But I wanted something I could deploy as a single static binary with no runtime dependencies. `cargo build --release` gives you one file. Copy it to a server, set three environment variables, and it runs.
+The original nanoclaw is TypeScript. It works. But I wanted something I could deploy as a single static binary with no runtime dependencies. `cargo build --release` gives you one file. Copy it to a server, create a config file, and it runs.
 
 Rust also turned out to be a surprisingly good fit for this kind of project:
 
@@ -110,8 +110,8 @@ Tell it "remember that I'm working on project Atlas and the deploy target is sta
 
 Two scopes:
 
-- Global memory: `data/groups/CLAUDE.md`
-- Per-chat memory: `data/groups/{chat_id}/CLAUDE.md`
+- Global memory: `microclaw.data/runtime/groups/CLAUDE.md`
+- Per-chat memory: `microclaw.data/runtime/groups/{chat_id}/CLAUDE.md`
 
 ### The scheduler
 
@@ -135,14 +135,14 @@ Getting started takes about two minutes:
 ```sh
 git clone https://github.com/microclaw/microclaw.git
 cd microclaw
-cp .env.example .env
+cp microclaw.config.example.yaml microclaw.config.yaml
 ```
 
-Edit `.env` with three required values:
+Edit `microclaw.config.yaml` with three required values:
 
-- `TELEGRAM_BOT_TOKEN` -- get one from @BotFather
-- `ANTHROPIC_API_KEY` -- from console.anthropic.com
-- `BOT_USERNAME` -- your bot's username (without the @)
+- `telegram_bot_token` -- get one from @BotFather
+- `api_key` -- from your LLM provider
+- `bot_username` -- your bot's username (without the @)
 
 Then:
 
@@ -157,7 +157,7 @@ cargo build --release
 ./target/release/microclaw start
 ```
 
-The binary is self-contained. No database server to install (SQLite is bundled), no external dependencies to configure. It creates its `data/` directory on first run, starts the scheduler automatically, and begins listening for messages.
+The binary is self-contained. No database server to install (SQLite is bundled), no external dependencies to configure. It creates its `microclaw.data/` directory on first run, starts the scheduler automatically, and begins listening for messages.
 
 ## What's different from the original nanoclaw
 

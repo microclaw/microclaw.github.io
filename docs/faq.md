@@ -18,7 +18,7 @@ There is no permission model today. If you need access control, run the bot behi
 
 ## How does memory work?
 
-Memory is stored in `CLAUDE.md` files under `data/groups/` and injected into the system prompt for every request. There is a global memory file and a per-chat memory file.
+Memory is stored in `CLAUDE.md` files under `microclaw.data/runtime/groups/` and injected into the system prompt for every request. There is a global memory file and a per-chat memory file.
 
 ## How do scheduled tasks work?
 
@@ -30,4 +30,4 @@ Yes. Implement the `Tool` trait in `src/tools/`, register it in `ToolRegistry::n
 
 ## What model is used by default?
 
-`CLAUDE_MODEL` defaults to `claude-sonnet-4-20250514`. You can override it via `.env`.
+`model` defaults to `claude-sonnet-4-20250514`. You can override it in `microclaw.config.yaml`.

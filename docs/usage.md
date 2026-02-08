@@ -174,8 +174,8 @@ Bot: [fetches and displays the JSON response]
 
 MicroClaw has persistent memory stored in `CLAUDE.md` files. Two scopes:
 
-- **Global memory**: Shared across all chats (`data/groups/CLAUDE.md`)
-- **Chat memory**: Specific to one chat (`data/groups/{chat_id}/CLAUDE.md`)
+- **Global memory**: Shared across all chats (`microclaw.data/runtime/groups/CLAUDE.md`)
+- **Chat memory**: Specific to one chat (`microclaw.data/runtime/groups/{chat_id}/CLAUDE.md`)
 
 Memory is automatically injected into the system prompt on every request.
 
@@ -356,16 +356,15 @@ microclaw start       # Start the bot
 microclaw help        # Show help and all configuration options
 ```
 
-### Environment variables
+### Config Keys
 
-| Variable | Required | Default | Description |
+| Key | Required | Default | Description |
 |---|---|---|---|
-| `TELEGRAM_BOT_TOKEN` | Yes | - | Bot token from @BotFather |
-| `ANTHROPIC_API_KEY` | Yes | - | Anthropic API key |
-| `BOT_USERNAME` | Yes | - | Bot username (without @) |
-| `CLAUDE_MODEL` | No | `claude-sonnet-4-20250514` | LLM model ID |
-| `DATA_DIR` | No | `./data` | Data directory for DB and memory |
-| `MAX_TOKENS` | No | `8192` | Max tokens per response |
-| `MAX_TOOL_ITERATIONS` | No | `25` | Max tool loop iterations |
-| `MAX_HISTORY_MESSAGES` | No | `50` | Chat history context size |
-| `RUST_LOG` | No | `info` | Log level (debug, info, warn, error) |
+| `telegram_bot_token` | Yes | - | Bot token from @BotFather |
+| `api_key` | Yes | - | LLM API key |
+| `bot_username` | Yes | - | Bot username (without @) |
+| `model` | No | `claude-sonnet-4-20250514` | LLM model ID |
+| `data_dir` | No | `./microclaw.data` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
+| `max_tokens` | No | `8192` | Max tokens per response |
+| `max_tool_iterations` | No | `25` | Max tool loop iterations |
+| `max_history_messages` | No | `50` | Chat history context size |

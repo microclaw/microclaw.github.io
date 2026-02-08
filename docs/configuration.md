@@ -4,27 +4,31 @@ title: Configuration
 sidebar_position: 4
 ---
 
-All configuration is via environment variables or a `.env` file.
+All configuration is via `microclaw.config.yaml`.
 
 ## Required
 
-| Variable | Description |
+| Key | Description |
 |---|---|
-| `TELEGRAM_BOT_TOKEN` | chat bot token from @BotFather |
-| `LLM_API_KEY` | LLM API key (`ANTHROPIC_API_KEY` also accepted for backward compatibility) |
-| `BOT_USERNAME` | Bot username without the `@` |
+| `telegram_bot_token` | chat bot token from @BotFather |
+| `api_key` | LLM API key |
+| `bot_username` | Bot username without the `@` |
 
 ## Optional
 
-| Variable | Default | Description |
+| Key | Default | Description |
 |---|---|---|
-| `LLM_PROVIDER` | `anthropic` | Provider preset ID (or custom ID). `anthropic` uses native Anthropic API, others use OpenAI-compatible API |
-| `LLM_MODEL` | provider-specific | Model name (`CLAUDE_MODEL` fallback supported) |
-| `LLM_BASE_URL` | provider preset default | Optional custom base URL |
-| `DATA_DIR` | `./data` | Directory for SQLite DB and memory files |
-| `MAX_TOKENS` | `8192` | Max tokens per LLM response |
-| `MAX_TOOL_ITERATIONS` | `25` | Max tool-use loop iterations per message |
-| `MAX_HISTORY_MESSAGES` | `50` | Number of recent messages sent as context |
+| `llm_provider` | `anthropic` | Provider preset ID (or custom ID). `anthropic` uses native Anthropic API, others use OpenAI-compatible API |
+| `model` | provider-specific | Model name |
+| `llm_base_url` | provider preset default | Optional custom base URL |
+| `data_dir` | `./microclaw.data` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
+| `max_tokens` | `8192` | Max tokens per LLM response |
+| `max_tool_iterations` | `25` | Max tool-use loop iterations per message |
+| `max_history_messages` | `50` | Number of recent messages sent as context |
+
+## Supported `llm_provider` values
+
+`openai`, `openrouter`, `anthropic`, `google`, `alibaba`, `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`, `zhipu`, `minimax`, `cohere`, `tencent`, `xai`, `huggingface`, `together`, `custom`.
 
 ## Setup wizard
 
@@ -38,7 +42,7 @@ Features:
 - interactive terminal UI
 - provider/model list pickers (visible choices, not blind cycling)
 - local + online validation
-- safe `.env` write with backup
+- safe `microclaw.config.yaml` write with backup
 
 Preset providers in setup wizard:
 - `openai`
@@ -54,13 +58,10 @@ Preset providers in setup wizard:
 - `zhipu`
 - `minimax`
 - `cohere`
-- `baidu`
 - `tencent`
-- `huawei`
 - `xai`
 - `huggingface`
 - `together`
-- `perplexity`
 - `custom`
 
 ## Logging

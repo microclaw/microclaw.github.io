@@ -53,24 +53,26 @@ microclaw setup
 <!-- Placeholder: replace with real screenshot later -->
 ![Setup Wizard (placeholder)](/img/setup-wizard.svg)
 
-It validates required fields, tests chat/LLM connectivity, and writes `.env` with backup.
+It validates required fields, tests chat/LLM connectivity, and writes `microclaw.config.yaml` with backup.
 It also includes provider/model list pickers (`Enter` open list, `↑/↓` move, `Enter` confirm, `Esc` close).
 
 Built-in provider presets:
 - `openai`, `openrouter`, `anthropic`, `google`, `alibaba`
 - `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`
-- `zhipu`, `minimax`, `cohere`, `baidu`, `tencent`
-- `huawei`, `xai`, `huggingface`, `together`, `perplexity`
+- `zhipu`, `minimax`, `cohere`, `tencent`
+- `xai`, `huggingface`, `together`
 - `custom` (manual provider/model/base URL)
 
-Manual `.env` configuration is still supported:
+These are also the valid values for `llm_provider` in `microclaw.config.yaml`.
+
+Manual `microclaw.config.yaml` configuration is also supported:
 
 ```
-TELEGRAM_BOT_TOKEN=123456:ABC-DEF1234...
-BOT_USERNAME=my_bot
-LLM_PROVIDER=anthropic
-LLM_API_KEY=sk-ant-...
-LLM_MODEL=claude-sonnet-4-20250514
+telegram_bot_token: "123456:ABC-DEF1234..."
+bot_username: "my_bot"
+llm_provider: "anthropic"
+api_key: "sk-ant-..."
+model: "claude-sonnet-4-20250514"
 ```
 
 ## 4. Run
@@ -84,6 +86,6 @@ After setup, the bot initializes SQLite, starts scheduler, and begins listening 
 
 ## Next
 
-- Read Configuration to see all environment variables
+- Read Configuration to see all config keys
 - Explore Tools to understand what the agent can do
 - Review Usage Examples for common workflows

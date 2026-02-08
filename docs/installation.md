@@ -59,14 +59,14 @@ Recommended:
 microclaw setup
 ```
 
-Or manually create `.env`:
+Or manually create `microclaw.config.yaml`:
 
 ```
-TELEGRAM_BOT_TOKEN=...
-BOT_USERNAME=...
-LLM_PROVIDER=anthropic
-LLM_API_KEY=...
-LLM_MODEL=claude-sonnet-4-20250514
+telegram_bot_token: "..."
+bot_username: "..."
+llm_provider: "anthropic"
+api_key: "..."
+model: "claude-sonnet-4-20250514"
 ```
 
 Use `microclaw help` (or `cargo run -- help`) for CLI usage.
@@ -92,7 +92,6 @@ brew untap everettjf/tap
 Optional cleanup (remove local runtime data):
 
 ```sh
-# Keep data/skills, remove everything else under data/
-find ./data -mindepth 1 -maxdepth 1 ! -name skills -exec rm -rf {} +
+rm -rf ./microclaw.data/runtime
 rm -rf ~/.microclaw
 ```

@@ -9,7 +9,7 @@ MicroClaw keeps persistent memory in `CLAUDE.md` files and injects that content 
 ## Scopes
 
 ```
-data/groups/
+microclaw.data/runtime/groups/
     CLAUDE.md                 # Global memory (shared across all chats)
     {chat_id}/
         CLAUDE.md             # Per-chat memory
@@ -19,7 +19,7 @@ data/groups/
 
 - LLM can read and write memory using `read_memory` and `write_memory`
 - Memory is wrapped in `<global_memory>` and `<chat_memory>` tags
-- The memory files live under `DATA_DIR` (default `./data`)
+- The memory files live under `DATA_DIR/runtime` (default `./microclaw.data/runtime`)
 
 ## Example
 
