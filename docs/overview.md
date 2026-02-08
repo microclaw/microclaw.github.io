@@ -50,6 +50,7 @@ MicroClaw enters an agentic loop for every message. LLM can call tools, inspect 
 - Scheduling with cron expressions
 - Mid-conversation messaging for progress updates
 - Persistent memory (global + per-chat)
+- Conversation archiving (automatic before compaction, manual via `/archive`)
 - Typing indicator that stays active during tool use
 
 Continue with the Quickstart to get a bot running in minutes.

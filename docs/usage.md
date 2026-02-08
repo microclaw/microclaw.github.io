@@ -29,6 +29,39 @@ Bot: Alice updated the config...
 
 ---
 
+## Bot Commands
+
+| Command | Description |
+|---|---|
+| `/reset` | Clear the current session (start a fresh conversation) |
+| `/skills` | List all available agent skills |
+| `/archive` | Save the current session to a markdown file |
+
+---
+
+## Conversation Archive
+
+MicroClaw can archive full conversations to markdown files for later reference.
+
+**Automatic**: When context compaction triggers (session exceeds `max_session_messages`), the full conversation is automatically archived before being summarized.
+
+**Manual**: Send `/archive` to save the current session on demand, without clearing or compacting it.
+
+Archives are stored at:
+
+```
+microclaw.data/runtime/groups/<chat_id>/conversations/<YYYYMMDD-HHMMSS>.md
+```
+
+Each message is saved with its role (user/assistant) and full content including tool calls and results.
+
+```
+You: /archive
+Bot: Archived 42 messages.
+```
+
+---
+
 ## Shell Commands (bash)
 
 Run any shell command on the host machine. The bot returns stdout, stderr, and exit code.
