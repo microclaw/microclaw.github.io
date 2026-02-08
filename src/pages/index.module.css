@@ -108,10 +108,17 @@
   color: rgba(15, 30, 27, 0.72);
 }
 
+.installRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+}
+
 .installCommand {
   display: block;
-  width: fit-content;
-  max-width: 100%;
+  flex: 1;
+  min-width: 0;
   padding: 0.75rem 0.95rem;
   border-radius: 12px;
   border: 1px solid rgba(15, 30, 27, 0.18);
@@ -125,6 +132,32 @@
   white-space: nowrap;
 }
 
+.copyButton {
+  border: 1px solid rgba(15, 30, 27, 0.26);
+  background: rgba(255, 255, 255, 0.92);
+  color: #12201c;
+  border-radius: 12px;
+  min-height: 2.8rem;
+  min-width: 5.2rem;
+  padding: 0.65rem 0.95rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  box-shadow: 0 8px 20px rgba(12, 25, 22, 0.12);
+}
+
+.copyButton:hover {
+  transform: translateY(-1px);
+  border-color: rgba(46, 168, 132, 0.72);
+  box-shadow: 0 12px 24px rgba(12, 25, 22, 0.18);
+}
+
+.copyButtonCopied {
+  border-color: rgba(46, 168, 132, 0.75);
+  color: #0f3f32;
+}
+
 :global([data-theme='dark']) .installLabel {
   color: rgba(255, 255, 255, 0.72);
 }
@@ -134,6 +167,21 @@
   background: rgba(8, 14, 19, 0.8);
   color: #f6fff9;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+}
+
+:global([data-theme='dark']) .copyButton {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(8, 14, 19, 0.9);
+  color: #f6fff9;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+}
+
+:global([data-theme='dark']) .copyButton:hover {
+  border-color: rgba(69, 224, 159, 0.72);
+}
+
+:global([data-theme='dark']) .copyButtonCopied {
+  color: #8ffac9;
 }
 
 .githubButton {
@@ -160,26 +208,6 @@
   border-color: rgba(69, 224, 159, 0.72);
   background: linear-gradient(135deg, #0d1219 0%, #18273a 55%, #10505b 100%);
   box-shadow: 0 14px 34px rgba(7, 14, 20, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.14);
-}
-
-.heroMeta {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1rem;
-  margin-top: 2.5rem;
-  font-size: 0.95rem;
-}
-
-.metaLabel {
-  display: block;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  color: rgba(15, 30, 27, 0.6);
-}
-
-.metaValue {
-  font-weight: 600;
 }
 
 .heroPanel {
@@ -438,12 +466,17 @@
     align-items: flex-start;
   }
 
-  .heroMeta {
-    grid-template-columns: 1fr;
-  }
-
   .heroVisual {
     height: 300px;
+  }
+
+  .installRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .copyButton {
+    width: 100%;
   }
 }
 

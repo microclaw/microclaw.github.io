@@ -2,10 +2,40 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import {useState} from 'react';
 import styles from './index.module.css';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
+  const installCommand = 'curl -fsSL https://microclaw.ai/install.sh | bash';
+  const [copyStatus, setCopyStatus] = useState('idle');
+
+  const copyInstallCommand = async () => {
+    let copied = false;
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(installCommand);
+        copied = true;
+      } else if (typeof document !== 'undefined') {
+        const textarea = document.createElement('textarea');
+        textarea.value = installCommand;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        copied = document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+    } catch {
+      copied = false;
+    }
+    if (copied) {
+      setCopyStatus('copied');
+      window.setTimeout(() => setCopyStatus('idle'), 2000);
+    }
+  };
+
   return (
     <header className={styles.hero}>
       <div className={styles.heroGlow} />
@@ -33,20 +63,14 @@ function HomepageHeader() {
           </div>
           <div className={styles.installBlock}>
             <span className={styles.installLabel}>One-line install</span>
-            <code className={styles.installCommand}>curl -fsSL https://microclaw.ai/install.sh | bash</code>
-          </div>
-          <div className={styles.heroMeta}>
-            <div>
-              <span className={styles.metaLabel}>Tools</span>
-              <span className={styles.metaValue}>16 built-in</span>
-            </div>
-            <div>
-              <span className={styles.metaLabel}>Storage</span>
-              <span className={styles.metaValue}>SQLite + CLAUDE.md</span>
-            </div>
-            <div>
-              <span className={styles.metaLabel}>Loop</span>
-              <span className={styles.metaValue}>Up to 25 iterations</span>
+            <div className={styles.installRow}>
+              <code className={styles.installCommand}>{installCommand}</code>
+              <button
+                className={`${styles.copyButton} ${copyStatus === 'copied' ? styles.copyButtonCopied : ''}`}
+                type="button"
+                onClick={copyInstallCommand}>
+                {copyStatus === 'copied' ? 'Copied' : 'Copy'}
+              </button>
             </div>
           </div>
         </div>
