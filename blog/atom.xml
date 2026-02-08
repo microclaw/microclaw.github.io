@@ -150,57 +150,127 @@
         <category label="Agentic AI" term="Agentic AI"/>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Introducing MicroClaw: An Agentic AI Assistant for Telegram]]></title>
+        <title type="html"><![CDATA[Building MicroClaw: A Practical Agentic Assistant for Telegram]]></title>
         <id>https://microclaw.ai/blog/building-microclaw</id>
         <link href="https://microclaw.ai/blog/building-microclaw"/>
         <updated>2026-02-07T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[MicroClaw is a Rust-based AI assistant that lives directly in your Telegram chats. Instead of only answering text prompts, it can use tools to complete multi-step tasks: run shell commands, read and edit files, search code, browse the web, schedule jobs, and keep persistent memory.]]></summary>
-        <content type="html"><![CDATA[<p>MicroClaw is a Rust-based AI assistant that lives directly in your Telegram chats. Instead of only answering text prompts, it can use tools to complete multi-step tasks: run shell commands, read and edit files, search code, browse the web, schedule jobs, and keep persistent memory.</p>
-<p>This post is a short project introduction: what MicroClaw is, how it works, and why the architecture is built this way.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-problem-it-solves">What problem it solves<a href="https://microclaw.ai/blog/building-microclaw#what-problem-it-solves" class="hash-link" aria-label="Direct link to What problem it solves" title="Direct link to What problem it solves" translate="no">​</a></h2>
-<p>Most chat bots are single-turn wrappers around an LLM API: send user text in, send model text out.</p>
-<p>MicroClaw uses an agent loop. For each user message, the model can:</p>
+        <summary type="html"><![CDATA[MicroClaw is a Rust-based AI assistant that lives directly in your chats. It is built for one specific goal: turn chat into a reliable execution surface, not just a text interface.]]></summary>
+        <content type="html"><![CDATA[<p>MicroClaw is a Rust-based AI assistant that lives directly in your chats. It is built for one specific goal: turn chat into a reliable execution surface, not just a text interface.</p>
+<p>MicroClaw can run shell commands, read and edit files, search code, browse the web, schedule recurring tasks, and maintain persistent memory. It is Telegram-first today, with optional WhatsApp and Discord paths, and it is designed to stay understandable as it grows.</p>
+<p>This post is a full introduction to the project: where the idea came from, what design decisions shaped it, and how the architecture works in practice.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="where-the-idea-came-from">Where the Idea Came From<a href="https://microclaw.ai/blog/building-microclaw#where-the-idea-came-from" class="hash-link" aria-label="Direct link to Where the Idea Came From" title="Direct link to Where the Idea Came From" translate="no">​</a></h2>
+<p>MicroClaw was inspired by two things happening at the same time:</p>
 <ol>
-<li class="">Decide whether to answer directly or call a tool</li>
-<li class="">Execute one or more tools</li>
-<li class="">Read tool results</li>
-<li class="">Continue iterating until the task is complete</li>
+<li class="">The rise of <strong>NanoClaw</strong>, which proved that personal AI assistants should be understandable, self-hostable, and opinionated.</li>
+<li class="">The release wave around <strong>Claude Opus 4.6</strong>, which made long-context, tool-heavy assistant workflows feel much more practical for real daily use.</li>
 </ol>
-<p>That loop turns chat from Q&amp;A into execution.</p>
-<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-capabilities">Core capabilities<a href="https://microclaw.ai/blog/building-microclaw#core-capabilities" class="hash-link" aria-label="Direct link to Core capabilities" title="Direct link to Core capabilities" translate="no">​</a></h2>
+<p>NanoClaw showed that small and focused systems can be powerful. Opus 4.6 showed that model capability had reached a point where multi-step reasoning with tools could be trustworthy enough to build on.</p>
+<p>MicroClaw started as a question:<br>
+<!-- -->Can we keep the spirit of NanoClaw, but build a Telegram-first assistant in Rust with stronger session continuity, operational stability, and practical built-ins?</p>
+<p>The answer became this project.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-problem-microclaw-solves">The Problem MicroClaw Solves<a href="https://microclaw.ai/blog/building-microclaw#the-problem-microclaw-solves" class="hash-link" aria-label="Direct link to The Problem MicroClaw Solves" title="Direct link to The Problem MicroClaw Solves" translate="no">​</a></h2>
+<p>Most chat bots are still single-turn wrappers:</p>
 <ul>
-<li class="">Tool execution in chat (<code>bash</code>, file ops, <code>glob</code>, <code>grep</code>, web tools)</li>
-<li class="">Session resume with full tool-call context persisted in SQLite</li>
-<li class="">Context compaction when sessions grow large</li>
-<li class="">Persistent memory via global and per-chat <code>CLAUDE.md</code></li>
-<li class="">Scheduled tasks (one-shot and cron)</li>
-<li class="">Sub-agent execution with a restricted tool set</li>
+<li class="">user sends text</li>
+<li class="">model returns text</li>
+<li class="">conversation state is shallow</li>
+<li class="">no durable execution context</li>
+</ul>
+<p>That is fine for Q&amp;A, but weak for real work.</p>
+<p>MicroClaw treats each message as an <strong>agentic task loop</strong>. For each incoming message, the model can:</p>
+<ol>
+<li class="">Decide whether to answer directly or use tools</li>
+<li class="">Execute one or more tools</li>
+<li class="">Read tool outputs</li>
+<li class="">Keep iterating until the task is done</li>
+<li class="">Persist the state for the next turn</li>
+</ol>
+<p>This turns chat from “ask and answer” into “plan, execute, and continue.”</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-makes-microclaw-different">What Makes MicroClaw Different<a href="https://microclaw.ai/blog/building-microclaw#what-makes-microclaw-different" class="hash-link" aria-label="Direct link to What Makes MicroClaw Different" title="Direct link to What Makes MicroClaw Different" translate="no">​</a></h2>
+<p>MicroClaw is designed around four practical requirements.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-durable-conversations-not-stateless-prompts">1) Durable conversations, not stateless prompts<a href="https://microclaw.ai/blog/building-microclaw#1-durable-conversations-not-stateless-prompts" class="hash-link" aria-label="Direct link to 1) Durable conversations, not stateless prompts" title="Direct link to 1) Durable conversations, not stateless prompts" translate="no">​</a></h3>
+<p>Sessions are persisted in SQLite with full tool context (<code>tool_use</code> and <code>tool_result</code> blocks).<br>
+<!-- -->When a new message arrives, the assistant can resume from real prior execution state, not just a truncated chat summary.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-memory-that-can-evolve-over-time">2) Memory that can evolve over time<a href="https://microclaw.ai/blog/building-microclaw#2-memory-that-can-evolve-over-time" class="hash-link" aria-label="Direct link to 2) Memory that can evolve over time" title="Direct link to 2) Memory that can evolve over time" translate="no">​</a></h3>
+<p>MicroClaw supports global and per-chat <code>CLAUDE.md</code> memory.<br>
+<!-- -->The assistant can read and update memory through tools, so preferences and project context survive across days or weeks.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-operational-features-built-in">3) Operational features built in<a href="https://microclaw.ai/blog/building-microclaw#3-operational-features-built-in" class="hash-link" aria-label="Direct link to 3) Operational features built in" title="Direct link to 3) Operational features built in" translate="no">​</a></h3>
+<p>It includes production-relevant features out of the box:</p>
+<ul>
+<li class="">context compaction for oversized sessions</li>
+<li class="">scheduled one-shot and recurring tasks</li>
+<li class="">continuous typing indicator during long tool loops</li>
+<li class="">group catch-up behavior for mention-based activation</li>
+<li class="">message splitting for platform limits</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-controlled-delegation">4) Controlled delegation<a href="https://microclaw.ai/blog/building-microclaw#4-controlled-delegation" class="hash-link" aria-label="Direct link to 4) Controlled delegation" title="Direct link to 4) Controlled delegation" translate="no">​</a></h3>
+<p>MicroClaw includes a <code>sub_agent</code> tool that launches a restricted inner agent with a reduced tool set.<br>
+<!-- -->This allows decomposition of complex work while keeping clear safety boundaries.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-capabilities">Core Capabilities<a href="https://microclaw.ai/blog/building-microclaw#core-capabilities" class="hash-link" aria-label="Direct link to Core Capabilities" title="Direct link to Core Capabilities" translate="no">​</a></h2>
+<ul>
+<li class="">Chat-native tool execution (<code>bash</code>, file operations, <code>glob</code>, <code>grep</code>, web search/fetch)</li>
+<li class="">Persistent session resume including tool interaction history</li>
+<li class="">Context compaction for long-running sessions</li>
+<li class="">Global + per-chat persistent memory via <code>CLAUDE.md</code></li>
+<li class="">Scheduler for cron and one-time tasks</li>
+<li class="">Skill activation for domain-specific instructions</li>
+<li class="">Todo/plan tools for structured multi-step execution</li>
+<li class="">Optional cross-surface integrations (Telegram-first, plus optional WhatsApp/Discord)</li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="high-level-architecture">High-level architecture<a href="https://microclaw.ai/blog/building-microclaw#high-level-architecture" class="hash-link" aria-label="Direct link to High-level architecture" title="Direct link to High-level architecture" translate="no">​</a></h2>
-<p>At a high level, each message flows through the same pipeline:</p>
+<p>At a high level, every message follows the same execution path:</p>
 <ol>
 <li class="">Store message in SQLite</li>
-<li class="">Load session/history + memory</li>
+<li class="">Load session state, recent history, and memory</li>
 <li class="">Call LLM with tool definitions</li>
-<li class="">If tool use is requested, execute tool and loop</li>
-<li class="">When LLM ends turn, return response to chat</li>
+<li class="">If <code>tool_use</code> is requested, execute tool(s) and loop</li>
+<li class="">If <code>end_turn</code>, send response and persist updated session</li>
 </ol>
-<p>The same agent loop is reused by the scheduler, so scheduled jobs can also use tools and reasoning.</p>
+<p>The scheduler reuses this same loop.<br>
+<!-- -->That means scheduled tasks are not “dumb reminders” but full agent invocations with tools, reasoning, and memory access.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-rust">Why Rust<a href="https://microclaw.ai/blog/building-microclaw#why-rust" class="hash-link" aria-label="Direct link to Why Rust" title="Direct link to Why Rust" translate="no">​</a></h2>
-<p>MicroClaw is written in Rust for operational simplicity and reliability:</p>
+<p>MicroClaw is written in Rust for reliability and operational clarity:</p>
 <ul>
 <li class="">Single binary deployment (<code>cargo build --release</code>)</li>
-<li class="">Strong typing for message blocks (<code>text</code>, <code>tool_use</code>, <code>tool_result</code>)</li>
-<li class="">Clear shared-state boundaries (<code>Arc&lt;Database&gt;</code>)</li>
-<li class="">Predictable async runtime behavior with Tokio</li>
+<li class="">Strong typing for protocol/message block structures</li>
+<li class="">Explicit shared-state boundaries (<code>Arc&lt;Database&gt;</code>)</li>
+<li class="">Predictable async behavior via Tokio</li>
+<li class="">Lower accidental complexity in long-running bot processes</li>
 </ul>
+<p>Rust is not used for novelty. It is used because this project is a long-lived process that handles concurrency, persistence, and external APIs continuously.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="design-principles">Design Principles<a href="https://microclaw.ai/blog/building-microclaw#design-principles" class="hash-link" aria-label="Direct link to Design Principles" title="Direct link to Design Principles" translate="no">​</a></h2>
+<p>MicroClaw follows a few strict rules:</p>
+<ul>
+<li class=""><strong>Execution-first</strong>: a useful assistant must do work, not only generate text.</li>
+<li class=""><strong>State is a feature</strong>: preserving session and memory quality is as important as model quality.</li>
+<li class=""><strong>Simple core, practical edges</strong>: keep architecture small, but include features needed in real daily workflows.</li>
+<li class=""><strong>Safety by layers</strong>: combine tool-level checks, chat access controls, and deployment hardening.</li>
+<li class=""><strong>Composable growth</strong>: add capabilities via tools and skills without breaking the core loop.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="example-workflows">Example Workflows<a href="https://microclaw.ai/blog/building-microclaw#example-workflows" class="hash-link" aria-label="Direct link to Example Workflows" title="Direct link to Example Workflows" translate="no">​</a></h2>
+<p>Here are the kinds of tasks MicroClaw is designed for:</p>
+<ul>
+<li class="">“Search this repo for API breaking changes and draft release notes.”</li>
+<li class="">“Every weekday at 9am, send me an AI news briefing from selected sources.”</li>
+<li class="">“Read this error log, find likely root causes, and propose fixes.”</li>
+<li class="">“Remember that I prefer concise responses and Rust code examples.”</li>
+<li class="">“Break this migration into a todo plan and execute step by step.”</li>
+</ul>
+<p>These are not one-shot prompts. They are iterative workflows with context and state.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="project-status">Project status<a href="https://microclaw.ai/blog/building-microclaw#project-status" class="hash-link" aria-label="Direct link to Project status" title="Direct link to Project status" translate="no">​</a></h2>
-<p>MicroClaw is under active development. Current focus areas are improving onboarding, hardening runtime safety defaults, and making multi-chat operations more robust.</p>
+<p>MicroClaw is under active development. Current priorities are:</p>
+<ol>
+<li class="">Stronger default safety boundaries for tool execution</li>
+<li class="">Better multi-channel consistency across Telegram/WhatsApp/Discord</li>
+<li class="">Better observability for scheduler/session/tool failures</li>
+<li class="">Smoother onboarding and configuration UX</li>
+</ol>
 <p>If you want to explore the full docs, start here:</p>
 <ul>
 <li class=""><a href="https://microclaw.ai/docs/overview" target="_blank" rel="noopener noreferrer" class="">https://microclaw.ai/docs/overview</a></li>
 <li class=""><a href="https://microclaw.ai/docs/architecture" target="_blank" rel="noopener noreferrer" class="">https://microclaw.ai/docs/architecture</a></li>
 <li class=""><a href="https://microclaw.ai/docs/tools" target="_blank" rel="noopener noreferrer" class="">https://microclaw.ai/docs/tools</a></li>
+<li class="">Source code: <a href="https://github.com/microclaw/microclaw" target="_blank" rel="noopener noreferrer" class="">https://github.com/microclaw/microclaw</a></li>
 </ul>]]></content>
         <author>
             <name>Everett</name>
