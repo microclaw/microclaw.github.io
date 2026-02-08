@@ -41,6 +41,8 @@ All configuration is via `microclaw.config.yaml`.
 - control chats: can operate across chats
 - global memory writes require control-chat privileges
 
+See [Multi-Chat Permissions](./permissions) for setup and verification steps.
+
 ## Setup wizard
 
 Run:
