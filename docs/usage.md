@@ -408,6 +408,8 @@ Bot: [bash: lsof -i :8080 -> read_file: /etc/nginx/nginx.conf -> analysis]
 
 ```sh
 microclaw start       # Start the bot
+microclaw config      # Interactive Q&A configuration flow
+microclaw setup       # Full-screen setup wizard
 microclaw gateway install # Install + enable persistent gateway service
 microclaw gateway status  # Show gateway service status
 microclaw gateway stop    # Stop gateway service
@@ -421,10 +423,11 @@ microclaw help        # Show help and all configuration options
 | Key | Required | Default | Description |
 |---|---|---|---|
 | `telegram_bot_token` | Yes | - | Bot token from @BotFather |
-| `api_key` | Yes | - | LLM API key |
+| `api_key` | Yes* | - | LLM API key (`ollama` can leave this empty) |
 | `bot_username` | Yes | - | Bot username (without @) |
 | `model` | No | `claude-sonnet-4-20250514` | LLM model ID |
 | `data_dir` | No | `./microclaw.data` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
+| `working_dir` | No | `./tmp` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
 | `max_tokens` | No | `8192` | Max tokens per response |
-| `max_tool_iterations` | No | `25` | Max tool loop iterations |
+| `max_tool_iterations` | No | `100` | Max tool loop iterations |
 | `max_history_messages` | No | `50` | Chat history context size |

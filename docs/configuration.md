@@ -11,7 +11,7 @@ All configuration is via `microclaw.config.yaml`.
 | Key | Description |
 |---|---|
 | `telegram_bot_token` | chat bot token from @BotFather |
-| `api_key` | LLM API key |
+| `api_key` | LLM API key (`ollama` can be empty) |
 | `bot_username` | Bot username without the `@` |
 
 ## Optional
@@ -22,8 +22,9 @@ All configuration is via `microclaw.config.yaml`.
 | `model` | provider-specific | Model name |
 | `llm_base_url` | provider preset default | Optional custom base URL |
 | `data_dir` | `./microclaw.data` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
+| `working_dir` | `./tmp` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
 | `max_tokens` | `8192` | Max tokens per LLM response |
-| `max_tool_iterations` | `25` | Max tool-use loop iterations per message |
+| `max_tool_iterations` | `100` | Max tool-use loop iterations per message |
 | `max_history_messages` | `50` | Number of recent messages sent as context |
 | `control_chat_ids` | `[]` | Chat IDs allowed to perform cross-chat tool actions |
 | `max_session_messages` | `40` | Message threshold that triggers context compaction |
@@ -31,7 +32,12 @@ All configuration is via `microclaw.config.yaml`.
 
 ## Supported `llm_provider` values
 
-`openai`, `openrouter`, `anthropic`, `google`, `alibaba`, `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`, `zhipu`, `minimax`, `cohere`, `tencent`, `xai`, `huggingface`, `together`, `custom`.
+`openai`, `openrouter`, `anthropic`, `ollama`, `google`, `alibaba`, `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`, `zhipu`, `minimax`, `cohere`, `tencent`, `xai`, `huggingface`, `together`, `custom`.
+
+`ollama` is supported as a local OpenAI-compatible provider. Recommended defaults:
+- `llm_base_url`: `http://127.0.0.1:11434/v1`
+- `api_key`: optional
+- `model`: one of your local pulled models (for example `llama3.2`)
 
 ## Multi-chat permissions
 
@@ -43,12 +49,12 @@ All configuration is via `microclaw.config.yaml`.
 
 See [Multi-Chat Permissions](./permissions) for setup and verification steps.
 
-## Setup wizard
+## Interactive Config
 
-Run:
+Run the recommended interactive Q&A flow:
 
 ```sh
-microclaw setup
+microclaw config
 ```
 
 Features:
@@ -57,10 +63,11 @@ Features:
 - local + online validation
 - safe `microclaw.config.yaml` write with backup
 
-Preset providers in setup wizard:
+Preset providers:
 - `openai`
 - `openrouter`
 - `anthropic`
+- `ollama`
 - `google`
 - `alibaba`
 - `deepseek`

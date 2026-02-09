@@ -40,10 +40,10 @@ cp target/release/microclaw /usr/local/bin/
 
 ## 3. Configure (recommended)
 
-Use the interactive setup wizard:
+Use the interactive config flow:
 
 ```sh
-microclaw setup
+microclaw config
 ```
 
 <!-- Placeholder: replace with real screenshot later -->
@@ -53,11 +53,13 @@ It validates required fields, tests chat/LLM connectivity, and writes `microclaw
 It also includes provider/model list pickers (`Enter` open list, `↑/↓` move, `Enter` confirm, `Esc` close).
 
 Built-in provider presets:
-- `openai`, `openrouter`, `anthropic`, `google`, `alibaba`
+- `openai`, `openrouter`, `anthropic`, `ollama`, `google`, `alibaba`
 - `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`
 - `zhipu`, `minimax`, `cohere`, `tencent`
 - `xai`, `huggingface`, `together`
 - `custom` (manual provider/model/base URL)
+
+For `ollama`, `llm_base_url` defaults to `http://127.0.0.1:11434/v1`, `api_key` is optional, and the config flow attempts to detect local models.
 
 These are also the valid values for `llm_provider` in `microclaw.config.yaml`.
 
@@ -69,6 +71,8 @@ bot_username: "my_bot"
 llm_provider: "anthropic"
 api_key: "sk-ant-..."
 model: "claude-sonnet-4-20250514"
+data_dir: "./microclaw.data"
+working_dir: "./tmp"
 ```
 
 ## 4. Run
@@ -77,7 +81,7 @@ model: "claude-sonnet-4-20250514"
 microclaw start
 ```
 
-That is it. On first launch, if required config is missing, `start` will auto-open setup wizard.
+That is it. On first launch, if required config is missing, `start` will auto-open the config flow.
 After setup, the bot initializes SQLite, starts scheduler, and begins listening for messages.
 
 ## 5. Optional: run as persistent gateway service

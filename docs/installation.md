@@ -51,7 +51,7 @@ cargo run -- start
 Recommended:
 
 ```sh
-microclaw setup
+microclaw config
 ```
 
 Or manually create `microclaw.config.yaml`:
@@ -62,11 +62,13 @@ bot_username: "..."
 llm_provider: "anthropic"
 api_key: "..."
 model: "claude-sonnet-4-20250514"
+data_dir: "./microclaw.data"
+working_dir: "./tmp"
 ```
 
 Use `microclaw help` (or `cargo run -- help`) for CLI usage.
 
-The setup wizard now includes provider/model list pickers and 20+ built-in provider presets, plus `custom` for manual configuration.
+The interactive config flow supports provider/model selection (including `ollama`) and uses sensible defaults with Enter-to-confirm prompts.
 
 ## Gateway persistent service
 
