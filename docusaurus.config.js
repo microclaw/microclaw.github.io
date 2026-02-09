@@ -12,7 +12,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'MicroClaw',
   tagline: 'Agentic AI assistant for modern chat surfaces, built in Rust.',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon-32x32.webp',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -39,7 +39,7 @@ const config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'zh-Hans', 'ja'],
   },
 
   presets: [
@@ -78,6 +78,20 @@ const config = {
         anonymizeIP: true,
       },
     ],
+    [
+      '@docusaurus/plugin-zoom',
+      {
+        selector: '.markdown img',
+        background: {
+          light: 'rgb(255, 255, 255)',
+          dark: 'rgb(28, 28, 28)'
+        },
+        config: {
+          margin: 16,
+          zIndex: 100
+        }
+      },
+    ],
   ],
 
   headTags: [
@@ -85,9 +99,9 @@ const config = {
       tagName: 'link',
       attributes: {
         rel: 'icon',
-        type: 'image/png',
+        type: 'image/webp',
         sizes: '32x32',
-        href: '/img/favicon-32x32.png',
+        href: '/img/favicon-32x32.webp',
       },
     },
     {
@@ -210,6 +224,7 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
+        additionalLanguages: ['bash', 'json', 'yaml', 'toml', 'rust', 'python', 'javascript'],
       },
     }),
 };
