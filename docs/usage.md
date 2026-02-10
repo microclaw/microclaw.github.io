@@ -13,6 +13,8 @@ When `web_enabled: true`, MicroClaw serves a local Web UI (default `http://127.0
 - Session list shows all channels found in SQLite (`telegram`, `whatsapp`, `discord`, `web`)
 - You can review chat history and manage state (refresh / clear context / delete)
 - Non-web channels are read-only in Web UI by default; send from source channel
+- If there are no sessions yet, Web UI auto-generates a key like `session-YYYYMMDDHHmmss`
+- The first message in that session automatically persists it in SQLite
 
 ---
 

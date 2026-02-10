@@ -10,9 +10,11 @@ All notable changes will be documented here.
 
 - Web UI sessions now aggregate all stored channels (`telegram`, `whatsapp`, `discord`, `web`) with channel-aware labels
 - Added read-only safeguards for non-web channels in local Web UI
+- Web UI now defaults to the latest session on startup (instead of the oldest)
+- Web UI auto-generates session keys like `session-YYYYMMDDHHmmss` when no sessions exist
+- Web UI `Clear Context` for web sessions now clears persisted history and session state
 - `send_message` now supports file attachments for Telegram / WhatsApp / Discord via `attachment_path` and optional `caption`
 - Added configurable Telegram inbound document size guard: `max_document_size_mb` (default: `100`)
-- Web UI now persists selected session in URL query (`?session=...`) for refresh continuity
 - CI release build now compiles `web/dist` before `cargo build --release` to ensure embedded Web assets stay in sync
 - Initial public documentation site
 - Core docs for configuration, tools, memory, scheduler, and architecture

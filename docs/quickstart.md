@@ -73,6 +73,7 @@ api_key: "sk-ant-..."
 model: "claude-sonnet-4-5-20250929"
 data_dir: "./microclaw.data"
 working_dir: "./tmp"
+working_dir_isolation: "chat" # optional; defaults to "chat"
 max_document_size_mb: 100
 ```
 
