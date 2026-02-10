@@ -10,7 +10,8 @@ MicroClaw is under active development. It is stable enough for personal and smal
 
 ## Does it support images, voice, or files?
 
-Telegram supports text + images. Voice messages are transcribed when `openai_api_key` is configured. File operations are available through tools (`read_file`, `write_file`, `edit_file`).
+Telegram supports text + images + document uploads. Voice messages are transcribed when `openai_api_key` is configured.  
+For tool-driven outbound attachments, `send_message` supports Telegram / WhatsApp / Discord via `attachment_path` (+ optional `caption`).
 
 ## Can I restrict who can run commands?
 
@@ -34,4 +35,5 @@ Yes. Implement the `Tool` trait in `src/tools/`, register it in `ToolRegistry::n
 
 ## What model is used by default?
 
-`model` defaults to `claude-sonnet-4-20250514`. You can override it in `microclaw.config.yaml`.
+`model` defaults to a provider-specific value (`claude-sonnet-4-5-20250929` for `anthropic`, `gpt-5.2` for OpenAI-compatible providers, `llama3.2` for `ollama`).  
+You can override it in `microclaw.config.yaml`.

@@ -61,9 +61,10 @@ telegram_bot_token: "..."
 bot_username: "..."
 llm_provider: "anthropic"
 api_key: "..."
-model: "claude-sonnet-4-20250514"
+model: "claude-sonnet-4-5-20250929"
 data_dir: "./microclaw.data"
 working_dir: "./tmp"
+max_document_size_mb: 100
 ```
 
 Use `microclaw help` (or `cargo run -- help`) for CLI usage.

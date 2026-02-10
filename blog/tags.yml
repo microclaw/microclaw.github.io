@@ -13,3 +13,6 @@ agents:
 telegram:
   label: Telegram
   permalink: /telegram
+comparison:
+  label: Comparison
+  permalink: /comparison

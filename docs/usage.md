@@ -6,6 +6,16 @@ sidebar_position: 5
 
 A complete guide to using MicroClaw. Each section includes exact messages you can send to test the corresponding feature.
 
+## Local Web UI
+
+When `web_enabled: true`, MicroClaw serves a local Web UI (default `http://127.0.0.1:10961`).
+
+- Session list shows all channels found in SQLite (`telegram`, `whatsapp`, `discord`, `web`)
+- You can review chat history and manage state (refresh / clear context / delete)
+- Non-web channels are read-only in Web UI by default; send from source channel
+
+---
+
 ## Basics
 
 ### Private chat
@@ -425,9 +435,10 @@ microclaw help        # Show help and all configuration options
 | `telegram_bot_token` | Yes | - | Bot token from @BotFather |
 | `api_key` | Yes* | - | LLM API key (`ollama` can leave this empty) |
 | `bot_username` | Yes | - | Bot username (without @) |
-| `model` | No | `claude-sonnet-4-20250514` | LLM model ID |
+| `model` | No | provider-specific (`claude-sonnet-4-5-20250929` for `anthropic`) | LLM model ID |
 | `data_dir` | No | `./microclaw.data` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
 | `working_dir` | No | `./tmp` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
 | `max_tokens` | No | `8192` | Max tokens per response |
 | `max_tool_iterations` | No | `100` | Max tool loop iterations |
+| `max_document_size_mb` | No | `100` | Max inbound Telegram document size (MB); larger files are rejected |
 | `max_history_messages` | No | `50` | Chat history context size |

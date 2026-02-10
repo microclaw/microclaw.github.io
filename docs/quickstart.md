@@ -70,9 +70,10 @@ telegram_bot_token: "123456:ABC-DEF1234..."
 bot_username: "my_bot"
 llm_provider: "anthropic"
 api_key: "sk-ant-..."
-model: "claude-sonnet-4-20250514"
+model: "claude-sonnet-4-5-20250929"
 data_dir: "./microclaw.data"
 working_dir: "./tmp"
+max_document_size_mb: 100
 ```
 
 ## 4. Run
@@ -83,6 +84,12 @@ microclaw start
 
 That is it. On first launch, if required config is missing, `start` will auto-open the config flow.
 After setup, the bot initializes SQLite, starts scheduler, and begins listening for messages.
+
+If `web_enabled: true` (default), local Web UI is available at:
+
+```text
+http://127.0.0.1:10961
+```
 
 ## 5. Optional: run as persistent gateway service
 

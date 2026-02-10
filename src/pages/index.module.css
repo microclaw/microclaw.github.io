@@ -37,6 +37,7 @@
   grid-template-columns: 1fr 1.1fr;
   gap: 3rem;
   align-items: center;
+  min-width: 0;
 }
 
 .heroBadge {
@@ -119,6 +120,8 @@
 .installCommand {
   display: block;
   flex: 1;
+  width: 100%;
+  max-width: 100%;
   min-width: 0;
   padding: 0.75rem 0.95rem;
   border-radius: 12px;
@@ -213,6 +216,8 @@
 
 .heroPanel {
   margin-top: 3rem;
+  width: 100%;
+  min-width: 0;
   background: rgba(17, 28, 25, 0.72);
   color: #f4f4f4;
   border-radius: 20px;
@@ -240,10 +245,13 @@
   margin-top: 1.5rem;
   display: grid;
   gap: 1rem;
+  min-width: 0;
 }
 
 .heroVisual {
   position: relative;
+  width: 100%;
+  min-width: 0;
   height: 360px;
   border-radius: 20px;
   background: radial-gradient(circle at 30% 20%, rgba(69, 224, 159, 0.25), transparent 50%),
@@ -456,10 +464,17 @@
 @media screen and (max-width: 996px) {
   .hero {
     padding: 4rem 0;
+    overflow-x: clip;
+  }
+
+  .hero :global(.container) {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .heroLayout {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 
   .heroActions {
@@ -469,6 +484,14 @@
 
   .heroVisual {
     height: 300px;
+  }
+
+  .heroContent,
+  .heroPanel,
+  .installBlock,
+  .installRow {
+    width: 100%;
+    min-width: 0;
   }
 
   .installRow {

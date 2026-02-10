@@ -42,6 +42,12 @@
 
 body {
   letter-spacing: -0.01em;
+  overflow-x: hidden;
+}
+
+html,
+#__docusaurus {
+  overflow-x: clip;
 }
 
 .navbar__title {

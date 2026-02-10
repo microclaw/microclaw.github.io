@@ -25,6 +25,7 @@ All configuration is via `microclaw.config.yaml`.
 | `working_dir` | `./tmp` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
 | `max_tokens` | `8192` | Max tokens per LLM response |
 | `max_tool_iterations` | `100` | Max tool-use loop iterations per message |
+| `max_document_size_mb` | `100` | Maximum allowed inbound Telegram document size (files above limit are rejected with a hint message) |
 | `max_history_messages` | `50` | Number of recent messages sent as context |
 | `control_chat_ids` | `[]` | Chat IDs allowed to perform cross-chat tool actions |
 | `max_session_messages` | `40` | Message threshold that triggers context compaction |
