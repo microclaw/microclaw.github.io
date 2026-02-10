@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.ca572b06.css">
-<script src="/assets/js/runtime~main.85aa9d00.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.7a5b07ea.js" defer="defer"></script>
 <script src="/assets/js/main.d78fb5a9.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -29,9 +29,11 @@
 <ul>
 <li class="">Web UI sessions now aggregate all stored channels (<code>telegram</code>, <code>whatsapp</code>, <code>discord</code>, <code>web</code>) with channel-aware labels</li>
 <li class="">Added read-only safeguards for non-web channels in local Web UI</li>
+<li class="">Web UI now defaults to the latest session on startup (instead of the oldest)</li>
+<li class="">Web UI auto-generates session keys like <code>session-YYYYMMDDHHmmss</code> when no sessions exist</li>
+<li class="">Web UI <code>Clear Context</code> for web sessions now clears persisted history and session state</li>
 <li class=""><code>send_message</code> now supports file attachments for Telegram / WhatsApp / Discord via <code>attachment_path</code> and optional <code>caption</code></li>
 <li class="">Added configurable Telegram inbound document size guard: <code>max_document_size_mb</code> (default: <code>100</code>)</li>
-<li class="">Web UI now persists selected session in URL query (<code>?session=...</code>) for refresh continuity</li>
 <li class="">CI release build now compiles <code>web/dist</code> before <code>cargo build --release</code> to ensure embedded Web assets stay in sync</li>
 <li class="">Initial public documentation site</li>
 <li class="">Core docs for configuration, tools, memory, scheduler, and architecture</li>
