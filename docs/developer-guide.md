@@ -23,7 +23,7 @@ src/
     main.rs          # CLI, bootstraps app
     config.rs        # Loads microclaw.config.yaml
     error.rs         # MicroClawError
-    telegram.rs      # Message handler + agent loop
+    channels/telegram.rs # Telegram adapter + channel handling
     claude.rs        # Anthropic Messages API client
     db.rs            # SQLite tables + queries
     memory.rs        # AGENTS.md memory manager
@@ -35,7 +35,7 @@ src/
 
 | Type | Location | Description |
 |---|---|---|
-| `AppState` | `telegram.rs` | Shared config, bot, db, memory, tools |
+| `AppState` | `channels/telegram.rs` | Shared runtime state for channel processing |
 | `Database` | `db.rs` | SQLite wrapper with `Mutex<Connection>` |
 | `ToolRegistry` | `tools/mod.rs` | `Vec<Box<dyn Tool>>` dispatch |
 | `LlmProvider` | `llm.rs` | Provider abstraction for Anthropic and OpenAI-compatible APIs |

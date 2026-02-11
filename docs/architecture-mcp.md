@@ -1,0 +1,35 @@
+---
+id: architecture-mcp
+title: Architecture - MCP Integration
+sidebar_position: 12
+---
+
+MCP extends tool surface area without baking all integrations into MicroClaw itself.
+
+## Transport model
+
+Supported transports:
+
+- `stdio`
+- `streamable_http`
+
+Protocol version is negotiated during initialize (default currently `2025-11-05`, configurable per server/global).
+
+## Reliability model
+
+- request timeout (`request_timeout_secs`)
+- retry + reconnect for stdio (`max_retries`)
+- tools cache with TTL + forced refresh
+- periodic health probe (`health_interval_secs`, `0` disables)
+
+## Tool exposure
+
+MCP tools are registered into the same runtime tool registry with namespaced identifiers.
+This keeps planner behavior consistent between built-in tools and MCP tools.
+
+## Operational guidance
+
+- Start with minimal local MCP config.
+- Add remote servers one-by-one.
+- Monitor tool list refresh and probe failures in logs.
+- Treat endpoint auth and command dependencies as first-class operational dependencies.

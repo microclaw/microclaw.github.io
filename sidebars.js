@@ -29,7 +29,13 @@ const sidebars = {
     {
       type: 'category',
       label: 'Architecture',
-      items: ['architecture'],
+      items: [
+        'architecture',
+        'architecture-context',
+        'architecture-skills',
+        'architecture-mcp',
+        'architecture-channels',
+      ],
     },
     {
       type: 'category',
@@ -39,7 +45,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Reference',
-      items: ['project-files', 'license', 'faq', 'roadmap', 'changelog', 'about'],
+      items: ['project-files', 'license', 'faq', 'roadmap', 'about'],
     },
   ],
 };

@@ -1,69 +1,39 @@
 ---
 id: architecture
-title: Architecture
+title: Architecture - Core Principles
 sidebar_position: 9
 ---
 
-## Data flow
+This section explains how MicroClaw is designed for long-running agent workflows while staying maintainable as channels/tools/models grow.
 
-```
-chat message
-       |
-       v
-    Store in SQLite (message + chat metadata)
-       |
-       v
-    Determine response: private=always, group=@mention only
-       |
-       v
-    Start typing indicator (tokio::spawn, every 4s)
-       |
-       v
-    Load history:
-       - Private: last N messages
-       - Group: all messages since last bot response
-       |
-       v
-    Build system prompt (bot identity + memory context + chat_id)
-       |
-       v
-    Agentic loop (up to MAX_TOOL_ITERATIONS):
-       1. Call LLM API with messages + tool definitions
-       2. If stop_reason == "tool_use" -> execute tools -> append results -> loop
-       3. If stop_reason == "end_turn" -> extract text -> return
-       |
-       v
-    Abort typing indicator
-       |
-       v
-    Send response (split if > 4096 chars)
-       |
-       v
-    Store bot response in SQLite
+## Design goals
+
+- Platform-agnostic agent core: conversation + tool loop should not be tightly coupled to Telegram/Discord/Web handlers.
+- Safe-by-default execution: tool permissions, risk levels, and explicit approval for dangerous operations.
+- Durable state: sessions, messages, tasks, and memory persisted in SQLite/filesystem.
+- Single-binary operations: no required Python runtime, predictable deployment model.
+- Extensibility: MCP tools + local skills + built-in tools, with clear boundaries.
+
+## High-level runtime flow
+
+```text
+Channel event -> Gateway adapter -> Agent engine -> LLM + Tools loop
+                 |                                 |
+                 v                                 v
+           channel persistence               state + memory + sessions
 ```
 
-## Key modules
+## Core modules
 
-```
-src/
-    main.rs          # CLI entry point
-    config.rs        # Environment variable loading
-    error.rs         # Error types
-    telegram.rs      # Message handler + agent loop
-    claude.rs        # Anthropic API client
-    db.rs            # SQLite tables + queries
-    memory.rs        # AGENTS.md memory system
-    scheduler.rs     # Background scheduler
-    tools/           # Tool trait + implementations
-```
+- `core` (current: spread across `channels/*`, `tools/*`, `llm.rs`): agent loop, tool orchestration, context handling.
+- `storage` (`db.rs`, memory files): chat/task/session persistence.
+- `skills` (`skills.rs`, tool activation/sync): skill discovery and loading.
+- `gateway/channel adapters` (`channels/telegram.rs`, `channels/discord.rs`, `channels/whatsapp.rs`, `web.rs`): platform-specific ingress/egress.
+- `runtime` (`main.rs`, `scheduler.rs`, `gateway.rs`, `doctor.rs`): process boot, background jobs, diagnostics.
 
-## Agentic loop
+## Recommended reading order
 
-The core logic lives in `process_with_claude`:
-
-1. Load history and memory
-2. Call LLM with tool definitions
-3. If `stop_reason` is `tool_use`, run tools and feed results back
-4. If `end_turn`, return the text response
-
-The loop is capped to prevent infinite tool chains.
+1. [Context Lifecycle](./architecture-context)
+2. [Skills Architecture](./architecture-skills)
+3. [MCP Architecture](./architecture-mcp)
+4. [Channels and Gateway](./architecture-channels)

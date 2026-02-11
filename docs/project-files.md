@@ -14,4 +14,4 @@ This repository includes several reference documents used by developers and AI a
 | `CLAUDE.md` | AI assistant project context |
 | `AGENTS.md` | Agent-focused architecture and tool reference |
 
-These files are mirrored into this website as documentation content.
+These files inform both repository docs and website documentation. Use GitHub Releases for version-by-version change history.

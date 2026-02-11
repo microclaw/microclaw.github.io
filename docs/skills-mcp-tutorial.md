@@ -206,4 +206,4 @@ mcp_filesystem_read_file
 2. Add remote MCP servers one-by-one, with explicit owners.
 3. Add skills in small focused folders.
 4. Validate each addition with `/skills` + one real task prompt.
-5. Track changes in docs/changelog.
+5. Track changes in GitHub Releases and project roadmap docs.
