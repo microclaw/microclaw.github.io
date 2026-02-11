@@ -34,7 +34,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Developer',
-      items: ['developer-guide', 'testing'],
+      items: ['developer-guide', 'skills-mcp-tutorial', 'testing'],
     },
     {
       type: 'category',

@@ -1,0 +1,175 @@
+---
+id: skills-mcp-tutorial
+title: Skills + MCP Tutorial
+sidebar_position: 3
+---
+
+This tutorial covers two extension paths:
+
+1. Add or customize **Skills** (`SKILL.md` workflow packs)
+2. Extend **MCP** servers (`mcp.json` tool federation)
+
+Use this page as the operational guide for production setups.
+
+## Part 1: Add a New Skill
+
+### 1) Create the skill folder
+
+```bash
+mkdir -p microclaw.data/skills/my-skill
+```
+
+### 2) Add `SKILL.md`
+
+```markdown
+---
+name: my-skill
+description: One-line summary of what the skill does.
+platforms: [darwin, linux, windows]
+deps: [curl]
+---
+
+# My Skill
+
+When to use:
+- ...
+
+Workflow:
+1. ...
+2. ...
+```
+
+Supported frontmatter fields:
+
+- `name` (required)
+- `description` (required)
+- `platforms` (optional)
+- `deps` (optional)
+- `compatibility.os` and `compatibility.deps` (optional aliases)
+
+### 3) Restart and verify
+
+```bash
+RUST_LOG=info cargo run -- start
+```
+
+Then in chat:
+
+```text
+/skills
+```
+
+If your skill is filtered out, check:
+
+- Platform mismatch (`platforms` does not include current OS)
+- Missing commands in `deps`
+
+### 4) Activate manually (sanity check)
+
+Ask the assistant:
+
+```text
+activate the skill my-skill and summarize its instructions
+```
+
+If activation fails, the error now includes platform/dependency diagnostics.
+
+## Part 2: Use Built-in `find-skills` (vercel-labs/skills)
+
+MicroClaw includes a bundled skill: `find-skills`.
+
+Goal:
+- Search [vercel-labs/skills](https://github.com/vercel-labs/skills)
+- Pick best-fit skills by task keyword
+- Adapt upstream instructions into MicroClaw-compatible local skills
+
+Example prompts:
+
+```text
+Find skills for playwright test debugging from vercel-labs/skills.
+```
+
+```text
+Find a skill for converting docs to PDF and adapt it to this repo.
+```
+
+## Part 3: Extend MCP
+
+### 1) Start from minimal production config
+
+```bash
+cp mcp.minimal.example.json microclaw.data/mcp.json
+```
+
+This gives you one safe local MCP server (`filesystem` via `stdio`).
+
+### 2) Add an additional MCP server
+
+```json
+{
+  "defaultProtocolVersion": "2025-11-05",
+  "mcpServers": {
+    "filesystem": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
+    },
+    "my_remote": {
+      "transport": "streamable_http",
+      "endpoint": "http://127.0.0.1:8080/mcp",
+      "headers": {
+        "Authorization": "Bearer REPLACE_ME"
+      },
+      "request_timeout_secs": 60
+    }
+  }
+}
+```
+
+Accepted key aliases:
+
+- `defaultProtocolVersion` or `default_protocol_version`
+- `protocolVersion` or `protocol_version`
+- `endpoint` or `url`
+
+### 3) Restart and verify MCP loading
+
+```bash
+RUST_LOG=info cargo run -- start
+```
+
+Look for logs:
+
+- `Connecting to MCP server '...'`
+- `MCP server '...' connected (...)`
+
+### 4) Confirm tools are exposed
+
+Ask the assistant to list available tools or invoke one MCP namespaced tool.
+
+Tool names are exposed as:
+
+```text
+mcp_<server_name>_<tool_name>
+```
+
+Example:
+
+```text
+mcp_filesystem_read_file
+```
+
+## Common pitfalls
+
+- `mcp.json` placed in wrong directory: must be `microclaw.data/mcp.json`
+- Missing runtime dependency (`npx`, server binary, auth token)
+- Skill appears in repo but not in `/skills`: usually platform/deps filter
+- Remote MCP endpoint responds non-JSON-RPC payload
+
+## Recommended workflow for teams
+
+1. Keep `mcp.minimal.example.json` as baseline.
+2. Add remote MCP servers one-by-one, with explicit owners.
+3. Add skills in small focused folders.
+4. Validate each addition with `/skills` + one real task prompt.
+5. Track changes in docs/changelog.

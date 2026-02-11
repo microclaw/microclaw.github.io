@@ -63,3 +63,8 @@ cargo build
 cargo build --release
 cargo run -- start
 ```
+
+
+## Extension tutorial
+
+For a step-by-step extension workflow, see: [Skills + MCP Tutorial](./skills-mcp-tutorial).

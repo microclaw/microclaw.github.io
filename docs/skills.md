@@ -11,7 +11,7 @@ When a request matches a skill, the model can call `activate_skill` to load and 
 
 ## Current bundled skills
 
-MicroClaw currently ships with 9 bundled skills:
+MicroClaw currently ships with 10 bundled skills:
 
 1. `pdf`
 2. `docx`
@@ -22,6 +22,7 @@ MicroClaw currently ships with 9 bundled skills:
 7. `apple-reminders`
 8. `apple-calendar`
 9. `weather`
+10. `find-skills`
 
 ## New skills in this release
 
@@ -100,6 +101,19 @@ Examples:
 curl -s "wttr.in/San+Francisco?format=3"
 curl -s "wttr.in/San+Francisco?format=%l:+%c+%t+%h+%w"
 curl -s "wttr.in/San+Francisco?m"
+```
+
+### `find-skills`
+
+- Purpose: discover reusable skills from [vercel-labs/skills](https://github.com/vercel-labs/skills) and map them into MicroClaw-compatible workflows
+- Typical tasks: search by keyword, compare candidates, recommend best-fit + fallback, propose adaptation steps
+- Dependency: `curl`
+
+Examples:
+
+```bash
+curl -sL "https://raw.githubusercontent.com/vercel-labs/skills/main/README.md"
+curl -s "https://api.github.com/search/code?q=repo:vercel-labs/skills+playwright"
 ```
 
 ## Notes
