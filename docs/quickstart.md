@@ -77,7 +77,27 @@ working_dir_isolation: "chat" # optional; defaults to "chat"
 max_document_size_mb: 100
 ```
 
-## 4. Run
+## 4. Preflight diagnostics (recommended)
+
+```sh
+microclaw doctor
+```
+
+For support tickets, attach JSON output:
+
+```sh
+microclaw doctor --json
+```
+
+Text output includes clear status markers:
+
+```text
+[✅ PASS] ...
+[⚠️ WARN] ...
+[❌ FAIL] ...
+```
+
+## 5. Run
 
 ```sh
 microclaw start
@@ -92,7 +112,7 @@ If `web_enabled: true` (default), local Web UI is available at:
 http://127.0.0.1:10961
 ```
 
-## 5. Optional: run as persistent gateway service
+## 6. Optional: run as persistent gateway service
 
 ```sh
 microclaw gateway install

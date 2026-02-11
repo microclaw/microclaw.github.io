@@ -19,6 +19,98 @@ curl -fsSL https://microclaw.ai/install.sh | bash
 The installer only installs prebuilt GitHub release binaries.
 It does not fall back to Homebrew or Cargo automatically.
 
+
+## Windows (PowerShell)
+
+Install using PowerShell:
+
+```powershell
+iwr https://microclaw.ai/install.ps1 -UseBasicParsing | iex
+```
+
+What this script does:
+
+- Downloads the latest matching Windows release (`microclaw.exe`)
+- Installs into `%USERPROFILE%\.local\bin` by default
+- Adds install dir to your **user PATH** if missing
+
+Optional browser automation dependency (for `browser` tool):
+
+```powershell
+npm install -g agent-browser
+agent-browser install
+```
+
+On Windows, MicroClaw will invoke `agent-browser.cmd` when available.
+
+### Preflight diagnostics (all platforms)
+
+Run diagnostics before first start, and include output in support tickets:
+
+```sh
+microclaw doctor
+```
+
+JSON output (for issue templates / copy-paste):
+
+```sh
+microclaw doctor --json
+```
+
+Unified check output format across macOS/Linux/Windows:
+
+```text
+[✅ PASS] <title> (<check_id>) <detail>
+[⚠️ WARN] <title> (<check_id>) <detail>
+[❌ FAIL] <title> (<check_id>) <detail>
+Summary: pass=<n> warn=<n> fail=<n>
+```
+
+`doctor` checks:
+
+- PATH/install dir visibility
+- Shell runtime (`bash/sh` or `pwsh/powershell`)
+- Node.js + npm + `agent-browser`
+- PowerShell execution policy (Windows)
+- MCP dependency commands from `microclaw.data/mcp.json`
+
+### PowerShell execution policy notes
+
+If your environment blocks script execution, run PowerShell as your user and temporarily allow signed/local scripts:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+If your organization enforces policy via Group Policy, use local source build instead of remote script execution.
+
+### Common Windows issues (native non-WSL flow)
+
+Use this triage path when running in native Windows terminals (PowerShell / CMD, not WSL):
+
+1. Confirm environment and run diagnostics:
+   - `microclaw doctor`
+   - If this fails, run with full path: `%USERPROFILE%\.local\bin\microclaw.exe doctor`
+2. If `path.install_dir` is `WARN`:
+   - add `%USERPROFILE%\.local\bin` to user PATH
+   - restart terminal
+3. If `powershell.policy` is `FAIL` (`Restricted`):
+   - `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`
+4. If `deps.node` / `deps.npm` / `deps.agent_browser` is `WARN`:
+   - install Node.js LTS
+   - run `npm install -g agent-browser` and `agent-browser install`
+5. If any `mcp.<name>.command` is `FAIL`:
+   - install that command (or use absolute path in `microclaw.data/mcp.json`)
+6. Re-run `microclaw doctor` until `fail=0`, then start:
+   - `microclaw start`
+
+Quick symptom map:
+
+- `microclaw` command not found: PATH problem (`path.install_dir`)
+- `browser` spawn failure: missing `agent-browser.cmd`
+- script blocked by policy: `powershell.policy` failure
+- MCP tool unavailable: `mcp.*` dependency failure
+
 ## Homebrew (macOS)
 
 ```sh
@@ -103,11 +195,24 @@ This lets MicroClaw interact with JavaScript-rendered pages, fill forms, click b
 
 ## Uninstall
 
-If you installed with the one-line installer, remove the binary from your PATH location:
+Installer-script uninstall (recommended):
+
+macOS/Linux:
 
 ```sh
-which microclaw
-rm -f "$(which microclaw)"
+curl -fsSL https://microclaw.ai/uninstall.sh | bash
+```
+
+Windows PowerShell:
+
+```powershell
+iwr https://microclaw.ai/uninstall.ps1 -UseBasicParsing | iex
+```
+
+Windows PATH cleanup (optional):
+
+```powershell
+iwr https://microclaw.ai/uninstall.ps1 -UseBasicParsing | iex -CleanPath
 ```
 
 If installed via Homebrew:

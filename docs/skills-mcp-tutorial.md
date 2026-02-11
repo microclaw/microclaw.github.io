@@ -93,6 +93,31 @@ Find skills for playwright test debugging from vercel-labs/skills.
 Find a skill for converting docs to PDF and adapt it to this repo.
 ```
 
+### 5) Sync from external registries (automated)
+
+MicroClaw includes a `sync_skills` tool that can pull a skill from a remote repo and normalize metadata:
+
+```text
+sync skill playwright-debug from vercel-labs/skills
+```
+
+Equivalent tool input shape:
+
+```json
+{
+  "skill_name": "playwright-debug",
+  "source_repo": "vercel-labs/skills",
+  "git_ref": "main",
+  "target_name": "playwright-debug"
+}
+```
+
+The synced `SKILL.md` includes normalized fields:
+
+- `source` (for provenance)
+- `version` (git ref)
+- `updated_at` (sync time)
+
 ## Part 3: Extend MCP
 
 ### 1) Start from minimal production config
@@ -120,7 +145,9 @@ This gives you one safe local MCP server (`filesystem` via `stdio`).
       "headers": {
         "Authorization": "Bearer REPLACE_ME"
       },
-      "request_timeout_secs": 60
+      "request_timeout_secs": 60,
+      "max_retries": 2,
+      "health_interval_secs": 30
     }
   }
 }
@@ -131,6 +158,12 @@ Accepted key aliases:
 - `defaultProtocolVersion` or `default_protocol_version`
 - `protocolVersion` or `protocol_version`
 - `endpoint` or `url`
+
+Reliability knobs:
+
+- `request_timeout_secs`: per-request timeout
+- `max_retries`: retry count for stdio reconnect paths
+- `health_interval_secs`: periodic health probe interval (`0` disables probing)
 
 ### 3) Restart and verify MCP loading
 
@@ -165,6 +198,7 @@ mcp_filesystem_read_file
 - Missing runtime dependency (`npx`, server binary, auth token)
 - Skill appears in repo but not in `/skills`: usually platform/deps filter
 - Remote MCP endpoint responds non-JSON-RPC payload
+- High-risk tools (for example `bash`) can require second confirmation in Web/control-chat contexts; pass `__microclaw_approval.token` from the previous error message when prompted
 
 ## Recommended workflow for teams
 

@@ -421,6 +421,8 @@ Bot: [bash: lsof -i :8080 -> read_file: /etc/nginx/nginx.conf -> analysis]
 ```sh
 microclaw start       # Start the bot
 microclaw config      # Interactive Q&A configuration flow
+microclaw doctor      # Cross-platform preflight diagnostics
+microclaw doctor --json # Machine-readable diagnostic output
 microclaw setup       # Full-screen setup wizard
 microclaw gateway install # Install + enable persistent gateway service
 microclaw gateway status  # Show gateway service status

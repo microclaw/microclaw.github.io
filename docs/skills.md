@@ -116,6 +116,21 @@ curl -sL "https://raw.githubusercontent.com/vercel-labs/skills/main/README.md"
 curl -s "https://api.github.com/search/code?q=repo:vercel-labs/skills+playwright"
 ```
 
+## Sync skills from registry
+
+Use the `sync_skills` tool to import remote skills and normalize metadata (`source`, `version`, `updated_at`, `platforms`, `deps`).
+
+Example tool input:
+
+```json
+{
+  "skill_name": "find-skills",
+  "source_repo": "vercel-labs/skills",
+  "git_ref": "main",
+  "target_name": "find-skills"
+}
+```
+
 ## Notes
 
 - Apple-related skills are macOS-only.

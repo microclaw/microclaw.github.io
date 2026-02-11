@@ -4,7 +4,7 @@ title: Tools Reference
 sidebar_position: 6
 ---
 
-MicroClaw exposes 23 tools to LLM through JSON Schema definitions. LLM selects and calls tools automatically based on your request.
+MicroClaw exposes 24 tools to LLM through JSON Schema definitions. LLM selects and calls tools automatically based on your request.
 
 Skill workflows are provided by local `SKILL.md` files (for example `apple-notes`, `apple-reminders`, `apple-calendar`, `weather`) and loaded through `activate_skill`.
 
@@ -15,26 +15,27 @@ Skill workflows are provided by local `SKILL.md` files (for example `apple-notes
 | 1 | `bash` | Shell | Execute shell commands with configurable timeout |
 | 2 | `browser` | Web | Headless browser automation via agent-browser CLI |
 | 3 | `read_file` | File I/O | Read files with line numbers, optional offset/limit |
-| 3 | `write_file` | File I/O | Create or overwrite files (auto-creates directories) |
-| 4 | `edit_file` | File I/O | Find-and-replace with uniqueness validation |
-| 5 | `glob` | Search | Find files by glob pattern (`**/*.rs`) |
-| 6 | `grep` | Search | Regex search across file contents |
-| 7 | `read_memory` | Memory | Read persistent AGENTS.md memory |
-| 8 | `write_memory` | Memory | Write persistent AGENTS.md memory |
-| 9 | `web_search` | Web | Search via DuckDuckGo (top 8 results) |
-| 10 | `web_fetch` | Web | Fetch a URL and return plain text (max 20KB) |
-| 11 | `send_message` | chat | Send text mid-conversation; supports file attachments for Telegram/WhatsApp/Discord |
-| 12 | `schedule_task` | Scheduler | Create a recurring or one-time task |
-| 13 | `list_scheduled_tasks` | Scheduler | List active/paused tasks for a chat |
-| 14 | `pause_scheduled_task` | Scheduler | Pause a scheduled task |
-| 15 | `resume_scheduled_task` | Scheduler | Resume a paused task |
-| 16 | `cancel_scheduled_task` | Scheduler | Cancel a scheduled task |
-| 17 | `get_task_history` | Scheduler | View execution history for a task |
-| 18 | `export_chat` | chat | Export chat history to markdown |
-| 19 | `sub_agent` | Agent | Delegate a bounded sub-task to a restricted sub-agent |
-| 20 | `activate_skill` | Skills | Load specialized local skill instructions |
-| 21 | `todo_read` | Planning | Read persistent todo list for a chat |
-| 22 | `todo_write` | Planning | Write/replace persistent todo list for a chat |
+| 4 | `write_file` | File I/O | Create or overwrite files (auto-creates directories) |
+| 5 | `edit_file` | File I/O | Find-and-replace with uniqueness validation |
+| 6 | `glob` | Search | Find files by glob pattern (`**/*.rs`) |
+| 7 | `grep` | Search | Regex search across file contents |
+| 8 | `read_memory` | Memory | Read persistent AGENTS.md memory |
+| 9 | `write_memory` | Memory | Write persistent AGENTS.md memory |
+| 10 | `web_search` | Web | Search via DuckDuckGo (top 8 results) |
+| 11 | `web_fetch` | Web | Fetch a URL and return plain text (max 20KB) |
+| 12 | `send_message` | chat | Send text mid-conversation; supports file attachments for Telegram/WhatsApp/Discord |
+| 13 | `schedule_task` | Scheduler | Create a recurring or one-time task |
+| 14 | `list_scheduled_tasks` | Scheduler | List active/paused tasks for a chat |
+| 15 | `pause_scheduled_task` | Scheduler | Pause a scheduled task |
+| 16 | `resume_scheduled_task` | Scheduler | Resume a paused task |
+| 17 | `cancel_scheduled_task` | Scheduler | Cancel a scheduled task |
+| 18 | `get_task_history` | Scheduler | View execution history for a task |
+| 19 | `export_chat` | chat | Export chat history to markdown |
+| 20 | `sub_agent` | Agent | Delegate a bounded sub-task to a restricted sub-agent |
+| 21 | `activate_skill` | Skills | Load specialized local skill instructions |
+| 22 | `sync_skills` | Skills | Sync external skills into local `microclaw.data/skills` with normalized metadata |
+| 23 | `todo_read` | Planning | Read persistent todo list for a chat |
+| 24 | `todo_write` | Planning | Write/replace persistent todo list for a chat |
 
 ---
 
