@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
-  <rect width="1280" height="720" fill="#0b1020"/>
-  <rect x="40" y="40" width="1200" height="640" rx="12" fill="#111827" stroke="#334155"/>
-  <text x="640" y="320" text-anchor="middle" fill="#93c5fd" font-size="44" font-family="Menlo, monospace">MicroClaw Setup Wizard</text>
-  <text x="640" y="380" text-anchor="middle" fill="#94a3b8" font-size="24" font-family="Menlo, monospace">Screenshot placeholder</text>
-  <text x="640" y="420" text-anchor="middle" fill="#94a3b8" font-size="20" font-family="Menlo, monospace">Replace this with a real terminal capture</text>
-</svg>
