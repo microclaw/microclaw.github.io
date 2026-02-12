@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.ca572b06.css">
-<script src="/assets/js/runtime~main.b8d46cca.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.8420a985.js" defer="defer"></script>
 <script src="/assets/js/main.38ae0abb.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -28,7 +28,7 @@
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="local-web-ui">Local Web UI<a href="#local-web-ui" class="hash-link" aria-label="Direct link to Local Web UI" title="Direct link to Local Web UI" translate="no">​</a></h2>
 <p>When <code>web_enabled: true</code>, MicroClaw serves a local Web UI (default <code>http://127.0.0.1:10961</code>).</p>
 <ul>
-<li class="">Session list shows all channels found in SQLite (<code>telegram</code>, <code>whatsapp</code>, <code>discord</code>, <code>web</code>)</li>
+<li class="">Session list shows all channels found in SQLite (<code>telegram</code>, <code>discord</code>, <code>web</code>)</li>
 <li class="">You can review chat history and manage state (refresh / clear context / delete)</li>
 <li class="">Non-web channels are read-only in Web UI by default; send from source channel</li>
 <li class="">If there are no sessions yet, Web UI auto-generates a key like <code>session-YYYYMMDDHHmmss</code></li>
@@ -51,7 +51,7 @@
 <p><strong>Automatic</strong>: When context compaction triggers (session exceeds <code>max_session_messages</code>), the full conversation is automatically archived before being summarized.</p>
 <p><strong>Manual</strong>: Send <code>/archive</code> to save the current session on demand, without clearing or compacting it.</p>
 <p>Archives are stored at:</p>
-<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">microclaw.data/runtime/groups/&lt;chat_id&gt;/conversations/&lt;YYYYMMDD-HHMMSS&gt;.md</span><br></span></code></pre></div></div>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">microclaw.data/runtime/groups/&lt;channel&gt;/&lt;chat_id&gt;/conversations/&lt;YYYYMMDD-HHMMSS&gt;.md</span><br></span></code></pre></div></div>
 <p>Each message is saved with its role (user/assistant) and full content including tool calls and results.</p>
 <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">You: /archive</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Bot: Archived 42 messages.</span><br></span></code></pre></div></div>
 <hr>
