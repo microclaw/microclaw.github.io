@@ -15,6 +15,11 @@ MicroClaw supports multiple channels with shared agent behavior and channel-spec
 
 Each adapter handles platform specifics (message format, mention rules, send API), while reusing common agent/tool logic.
 
+Current runtime boundary:
+- `src/runtime.rs`: boots enabled adapters
+- `src/channel.rs`: channel routing + policy + dispatcher orchestration
+- `src/channels/delivery.rs`: concrete per-channel text delivery implementations
+
 ## Gateway responsibilities (target model)
 
 Gateway should own:

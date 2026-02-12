@@ -10,14 +10,26 @@ All configuration is via `microclaw.config.yaml`.
 
 | Key | Description |
 |---|---|
-| `telegram_bot_token` | chat bot token from @BotFather |
 | `api_key` | LLM API key (`ollama` can be empty) |
-| `bot_username` | Bot username without the `@` |
+
+At runtime, at least one channel must be enabled:
+- Telegram (`telegram_bot_token` + `bot_username`)
+- Discord (`discord_bot_token`)
+- WhatsApp (all 3: `whatsapp_access_token`, `whatsapp_phone_number_id`, `whatsapp_verify_token`)
+- Web UI (`web_enabled: true`)
 
 ## Optional
 
 | Key | Default | Description |
 |---|---|---|
+| `telegram_bot_token` | `""` | Telegram bot token from @BotFather (required only if Telegram is enabled) |
+| `bot_username` | `""` | Telegram bot username without `@` (required only if Telegram is enabled) |
+| `discord_bot_token` | unset | Discord bot token (required only if Discord is enabled) |
+| `whatsapp_access_token` | unset | WhatsApp Cloud API access token |
+| `whatsapp_phone_number_id` | unset | WhatsApp phone number ID |
+| `whatsapp_verify_token` | unset | WhatsApp webhook verify token |
+| `whatsapp_webhook_port` | `8080` | WhatsApp webhook server port |
+| `web_enabled` | `true` | Enable local Web UI channel |
 | `llm_provider` | `anthropic` | Provider preset ID (or custom ID). `anthropic` uses native Anthropic API, others use OpenAI-compatible API |
 | `model` | provider-specific | Model name |
 | `llm_base_url` | provider preset default | Optional custom base URL |
@@ -30,6 +42,13 @@ All configuration is via `microclaw.config.yaml`.
 | `control_chat_ids` | `[]` | Chat IDs allowed to perform cross-chat tool actions |
 | `max_session_messages` | `40` | Message threshold that triggers context compaction |
 | `compact_keep_recent` | `20` | Number of recent messages kept verbatim during compaction |
+
+## Channel-specific required fields
+
+- Telegram enabled: `telegram_bot_token` and `bot_username` are required.
+- Discord enabled: `discord_bot_token` is required.
+- WhatsApp enabled: all 3 are required: `whatsapp_access_token`, `whatsapp_phone_number_id`, `whatsapp_verify_token`.
+- Web-only mode is valid: keep `web_enabled: true` (default) and leave other channel tokens empty.
 
 ## Supported `llm_provider` values
 

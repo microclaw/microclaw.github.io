@@ -19,7 +19,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Getting Started',
-      items: ['overview', 'quickstart', 'installation', 'configuration', 'permissions'],
+      items: ['overview', 'quickstart', 'installation', 'channel-setup', 'configuration', 'permissions'],
     },
     {
       type: 'category',

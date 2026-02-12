@@ -29,7 +29,8 @@ Channel event -> Gateway adapter -> Agent engine -> LLM + Tools loop
 - `storage` (`db.rs`, memory files): chat/task/session persistence.
 - `skills` (`skills.rs`, tool activation/sync): skill discovery and loading.
 - `gateway/channel adapters` (`channels/telegram.rs`, `channels/discord.rs`, `channels/whatsapp.rs`, `web.rs`): platform-specific ingress/egress.
-- `runtime` (`main.rs`, `scheduler.rs`, `gateway.rs`, `doctor.rs`): process boot, background jobs, diagnostics.
+- `channel boundary` (`channel.rs`, `channels/delivery.rs`): chat routing, dispatch policy, and per-channel delivery.
+- `runtime` (`main.rs`, `runtime.rs`, `scheduler.rs`, `gateway.rs`, `doctor.rs`): process boot, background jobs, diagnostics.
 
 ## Recommended reading order
 

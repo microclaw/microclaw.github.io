@@ -20,22 +20,26 @@ cargo run -- start
 
 ```
 src/
-    main.rs          # CLI, bootstraps app
-    config.rs        # Loads microclaw.config.yaml
-    error.rs         # MicroClawError
-    channels/telegram.rs # Telegram adapter + channel handling
-    claude.rs        # Anthropic Messages API client
-    db.rs            # SQLite tables + queries
-    memory.rs        # AGENTS.md memory manager
-    scheduler.rs     # Background scheduler
-    tools/           # Tool trait + implementations
+    main.rs             # CLI entrypoint
+    runtime.rs          # Runtime bootstrap + adapter startup
+    channel.rs          # Chat routing + channel dispatcher orchestration
+    channels/delivery.rs# Channel-specific text delivery clients
+    channels/telegram.rs# Telegram adapter
+    channels/discord.rs # Discord adapter
+    channels/whatsapp.rs# WhatsApp adapter
+    config.rs           # Loads microclaw.config.yaml
+    claude.rs           # Anthropic Messages API client
+    db.rs               # SQLite tables + queries
+    memory.rs           # AGENTS.md memory manager
+    scheduler.rs        # Background scheduler
+    tools/              # Tool trait + implementations
 ```
 
 ## Key types
 
 | Type | Location | Description |
 |---|---|---|
-| `AppState` | `channels/telegram.rs` | Shared runtime state for channel processing |
+| `AppState` | `runtime.rs` | Shared runtime state for all adapters |
 | `Database` | `db.rs` | SQLite wrapper with `Mutex<Connection>` |
 | `ToolRegistry` | `tools/mod.rs` | `Vec<Box<dyn Tool>>` dispatch |
 | `LlmProvider` | `llm.rs` | Provider abstraction for Anthropic and OpenAI-compatible APIs |
