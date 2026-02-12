@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.ca572b06.css">
-<script src="/assets/js/runtime~main.c692ad85.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.b8d46cca.js" defer="defer"></script>
 <script src="/assets/js/main.38ae0abb.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -47,8 +47,8 @@
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="from-source">From source<a href="#from-source" class="hash-link" aria-label="Direct link to From source" title="Direct link to From source" translate="no">​</a></h3>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git clone https://github.com/microclaw/microclaw.git</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cd microclaw</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cargo build --release</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cp target/release/microclaw /usr/local/bin/</span><br></span></code></pre></div></div>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-configure-recommended">3. Configure (recommended)<a href="#3-configure-recommended" class="hash-link" aria-label="Direct link to 3. Configure (recommended)" title="Direct link to 3. Configure (recommended)" translate="no">​</a></h2>
-<p>Use the interactive config flow:</p>
-<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">microclaw config</span><br></span></code></pre></div></div>
+<p>Use the interactive setup wizard:</p>
+<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">microclaw setup</span><br></span></code></pre></div></div>
 <p><img decoding="async" loading="lazy" alt="Setup Wizard (placeholder)" src="/assets/images/setup-wizard-1cf20103ba96fce570978da23031b991.png" width="1910" height="798" class="img_ev3q"></p>
 <p>It validates required fields, tests chat/LLM connectivity, and writes <code>microclaw.config.yaml</code> with backup.
 It also includes provider/model list pickers (<code>Enter</code> open list, <code>↑/↓</code> move, <code>Enter</code> confirm, <code>Esc</code> close).</p>
