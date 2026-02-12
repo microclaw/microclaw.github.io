@@ -148,7 +148,7 @@ cargo run -- start
 Recommended:
 
 ```sh
-microclaw config
+microclaw setup
 ```
 
 Or manually create `microclaw.config.yaml`:
@@ -175,7 +175,7 @@ Use `microclaw help` (or `cargo run -- help`) for CLI usage.
 
 For full Telegram / Discord / WhatsApp onboarding (token provisioning, webhook setup, verification), see [Channel Setup](./channel-setup).
 
-The interactive config flow supports provider/model selection (including `ollama`) and uses sensible defaults with Enter-to-confirm prompts.
+The interactive setup wizard supports provider/model selection (including `ollama`) and uses sensible defaults with Enter-to-confirm prompts.
 
 ## Gateway persistent service
 

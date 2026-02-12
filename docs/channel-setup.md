@@ -47,8 +47,9 @@ Notes:
 3. Create a Bot and copy the bot token
 4. In OAuth2 URL Generator:
    - Scopes: `bot`
-   - Bot permissions: `Send Messages`, `Read Message History` (and others as needed)
-5. Invite the bot to your server
+   - Bot permissions: `View Channels`, `Send Messages`, `Read Message History` (and others as needed)
+5. In **Bot -> Privileged Gateway Intents**, enable **Message Content Intent** (recommended)
+6. Invite the bot to your server
 
 ### 2. Configure MicroClaw
 
@@ -63,6 +64,8 @@ discord_bot_token: "YOUR_DISCORD_BOT_TOKEN"
 
 Notes:
 - If `discord_allowed_channels` is empty, MicroClaw listens in all channels it can access.
+- In guild channels, MicroClaw replies when the bot is mentioned.
+- If `Message Content Intent` is disabled, Discord may block message content in guilds.
 
 ### 3. Verify
 
@@ -150,8 +153,24 @@ Then check:
 
 ### Discord bot is online but silent
 
-- Check bot has channel read/send permissions
+- Check bot has `View Channels`, `Send Messages`, and `Read Message History` permissions
+- In guild channels, mention the bot (for example `@my_bot hello`)
 - If using `discord_allowed_channels`, verify channel IDs are correct
+- Enable **Message Content Intent** in Discord Developer Portal (`Bot -> Privileged Gateway Intents`)
+
+### Discord shows `4014 Disallowed intent(s)`
+
+This means Discord rejected one or more requested gateway intents, usually `MESSAGE_CONTENT`.
+
+What to do:
+- Open Discord Developer Portal -> your app -> `Bot`
+- Under `Privileged Gateway Intents`, enable `Message Content Intent`
+- Save changes and restart MicroClaw
+
+Current MicroClaw behavior:
+- MicroClaw first starts with `MESSAGE_CONTENT`
+- If Discord returns `4014`, MicroClaw automatically falls back to non-privileged intents so the bot can still run
+- Full guild message-content behavior requires `Message Content Intent`
 
 ### WhatsApp verification fails
 

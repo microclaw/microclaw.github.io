@@ -69,12 +69,12 @@ At runtime, at least one channel must be enabled:
 
 See [Multi-Chat Permissions](./permissions) for setup and verification steps.
 
-## Interactive Config
+## Setup Wizard
 
 Run the recommended interactive Q&A flow:
 
 ```sh
-microclaw config
+microclaw setup
 ```
 
 Features:

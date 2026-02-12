@@ -44,10 +44,10 @@ cp target/release/microclaw /usr/local/bin/
 
 ## 3. Configure (recommended)
 
-Use the interactive config flow:
+Use the interactive setup wizard:
 
 ```sh
-microclaw config
+microclaw setup
 ```
 
 <!-- Placeholder: replace with real screenshot later -->
