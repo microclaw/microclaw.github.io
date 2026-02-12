@@ -26,7 +26,6 @@ src/
     channels/delivery.rs# Channel-specific text delivery clients
     channels/telegram.rs# Telegram adapter
     channels/discord.rs # Discord adapter
-    channels/whatsapp.rs# WhatsApp adapter
     config.rs           # Loads microclaw.config.yaml
     claude.rs           # Anthropic Messages API client
     db.rs               # SQLite tables + queries

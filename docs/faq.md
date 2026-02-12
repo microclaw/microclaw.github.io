@@ -11,7 +11,7 @@ MicroClaw is under active development. It is stable enough for personal and smal
 ## Does it support images, voice, or files?
 
 Telegram supports text + images + document uploads. Voice messages are transcribed when `openai_api_key` is configured.  
-For tool-driven outbound attachments, `send_message` supports Telegram / WhatsApp / Discord via `attachment_path` (+ optional `caption`).
+For tool-driven outbound attachments, `send_message` supports Telegram / Discord via `attachment_path` (+ optional `caption`).
 
 ## Can I restrict who can run commands?
 

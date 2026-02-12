@@ -136,7 +136,7 @@ cp target/release/microclaw /usr/local/bin/
 
 Runtime boot behavior:
 - starts scheduler
-- starts configured adapters (Telegram/Discord/WhatsApp/Web)
+- starts configured adapters (Telegram/Discord/Web)
 - can run without Telegram when other channels are enabled
 
 ```sh
@@ -165,15 +165,12 @@ max_document_size_mb: 100
 telegram_bot_token: "..."
 bot_username: "..."
 # discord_bot_token: "..."
-# whatsapp_access_token: "..."
-# whatsapp_phone_number_id: "..."
-# whatsapp_verify_token: "..."
 web_enabled: true
 ```
 
 Use `microclaw help` (or `cargo run -- help`) for CLI usage.
 
-For full Telegram / Discord / WhatsApp onboarding (token provisioning, webhook setup, verification), see [Channel Setup](./channel-setup).
+For full Telegram / Discord onboarding (token provisioning, webhook setup, verification), see [Channel Setup](./channel-setup).
 
 The interactive setup wizard supports provider/model selection (including `ollama`) and uses sensible defaults with Enter-to-confirm prompts.
 

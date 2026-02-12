@@ -6,7 +6,7 @@ sidebar_position: 1
 
 # MicroClaw
 
-MicroClaw is a Rust chat bot that connects LLM to your chats with agentic tool execution. It can run shell commands, read and edit files, search codebases, browse the web, schedule tasks, and keep persistent memory across conversations. It is a Rust rewrite of nanoclaw (TypeScript/WhatsApp) with additional capabilities and a single-binary deployment model.
+MicroClaw is a Rust chat bot that connects LLM to your chats with agentic tool execution. It can run shell commands, read and edit files, search codebases, browse the web, schedule tasks, and keep persistent memory across conversations. It is a Rust rewrite of nanoclaw (TypeScript) with additional capabilities and a single-binary deployment model.
 
 ## What makes it different
 

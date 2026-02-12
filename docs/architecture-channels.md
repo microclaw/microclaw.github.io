@@ -10,7 +10,6 @@ MicroClaw supports multiple channels with shared agent behavior and channel-spec
 
 - Telegram
 - Discord
-- WhatsApp
 - Web UI
 
 Each adapter handles platform specifics (message format, mention rules, send API), while reusing common agent/tool logic.

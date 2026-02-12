@@ -4,12 +4,11 @@ title: Channel Setup
 sidebar_position: 4
 ---
 
-This guide explains how to connect MicroClaw to Telegram, Discord, and WhatsApp Cloud API.
+This guide explains how to connect MicroClaw to Telegram and Discord.
 
 MicroClaw can run with any combination of channels. You only need at least one of:
 - Telegram
 - Discord
-- WhatsApp (full webhook credentials)
 - Web UI (`web_enabled: true`)
 
 ## Telegram
@@ -73,45 +72,6 @@ Notes:
 2. Send `/skills` in an allowed Discord channel
 3. Confirm the bot replies
 
-## WhatsApp Cloud API
-
-WhatsApp integration runs a webhook server inside MicroClaw.
-
-### 1. Prepare Meta credentials
-
-From Meta Developer Dashboard (WhatsApp Cloud API), collect:
-- `whatsapp_access_token`
-- `whatsapp_phone_number_id`
-- `whatsapp_verify_token` (your chosen verify token)
-
-### 2. Configure MicroClaw
-
-```yaml
-whatsapp_access_token: "EAAG..."
-whatsapp_phone_number_id: "123456789012345"
-whatsapp_verify_token: "my_verify_token"
-whatsapp_webhook_port: 8080 # optional, default 8080
-```
-
-### 3. Configure Meta Webhook callback
-
-Set webhook URL in Meta to:
-
-```text
-https://<your-public-host>/webhook
-```
-
-MicroClaw exposes:
-- `GET /webhook` for verification
-- `POST /webhook` for incoming messages
-
-### 4. Verify
-
-1. Ensure your webhook URL is publicly reachable
-2. Start MicroClaw: `microclaw start`
-3. Complete webhook verification in Meta
-4. Send a WhatsApp message to your business number and confirm reply
-
 ## Multi-channel Example
 
 ```yaml
@@ -124,9 +84,6 @@ model: "claude-sonnet-4-5-20250929"
 telegram_bot_token: "123456:ABC..."
 bot_username: "my_microclaw_bot"
 discord_bot_token: "..."
-whatsapp_access_token: "..."
-whatsapp_phone_number_id: "..."
-whatsapp_verify_token: "..."
 web_enabled: true
 ```
 
@@ -143,7 +100,6 @@ microclaw doctor
 Then check:
 - token fields are non-empty
 - at least one channel is enabled
-- for WhatsApp, all three credentials are set
 
 ### Telegram responds in private but not group
 
@@ -172,8 +128,3 @@ Current MicroClaw behavior:
 - If Discord returns `4014`, MicroClaw automatically falls back to non-privileged intents so the bot can still run
 - Full guild message-content behavior requires `Message Content Intent`
 
-### WhatsApp verification fails
-
-- Confirm verify token in Meta exactly matches `whatsapp_verify_token`
-- Confirm callback URL ends with `/webhook`
-- Confirm your endpoint is publicly reachable (not localhost only)

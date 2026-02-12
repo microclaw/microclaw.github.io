@@ -10,7 +10,7 @@ A complete guide to using MicroClaw. Each section includes exact messages you ca
 
 When `web_enabled: true`, MicroClaw serves a local Web UI (default `http://127.0.0.1:10961`).
 
-- Session list shows all channels found in SQLite (`telegram`, `whatsapp`, `discord`, `web`)
+- Session list shows all channels found in SQLite (`telegram`, `discord`, `web`)
 - You can review chat history and manage state (refresh / clear context / delete)
 - Non-web channels are read-only in Web UI by default; send from source channel
 - If there are no sessions yet, Web UI auto-generates a key like `session-YYYYMMDDHHmmss`
@@ -62,7 +62,7 @@ MicroClaw can archive full conversations to markdown files for later reference.
 Archives are stored at:
 
 ```
-microclaw.data/runtime/groups/<chat_id>/conversations/<YYYYMMDD-HHMMSS>.md
+microclaw.data/runtime/groups/<channel>/<chat_id>/conversations/<YYYYMMDD-HHMMSS>.md
 ```
 
 Each message is saved with its role (user/assistant) and full content including tool calls and results.

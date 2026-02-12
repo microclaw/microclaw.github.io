@@ -12,7 +12,6 @@ Get MicroClaw running in a few minutes.
 - at least one channel entry point:
   - Telegram bot token (from @BotFather), or
   - Discord bot token, or
-  - WhatsApp Cloud API credentials, or
   - local Web UI mode (`web_enabled: true`)
 - LLM API key (Anthropic/OpenAI/OpenRouter/DeepSeek/etc.)
 
@@ -82,9 +81,6 @@ max_document_size_mb: 100
 telegram_bot_token: "123456:ABC-DEF1234..."
 bot_username: "my_bot"
 # discord_bot_token: "..."
-# whatsapp_access_token: "..."
-# whatsapp_phone_number_id: "..."
-# whatsapp_verify_token: "..."
 web_enabled: true
 ```
 
@@ -115,7 +111,7 @@ microclaw start
 ```
 
 That is it. On first launch, if required config is missing, `start` will auto-open the config flow.
-After setup, the runtime initializes SQLite, starts scheduler, and boots configured adapters (Telegram/Discord/WhatsApp/Web).
+After setup, the runtime initializes SQLite, starts scheduler, and boots configured adapters (Telegram/Discord/Web).
 
 If `web_enabled: true` (default), local Web UI is available at:
 
