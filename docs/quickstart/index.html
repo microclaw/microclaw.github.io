@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.ca572b06.css">
-<script src="/assets/js/runtime~main.20d959ed.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.bc8f5539.js" defer="defer"></script>
 <script src="/assets/js/main.38ae0abb.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -37,7 +37,7 @@
 </li>
 <li class="">LLM API key (Anthropic/OpenAI/OpenRouter/DeepSeek/etc.)<!-- -->
 <ul>
-<li class=""><code>openai-codex</code> is OAuth-based (<code>codex login</code>) and does not require an API key</li>
+<li class=""><code>openai-codex</code> supports OAuth (<code>codex login</code>) or <code>api_key</code> (for OpenAI-compatible proxy endpoints)</li>
 </ul>
 </li>
 </ul>
@@ -64,7 +64,7 @@ It also includes provider/model list pickers (<code>Enter</code> open list, <cod
 <li class=""><code>custom</code> (manual provider/model/base URL)</li>
 </ul>
 <p>For <code>ollama</code>, <code>llm_base_url</code> defaults to <code>http://127.0.0.1:11434/v1</code>, <code>api_key</code> is optional, and the config flow attempts to detect local models.
-For <code>openai-codex</code>, run <code>codex login</code> first. MicroClaw reads OAuth from <code>~/.codex/auth.json</code> (or <code>$CODEX_HOME/auth.json</code>), and <code>api_key</code> is ignored.</p>
+For <code>openai-codex</code>, you can run <code>codex login</code> first (OAuth from <code>~/.codex/auth.json</code> or <code>$CODEX_HOME/auth.json</code>), or use <code>api_key</code> with an OpenAI-compatible proxy endpoint.</p>
 <p>These are also the valid values for <code>llm_provider</code> in <code>microclaw.config.yaml</code>.</p>
 <p>Manual <code>microclaw.config.yaml</code> configuration is also supported:</p>
 <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">llm_provider: &quot;anthropic&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">api_key: &quot;sk-ant-...&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">model: &quot;claude-sonnet-4-5-20250929&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">data_dir: &quot;./microclaw.data&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">working_dir: &quot;./tmp&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">working_dir_isolation: &quot;chat&quot; # optional; defaults to &quot;chat&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">max_document_size_mb: 100</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"># Pick one or more channels:</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">telegram_bot_token: &quot;123456:ABC-DEF1234...&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">bot_username: &quot;my_bot&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"># discord_bot_token: &quot;...&quot;</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">web_enabled: true</span><br></span></code></pre></div></div>
