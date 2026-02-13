@@ -217,23 +217,43 @@ Bot: [fetches and displays the JSON response]
 
 ## Memory System
 
-MicroClaw has persistent memory stored in `AGENTS.md` files. Two scopes:
+MicroClaw has persistent memory stored in `AGENTS.md` files, plus structured memory rows in SQLite.
+
+AGENTS.md scopes:
 
 - **Global memory**: Shared across all chats (`microclaw.data/runtime/groups/AGENTS.md`)
 - **Chat memory**: Specific to one chat (`microclaw.data/runtime/groups/{chat_id}/AGENTS.md`)
 
 Memory is automatically injected into the system prompt on every request.
+Structured memory is also injected with a token budget and relevance ranking.
 
 ### Write memory
 
 ```
 You: Remember that my preferred programming language is Rust
-Bot: Saved to chat memory.
+Bot: Noted. Saved memory #123: my preferred programming language is Rust
 ```
 
 ```
 You: Save to global memory: The production server IP is 10.0.1.50
 Bot: Memory saved to global scope.
+```
+
+### Manage structured memories
+
+```
+You: Search memory for "production database"
+Bot: [id=42] [KNOWLEDGE] [chat] production database is on port 5433
+```
+
+```
+You: Update memory id 42 to "production database is on port 6432"
+Bot: Memory id=42 updated.
+```
+
+```
+You: Delete memory id 42
+Bot: Memory id=42 archived.
 ```
 
 ### Read memory
@@ -258,6 +278,19 @@ You: Remember that the deploy key is in /home/deploy/.ssh/id_ed25519
 You: Where's the deploy key?
 Bot: The deploy key is in /home/deploy/.ssh/id_ed25519
 ```
+
+---
+
+## Usage Panel: Memory Observability
+
+Open **Usage Panel** from the sidebar. In addition to token usage, it now shows:
+
+- Memory Pool: total / active / archived
+- Average confidence + low-confidence count
+- Reflector 24h throughput: inserted / updated / skipped
+- Injection coverage: selected / candidate memories
+
+Use this panel to tune `reflector_interval_mins`, `memory_token_budget`, and semantic-memory config.
 
 ---
 

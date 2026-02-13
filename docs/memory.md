@@ -22,6 +22,7 @@ microclaw.data/runtime/groups/
 - The memory files live under `DATA_DIR/runtime` (default `./microclaw.data/runtime`)
 - `write_memory` to `scope: "global"` requires the caller chat to be in `control_chat_ids`
 - `write_memory` also persists a structured memory row into SQLite (`memories` table)
+- Explicit commands like `remember ...` / `记住...` also use a deterministic fast path into structured memory
 
 ## Chat identity mapping
 
@@ -47,6 +48,11 @@ As sessions grow longer, the model tends to deprioritize voluntary `write_memory
 5. Dedup strategy:
    - with `sqlite-vec` feature + runtime embedding configured: semantic nearest-neighbor check (cosine distance)
    - otherwise: Jaccard overlap fallback
+6. Quality gate:
+   - low-signal / uncertain snippets are filtered before writing
+7. Lifecycle:
+   - rows track confidence + last-seen
+   - stale low-confidence rows can be soft-archived
 
 **Memory categories:**
 
@@ -97,11 +103,29 @@ Runtime outcomes:
 - `sqlite-vec` enabled + embedding not configured: vector table may exist but retrieval/dedup still falls back
 - `sqlite-vec` disabled: keyword retrieval + Jaccard dedup (stable baseline)
 
+## Memory observability
+
+MicroClaw records memory operations for diagnostics:
+
+- `memory_reflector_runs`: per-run extracted/inserted/updated/skipped counts
+- `memory_injection_logs`: candidate/selected/omitted counts during prompt injection
+
+You can inspect these from:
+
+- `/usage` output (text summary)
+- Web UI → **Usage Panel** → **Memory Observability** cards
+
+The panel highlights:
+
+- memory pool health (active/archived/low-confidence)
+- reflector throughput in last 24h
+- injection coverage (`selected / candidates`) in last 24h
+
 ## Example
 
 ```
 You: Remember that I prefer Rust examples
-Bot: Saved to chat memory.         # write_memory (file memory)
+Bot: Noted. Saved memory #123: I prefer Rust examples.
 
 [15 minutes later, automatically]
 Reflector: extracted "User prefers Rust code examples" → memories table

@@ -111,7 +111,12 @@ export default function Home() {
     {
       title: 'Persistent Memory',
       description:
-        'Global and per-chat AGENTS.md memories are injected into every system prompt.',
+        'File + structured memory with reflector extraction, quality gates, and confidence-based lifecycle.',
+    },
+    {
+      title: 'Memory Observability',
+      description:
+        'Usage panel shows 24h reflector throughput and injection coverage to keep memory quality measurable.',
     },
     {
       title: 'Scheduling',
@@ -161,7 +166,7 @@ export default function Home() {
               <div className={styles.stepCard}>
                 <span>01</span>
                 <h3>Load context</h3>
-                <p>Chat history and memory are loaded from SQLite and AGENTS.md files.</p>
+                <p>Chat history, file memory, and structured memory are loaded from SQLite + AGENTS.md.</p>
               </div>
               <div className={styles.stepCard}>
                 <span>02</span>

@@ -4,7 +4,9 @@ title: Tools Reference
 sidebar_position: 6
 ---
 
-MicroClaw exposes 24 tools to LLM through JSON Schema definitions. LLM selects and calls tools automatically based on your request.
+MicroClaw exposes 27 built-in tools to LLM through JSON Schema definitions (plus optional MCP-federated tools). LLM selects and calls tools automatically based on your request.
+
+For anti-drift, this page is complemented by the generated source-of-truth at [Generated Tools](./generated-tools), produced from code by `scripts/generate_docs_artifacts.mjs`.
 
 Skill workflows are provided by local `SKILL.md` files (for example `apple-notes`, `apple-reminders`, `apple-calendar`, `weather`) and loaded through `activate_skill`.
 
@@ -36,6 +38,9 @@ Skill workflows are provided by local `SKILL.md` files (for example `apple-notes
 | 22 | `sync_skills` | Skills | Sync external skills into local `microclaw.data/skills` with normalized metadata |
 | 23 | `todo_read` | Planning | Read persistent todo list for a chat |
 | 24 | `todo_write` | Planning | Write/replace persistent todo list for a chat |
+| 25 | `structured_memory_search` | Memory | Search structured memories (keyword, optional archived include) |
+| 26 | `structured_memory_delete` | Memory | Archive a structured memory by ID (soft delete) |
+| 27 | `structured_memory_update` | Memory | Update structured memory content/category by ID |
 
 ---
 
@@ -193,6 +198,40 @@ Write to AGENTS.md memory file.
 | `scope` | string | Yes | `"global"` or `"chat"` |
 | `chat_id` | integer | For chat scope | Chat ID for chat-scoped memory |
 | `content` | string | Yes | Content to write (replaces existing) |
+
+---
+
+### structured_memory_search
+
+Search structured memories persisted in SQLite.
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `query` | string | Yes | Keyword query |
+| `limit` | integer | No | Max results (default 10, max 50) |
+| `include_archived` | boolean | No | Include archived memories (default false) |
+
+---
+
+### structured_memory_delete
+
+Archive a structured memory by ID (soft delete).
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `id` | integer | Yes | Memory row ID |
+
+---
+
+### structured_memory_update
+
+Update structured memory content/category in place.
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `id` | integer | Yes | Memory row ID |
+| `content` | string | Yes | New content |
+| `category` | string | No | `PROFILE` / `KNOWLEDGE` / `EVENT` |
 
 ---
 

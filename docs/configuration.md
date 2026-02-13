@@ -6,6 +6,8 @@ sidebar_position: 4
 
 All configuration is via `microclaw.config.yaml`.
 
+For anti-drift defaults, use [Generated Config Defaults](./generated-config-defaults) and [Generated Provider Matrix](./generated-provider-matrix), produced from code by `scripts/generate_docs_artifacts.mjs`.
+
 ## Required
 
 | Key | Description |

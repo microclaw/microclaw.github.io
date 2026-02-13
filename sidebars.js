@@ -45,7 +45,16 @@ const sidebars = {
     {
       type: 'category',
       label: 'Reference',
-      items: ['project-files', 'license', 'faq', 'roadmap', 'about'],
+      items: [
+        'project-files',
+        'generated-tools',
+        'generated-config-defaults',
+        'generated-provider-matrix',
+        'license',
+        'faq',
+        'roadmap',
+        'about',
+      ],
     },
   ],
 };
