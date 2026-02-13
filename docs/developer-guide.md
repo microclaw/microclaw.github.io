@@ -27,7 +27,8 @@ src/
     channels/telegram.rs# Telegram adapter
     channels/discord.rs # Discord adapter
     config.rs           # Loads microclaw.config.yaml
-    claude.rs           # Anthropic Messages API client
+    llm.rs              # Provider adapters (Anthropic/OpenAI-compatible/Codex)
+    llm_types.rs        # Shared message/tool protocol types
     db.rs               # SQLite tables + queries
     memory.rs           # AGENTS.md memory manager
     scheduler.rs        # Background scheduler

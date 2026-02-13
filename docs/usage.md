@@ -437,7 +437,7 @@ microclaw help        # Show help and all configuration options
 | Key | Required | Default | Description |
 |---|---|---|---|
 | `telegram_bot_token` | Yes | - | Bot token from @BotFather |
-| `api_key` | Yes* | - | LLM API key (`ollama` can leave this empty) |
+| `api_key` | Yes* | - | LLM API key (`ollama` can leave this empty; `openai-codex` uses OAuth and ignores this field) |
 | `bot_username` | Yes | - | Bot username (without @) |
 | `model` | No | provider-specific (`claude-sonnet-4-5-20250929` for `anthropic`) | LLM model ID |
 | `data_dir` | No | `./microclaw.data` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |

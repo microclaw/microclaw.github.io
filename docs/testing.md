@@ -18,7 +18,7 @@ cargo test
 |---|---|---|
 | `db.rs` | 13 | Database creation, chat upsert, message CRUD, ordering, catch-up queries, scheduled task CRUD, status lifecycle |
 | `memory.rs` | 8 | Path construction, read/write global and chat memory, build_memory_context with various states |
-| `claude.rs` | 11 | Serialization/deserialization of all API types, request/response round-trips, client construction |
+| `llm_types.rs` | 11 | Serialization/deserialization of shared API types and request/response round-trips |
 | `config.rs` | 2 | Struct cloning, default values |
 | `error.rs` | 4 | Display formatting, From trait conversions, Debug output |
 | `telegram.rs` | 10 | Message merging, trailing/leading assistant removal, system prompt building, response splitting |
@@ -40,7 +40,7 @@ These tests require a running bot with valid credentials.
 
 ### Prerequisites
 
-1. A working `microclaw.config.yaml` file with `telegram_bot_token`, `api_key`, `bot_username`
+1. A working `microclaw.config.yaml` file with `telegram_bot_token`, `bot_username`, and LLM auth (`api_key` for most providers, or OAuth via `codex login` for `openai-codex`)
 2. Bot is running: `cargo run -- start`
 3. A chat account with a private chat open to the bot
 4. (For group tests) A chat group with the bot added as a member

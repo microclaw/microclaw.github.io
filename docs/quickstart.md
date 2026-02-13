@@ -14,6 +14,7 @@ Get MicroClaw running in a few minutes.
   - Discord bot token, or
   - local Web UI mode (`web_enabled: true`)
 - LLM API key (Anthropic/OpenAI/OpenRouter/DeepSeek/etc.)
+  - `openai-codex` is OAuth-based (`codex login`) and does not require an API key
 
 ## 2. Install
 
@@ -56,13 +57,14 @@ It validates required fields, tests chat/LLM connectivity, and writes `microclaw
 It also includes provider/model list pickers (`Enter` open list, `↑/↓` move, `Enter` confirm, `Esc` close).
 
 Built-in provider presets:
-- `openai`, `openrouter`, `anthropic`, `ollama`, `google`, `alibaba`
+- `openai`, `openai-codex`, `openrouter`, `anthropic`, `ollama`, `google`, `alibaba`
 - `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`
 - `zhipu`, `minimax`, `cohere`, `tencent`
 - `xai`, `huggingface`, `together`
 - `custom` (manual provider/model/base URL)
 
 For `ollama`, `llm_base_url` defaults to `http://127.0.0.1:11434/v1`, `api_key` is optional, and the config flow attempts to detect local models.
+For `openai-codex`, run `codex login` first. MicroClaw reads OAuth from `~/.codex/auth.json` (or `$CODEX_HOME/auth.json`), and `api_key` is ignored.
 
 These are also the valid values for `llm_provider` in `microclaw.config.yaml`.
 

@@ -35,5 +35,5 @@ Yes. Implement the `Tool` trait in `src/tools/`, register it in `ToolRegistry::n
 
 ## What model is used by default?
 
-`model` defaults to a provider-specific value (`claude-sonnet-4-5-20250929` for `anthropic`, `gpt-5.2` for OpenAI-compatible providers, `llama3.2` for `ollama`).  
+`model` defaults to a provider-specific value (`claude-sonnet-4-5-20250929` for `anthropic`, `gpt-5.2` for `openai`, `gpt-5.3-codex` for `openai-codex`, `llama3.2` for `ollama`).  
 You can override it in `microclaw.config.yaml`.

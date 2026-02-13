@@ -10,7 +10,7 @@ All configuration is via `microclaw.config.yaml`.
 
 | Key | Description |
 |---|---|
-| `api_key` | LLM API key (`ollama` can be empty) |
+| `api_key` | LLM API key (`ollama` can be empty; `openai-codex` uses OAuth and ignores this field) |
 
 At runtime, at least one channel must be enabled:
 - Telegram (`telegram_bot_token` + `bot_username`)
@@ -46,12 +46,17 @@ At runtime, at least one channel must be enabled:
 
 ## Supported `llm_provider` values
 
-`openai`, `openrouter`, `anthropic`, `ollama`, `google`, `alibaba`, `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`, `zhipu`, `minimax`, `cohere`, `tencent`, `xai`, `huggingface`, `together`, `custom`.
+`openai`, `openai-codex`, `openrouter`, `anthropic`, `ollama`, `google`, `alibaba`, `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`, `zhipu`, `minimax`, `cohere`, `tencent`, `xai`, `huggingface`, `together`, `custom`.
 
 `ollama` is supported as a local OpenAI-compatible provider. Recommended defaults:
 - `llm_base_url`: `http://127.0.0.1:11434/v1`
 - `api_key`: optional
 - `model`: one of your local pulled models (for example `llama3.2`)
+
+`openai-codex` uses ChatGPT/Codex OAuth:
+- run `codex login` before `microclaw start`
+- OAuth token source: `~/.codex/auth.json` (or `$CODEX_HOME/auth.json`)
+- `api_key`: ignored for this provider
 
 ## Multi-chat permissions
 
