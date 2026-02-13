@@ -37,6 +37,8 @@ At runtime, at least one channel must be enabled:
 | `control_chat_ids` | `[]` | Chat IDs allowed to perform cross-chat tool actions |
 | `max_session_messages` | `40` | Message threshold that triggers context compaction |
 | `compact_keep_recent` | `20` | Number of recent messages kept verbatim during compaction |
+| `reflector_enabled` | `true` | Enable the background memory reflector (see [Memory System](./memory)) |
+| `reflector_interval_mins` | `15` | How often the reflector runs (minutes) |
 
 ## Channel-specific required fields
 
