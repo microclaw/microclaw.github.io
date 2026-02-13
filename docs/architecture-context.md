@@ -22,9 +22,16 @@ Context quality determines agent quality. MicroClaw uses layered context managem
 4. If message count exceeds `max_session_messages`, compact older blocks.
 5. Run tool loop, then persist updated session state.
 
+Structured memory injection is budgeted by `memory_token_budget` (default `1500`, estimated as `content.len()/4 + 10` per memory). When budget is hit, remaining rows are omitted and a summary suffix is appended.
+
 ## Background Reflector
 
-Runs independently of the main chat loop every `reflector_interval_mins` (default 15 min). Scans recently-active chats, calls the LLM to extract structured facts, deduplicates with Jaccard similarity, and persists to the `memories` table. This decouples memory extraction from model attention — long sessions don't starve memory writes.
+Runs independently of the main chat loop every `reflector_interval_mins` (default 15 min). For each chat it tracks a cursor in `memory_reflector_state`, processes only unseen messages, calls the LLM to extract structured facts, validates categories, deduplicates, and persists to the `memories` table. This decouples memory extraction from model attention while avoiding repeated scans.
+
+Dedup mode:
+
+- semantic mode: `sqlite-vec` feature + runtime embedding config
+- fallback mode: Jaccard similarity
 
 See [Memory System](./memory) for details.
 
@@ -34,6 +41,15 @@ See [Memory System](./memory) for details.
 - Summarize older conversation into a compact summary block.
 - Fallback to truncation if summarization fails.
 - Strip large image payloads before session persistence.
+
+## Structured-memory retrieval modes
+
+At prompt build time, structured memories are ordered by:
+
+- semantic KNN (`sqlite-vec` + configured embedding provider)
+- fallback keyword relevance scoring (CJK-aware tokenizer) with recency tie-break
+
+This preserves baseline behavior when semantic memory is not available.
 
 ## Sub-agent inheritance and isolation
 

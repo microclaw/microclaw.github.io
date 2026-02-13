@@ -39,6 +39,12 @@ At runtime, at least one channel must be enabled:
 | `compact_keep_recent` | `20` | Number of recent messages kept verbatim during compaction |
 | `reflector_enabled` | `true` | Enable the background memory reflector (see [Memory System](./memory)) |
 | `reflector_interval_mins` | `15` | How often the reflector runs (minutes) |
+| `memory_token_budget` | `1500` | Estimated token budget for injecting structured memories into prompt context |
+| `embedding_provider` | unset | Runtime embedding provider (`openai` or `ollama`) for semantic memory; leave unset to disable |
+| `embedding_api_key` | unset | API key for embedding provider (if required) |
+| `embedding_base_url` | unset | Optional custom embedding API base URL |
+| `embedding_model` | provider default | Embedding model name |
+| `embedding_dim` | provider default | Embedding vector dimension used by sqlite-vec index |
 
 ## Channel-specific required fields
 
@@ -69,6 +75,42 @@ At runtime, at least one channel must be enabled:
 - global memory writes require control-chat privileges
 
 See [Multi-Chat Permissions](./permissions) for setup and verification steps.
+
+## Semantic memory switches (two-layer)
+
+Semantic memory is intentionally guarded by two independent switches:
+
+1. **Compile-time switch (default off):** build with `--features sqlite-vec`
+2. **Runtime switch (default off):** set `embedding_provider` in config
+
+If either switch is off, MicroClaw degrades gracefully to keyword retrieval + Jaccard dedup.
+
+### Build examples
+
+Default safe build (no sqlite-vec):
+
+```sh
+cargo build --release
+```
+
+Enable sqlite-vec explicitly:
+
+```sh
+cargo build --release --features sqlite-vec
+```
+
+### Runtime example
+
+```yaml
+memory_token_budget: 1500
+
+# optional semantic memory runtime config (requires --features sqlite-vec build)
+embedding_provider: "openai"      # openai | ollama
+embedding_api_key: "sk-..."
+# embedding_base_url: "http://127.0.0.1:11434/v1"
+embedding_model: "text-embedding-3-small"
+# embedding_dim: 1536
+```
 
 ## Setup Wizard
 

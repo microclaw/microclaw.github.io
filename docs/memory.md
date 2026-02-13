@@ -21,6 +21,16 @@ microclaw.data/runtime/groups/
 - Memory is wrapped in `<global_memory>` and `<chat_memory>` tags
 - The memory files live under `DATA_DIR/runtime` (default `./microclaw.data/runtime`)
 - `write_memory` to `scope: "global"` requires the caller chat to be in `control_chat_ids`
+- `write_memory` also persists a structured memory row into SQLite (`memories` table)
+
+## Chat identity mapping
+
+SQLite stores chats with two identities:
+
+- `chat_id`: internal primary key used by sessions/messages/tasks
+- `channel + external_chat_id`: source identity from Telegram/Discord/Web
+
+This prevents cross-channel collisions when numeric IDs overlap. Existing databases are migrated automatically at startup. Structured memories also store `chat_channel` and `external_chat_id` for easier debugging.
 
 ## Reflector (structured memories)
 
@@ -31,9 +41,12 @@ As sessions grow longer, the model tends to deprioritize voluntary `write_memory
 **How it works:**
 
 1. Every `reflector_interval_mins` minutes (default 15), the Reflector scans recently-active chats
-2. It calls the LLM directly with the last 30 messages and asks it to extract durable facts
-3. Extracted memories are stored in the `memories` SQLite table (not in AGENTS.md)
-4. Duplicates are filtered using Jaccard word-overlap before inserting
+2. Per chat, it reads messages incrementally from a persisted cursor (`memory_reflector_state`) instead of rescanning full windows
+3. It calls the LLM directly and extracts durable facts with strict category validation (`PROFILE`, `KNOWLEDGE`, `EVENT`)
+4. Extracted memories are stored in SQLite (`memories`)
+5. Dedup strategy:
+   - with `sqlite-vec` feature + runtime embedding configured: semantic nearest-neighbor check (cosine distance)
+   - otherwise: Jaccard overlap fallback
 
 **Memory categories:**
 
@@ -57,9 +70,32 @@ As sessions grow longer, the model tends to deprioritize voluntary `write_memory
 ```yaml
 reflector_enabled: true         # enable/disable background reflector
 reflector_interval_mins: 15     # how often to run (minutes)
+memory_token_budget: 1500       # structured-memory injection budget
+
+# optional semantic memory runtime config (requires --features sqlite-vec build)
+# embedding_provider: "openai"  # openai | ollama
+# embedding_api_key: "..."
+# embedding_base_url: "..."
+# embedding_model: "text-embedding-3-small"
+# embedding_dim: 1536
 ```
 
 Both can be changed via the setup wizard (`microclaw setup`) or the Web UI settings panel.
+
+When `memory_token_budget` is exceeded during prompt construction, MicroClaw stops adding memories and appends `(+N memories omitted)`.
+
+## Semantic memory behavior
+
+Two-level safety model:
+
+- Compile-time: `sqlite-vec` feature is **off by default**
+- Runtime: `embedding_provider` is **unset by default**
+
+Runtime outcomes:
+
+- `sqlite-vec` enabled + embedding configured: semantic KNN retrieval and semantic dedup
+- `sqlite-vec` enabled + embedding not configured: vector table may exist but retrieval/dedup still falls back
+- `sqlite-vec` disabled: keyword retrieval + Jaccard dedup (stable baseline)
 
 ## Example
 
