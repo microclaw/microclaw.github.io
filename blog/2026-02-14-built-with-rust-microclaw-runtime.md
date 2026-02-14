@@ -9,6 +9,9 @@ MicroClaw is no longer just a channel bot. In its current form, it is a **Rust m
 
 It supports Telegram, Discord, and Web through adapters, while keeping one core execution path for reasoning and tool use.
 
+Source code: https://github.com/microclaw/microclaw
+Quick Start: https://microclaw.ai/docs/quickstart
+
 ![MicroClaw system architecture](/img/blog/microclaw-runtime/01-system-architecture.svg)
 
 <!-- truncate -->
