@@ -312,6 +312,53 @@ If a request matches a skill, the model can call `activate_skill` and then follo
 
 ---
 
+## Bot Personality (SOUL.md)
+
+MicroClaw supports a `SOUL.md` file that defines the bot's personality, voice, values, and working style. When present, the file content replaces the default "helpful AI assistant" identity in the system prompt.
+
+### How it loads
+
+MicroClaw checks for a soul file in this order (first match wins):
+
+1. `soul_path` in config (explicit path)
+2. `<data_dir>/SOUL.md`
+3. `./SOUL.md` (project root)
+
+A default `SOUL.md` ships with the repo.
+
+### Per-chat personality
+
+Place a `SOUL.md` at `<data_dir>/runtime/groups/<chat_id>/SOUL.md` to give a specific chat a different personality. The per-chat file fully overrides the global soul for that chat.
+
+### Example
+
+```markdown
+# Soul
+
+I am a capable, action-oriented AI assistant.
+
+## Personality
+- I prefer doing over discussing.
+- I have a dry sense of humor.
+- I'm optimistic by default. Problems are puzzles, errors are clues.
+
+## Values
+- Reliability over impressiveness.
+- Transparency — if something fails, I say so plainly.
+
+## Working style
+- I report outcomes, not intentions — "done" beats "I'll try".
+```
+
+### Config
+
+```yaml
+# Optional: explicit path (otherwise auto-discovered)
+soul_path: "./SOUL.md"
+```
+
+---
+
 ## Mid-Conversation Messaging (send_message)
 
 LLM can send messages to the chat during tool execution, useful for progress updates on long tasks.

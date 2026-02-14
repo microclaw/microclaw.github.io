@@ -47,6 +47,7 @@ At runtime, at least one channel must be enabled:
 | `embedding_base_url` | unset | Optional custom embedding API base URL |
 | `embedding_model` | provider default | Embedding model name |
 | `embedding_dim` | provider default | Embedding vector dimension used by sqlite-vec index |
+| `soul_path` | unset | Path to a `SOUL.md` file that defines bot personality, voice, and values. If unset, checks `data_dir/SOUL.md` then `./SOUL.md` |
 
 ## Channel-specific required fields
 

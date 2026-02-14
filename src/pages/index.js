@@ -129,6 +129,11 @@ export default function Home() {
         'DuckDuckGo HTML search with page fetching and HTML stripping for clean summaries.',
     },
     {
+      title: 'Customizable Personality',
+      description:
+        'Define bot voice, values, and working style via SOUL.md files — global or per-chat.',
+    },
+    {
       title: 'Single Binary',
       description:
         'Rust build produces a self-contained binary with bundled SQLite.',
@@ -166,7 +171,7 @@ export default function Home() {
               <div className={styles.stepCard}>
                 <span>01</span>
                 <h3>Load context</h3>
-                <p>Chat history, file memory, and structured memory are loaded from SQLite + AGENTS.md.</p>
+                <p>Chat history, file memory, structured memory, and personality (SOUL.md) are loaded from SQLite + disk.</p>
               </div>
               <div className={styles.stepCard}>
                 <span>02</span>
