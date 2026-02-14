@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.ca572b06.css">
-<script src="/assets/js/runtime~main.78f9d787.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.4057d036.js" defer="defer"></script>
 <script src="/assets/js/main.0a67a518.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -34,10 +34,15 @@
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="telegram">Telegram<a href="#telegram" class="hash-link" aria-label="Direct link to Telegram" title="Direct link to Telegram" translate="no">​</a></h2>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-create-a-bot-token">1. Create a bot token<a href="#1-create-a-bot-token" class="hash-link" aria-label="Direct link to 1. Create a bot token" title="Direct link to 1. Create a bot token" translate="no">​</a></h3>
 <ol>
-<li class="">Open Telegram and chat with <code>@BotFather</code></li>
+<li class="">Open Telegram and start a chat with <code>@BotFather</code></li>
 <li class="">Run <code>/newbot</code></li>
-<li class="">Copy the token (<code>123456:ABC...</code>)</li>
-<li class="">Set a username (for example <code>my_microclaw_bot</code>)</li>
+<li class="">Enter a display name (for example <code>MicroClaw Dev Bot</code>)</li>
+<li class="">Enter a username that ends with <code>bot</code> (for example <code>my_microclaw_bot</code>)</li>
+<li class="">BotFather returns an HTTP API token (format like <code>123456:ABC...</code>) and your bot username</li>
+<li class="">Copy the token immediately and keep it secret</li>
+<li class="">Save token to your config as <code>telegram_bot_token</code></li>
+<li class="">Save username (without <code>@</code>) to your config as <code>bot_username</code></li>
+<li class="">Optional but useful in groups: run <code>/setprivacy</code> in BotFather and choose <code>Disable</code> if you want the bot to see non-mention group messages</li>
 </ol>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-configure-microclaw">2. Configure MicroClaw<a href="#2-configure-microclaw" class="hash-link" aria-label="Direct link to 2. Configure MicroClaw" title="Direct link to 2. Configure MicroClaw" translate="no">​</a></h3>
 <div class="language-yaml codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-yaml codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token key atrule" style="color:#00a4db">telegram_bot_token</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;123456:ABC-DEF1234...&quot;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token key atrule" style="color:#00a4db">bot_username</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;my_microclaw_bot&quot;</span><br></span></code></pre></div></div>
@@ -45,6 +50,8 @@
 <ul>
 <li class=""><code>bot_username</code> is required when Telegram is enabled.</li>
 <li class="">In group chats, mention <code>@bot_username</code> to trigger replies.</li>
+<li class=""><code>bot_username</code> should not include <code>@</code> in config.</li>
+<li class="">If you rotate token in BotFather (<code>/revoke</code>), update <code>telegram_bot_token</code> and restart MicroClaw.</li>
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-verify">3. Verify<a href="#3-verify" class="hash-link" aria-label="Direct link to 3. Verify" title="Direct link to 3. Verify" translate="no">​</a></h3>
 <ol>
@@ -55,17 +62,42 @@
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="discord">Discord<a href="#discord" class="hash-link" aria-label="Direct link to Discord" title="Direct link to Discord" translate="no">​</a></h2>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-create-a-discord-bot">1. Create a Discord bot<a href="#1-create-a-discord-bot" class="hash-link" aria-label="Direct link to 1. Create a Discord bot" title="Direct link to 1. Create a Discord bot" translate="no">​</a></h3>
 <ol>
-<li class="">Go to Discord Developer Portal</li>
-<li class="">Create an Application</li>
-<li class="">Create a Bot and copy the bot token</li>
-<li class="">In OAuth2 URL Generator:<!-- -->
+<li class="">Open the Discord Developer Portal: <code>https://discord.com/developers/applications</code></li>
+<li class="">Optional reference: Discord Developers intro docs <code>https://docs.discord.com/developers/intro</code></li>
+<li class="">Click <strong>New Application</strong>, enter a name, then click <strong>Create</strong></li>
+<li class="">In the left sidebar, open <strong>Bot</strong></li>
+<li class="">Click <strong>Add Bot</strong>, then confirm</li>
+<li class="">Under the bot profile, click <strong>Reset Token</strong> (or <strong>Copy</strong> if token is already shown), then copy the bot token</li>
+<li class="">Save that token to your MicroClaw config as <code>discord_bot_token</code></li>
+<li class="">Still in the Developer Portal, open <strong>OAuth2 -&gt; URL Generator</strong></li>
+<li class="">In <strong>Scopes</strong>, check:<!-- -->
 <ul>
-<li class="">Scopes: <code>bot</code></li>
-<li class="">Bot permissions: <code>View Channels</code>, <code>Send Messages</code>, <code>Read Message History</code> (and others as needed)</li>
+<li class=""><code>bot</code></li>
+<li class=""><code>applications.commands</code> (recommended, enables slash commands)</li>
 </ul>
 </li>
-<li class="">In <strong>Bot -&gt; Privileged Gateway Intents</strong>, enable <strong>Message Content Intent</strong> (recommended)</li>
-<li class="">Invite the bot to your server</li>
+<li class="">In <strong>Bot Permissions</strong>, select at least:</li>
+</ol>
+<ul>
+<li class=""><code>View Channels</code></li>
+<li class=""><code>Send Messages</code></li>
+<li class=""><code>Read Message History</code></li>
+<li class=""><code>Mention Everyone</code> is not required</li>
+</ul>
+<ol start="11">
+<li class="">Scroll to the bottom, find <strong>GENERATED URL</strong>, then click <strong>Copy</strong></li>
+<li class="">Paste the copied URL into your browser and open it</li>
+<li class="">In the Discord authorization page:</li>
+</ol>
+<ul>
+<li class="">Choose your target server</li>
+<li class="">Click <strong>Continue</strong></li>
+<li class="">Review permissions</li>
+<li class="">Click <strong>Authorize</strong></li>
+</ul>
+<ol start="14">
+<li class="">In the Developer Portal under <strong>Bot -&gt; Privileged Gateway Intents</strong>, enable <strong>Message Content Intent</strong> (recommended), then save changes</li>
+<li class="">Restart MicroClaw after intent changes</li>
 </ol>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-configure-microclaw-1">2. Configure MicroClaw<a href="#2-configure-microclaw-1" class="hash-link" aria-label="Direct link to 2. Configure MicroClaw" title="Direct link to 2. Configure MicroClaw" translate="no">​</a></h3>
 <div class="language-yaml codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-yaml codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token key atrule" style="color:#00a4db">discord_bot_token</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;YOUR_DISCORD_BOT_TOKEN&quot;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic"># Optional: restrict processing to specific channel IDs</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic"># discord_allowed_channels:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic">#   - 123456789012345678</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token comment" style="color:#999988;font-style:italic">#   - 987654321098765432</span><br></span></code></pre></div></div>
@@ -104,6 +136,8 @@
 <li class="">In guild channels, mention the bot (for example <code>@my_bot hello</code>)</li>
 <li class="">If using <code>discord_allowed_channels</code>, verify channel IDs are correct</li>
 <li class="">Enable <strong>Message Content Intent</strong> in Discord Developer Portal (<code>Bot -&gt; Privileged Gateway Intents</code>)</li>
+<li class="">If you could not select your server during invite, verify your Discord account has <code>Manage Server</code> permission in that server</li>
+<li class="">If <code>GENERATED URL</code> does not appear, re-check that <code>bot</code> is selected in OAuth2 scopes</li>
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="discord-shows-4014-disallowed-intents">Discord shows <code>4014 Disallowed intent(s)</code><a href="#discord-shows-4014-disallowed-intents" class="hash-link" aria-label="Direct link to discord-shows-4014-disallowed-intents" title="Direct link to discord-shows-4014-disallowed-intents" translate="no">​</a></h3>
 <p>This means Discord rejected one or more requested gateway intents, usually <code>MESSAGE_CONTENT</code>.</p>
