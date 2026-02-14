@@ -1,128 +1,78 @@
 ---
 slug: /microclaw-vs-nanoclaw-openclaw
-title: "MicroClaw vs NanoClaw vs OpenClaw: Three Paths from Minimalism to Platform"
+title: "MicroClaw vs NanoClaw vs OpenClaw: Updated Three-Path Comparison"
 authors: [microclaw]
 tags: [architecture, rust, telegram, agents, comparison]
 ---
 
-If you are building a personal AI assistant that lives inside chat apps, you usually end up on one of three paths:
+If you are building a personal AI assistant around chat, you usually choose among three distinct paths:
 
-1. Minimal and understandable, with isolation first
-2. Feature-rich and multi-platform, with ecosystem breadth first
-3. A middle path with practical built-ins and controlled complexity
+1. Minimal and isolation-first
+2. Broad platform with high feature surface
+3. Balanced runtime with practical built-ins
 
-MicroClaw, NanoClaw, and OpenClaw each sit at different points on that spectrum.
+This comparison is updated using publicly available docs/repos as of **February 14, 2026**.
 
-This post compares the three from an engineering perspective, based on publicly available repositories and docs as of February 8, 2026.
+![Three-path capability spectrum](/img/blog/refresh-2026-02/03-three-paths-spectrum.svg)
 
 <!-- truncate -->
 
 ## TL;DR
 
-- If your top priority is minimal code and container isolation, NanoClaw is a strong fit.
-- If you want a full personal AI platform (many channels, nodes, voice, canvas, control plane), OpenClaw is stronger.
-- If you want a Telegram-first assistant that is practical, maintainable, and feature-complete for daily use, MicroClaw is the more balanced choice.
+- **NanoClaw**: best when minimal code surface and container isolation are the top priorities.
+- **OpenClaw**: best when you need wide channel/platform coverage with control-plane breadth.
+- **MicroClaw**: best when you want a practical middle path with durable state and maintainable complexity.
 
-## At a Glance (Engineering View)
+## At a Glance (Updated)
 
 | Dimension | NanoClaw | OpenClaw | MicroClaw |
 |---|---|---|---|
-| Product orientation | Single-user, minimal, highly understandable | Personal AI platform (control plane + multi-surface ecosystem) | Practical chat agent, Telegram-first |
-| Primary stack | Node.js + Claude Agent SDK | TypeScript/Node.js platform architecture | Rust + Tokio + teloxide |
-| Default channel | WhatsApp-first | Multi-channel (WA/Telegram/Slack/Discord/...) | Telegram-first (optional WhatsApp webhook, Discord) |
-| Model strategy | Closely coupled to Claude Code/Agent SDK workflow | Multi-provider strategy with failover concepts | Native Anthropic + OpenAI-compatible abstraction |
-| Tool execution | Containerized execution as core principle | Broad tool ecosystem (browser/canvas/nodes/cron, etc.) | Built-in tool registry + sub-agent + skills + todo |
-| Session model | README emphasizes simplicity/isolation | Platform-level session/gateway/WS control plane | Full session persistence (including `tool_use` / `tool_result`) |
-| Context management | More skill-driven extension approach | Built-in pruning/session management capabilities | Built-in context compaction for long sessions |
-| Security emphasis | OS-level isolation (Apple Container/Docker) | Gateway policy + pairing/allowlist + platform controls | App-level auth + chat-level access control + hardening path |
-| Deployment shape | Claude-driven setup + container dependency | CLI + daemon + companion app/node | Rust single-binary deployment |
-| Best fit | Builders who want full control of a minimal core | Users who want a maximal capability platform | Developers who want practical features with maintainable complexity |
+| Orientation | Minimal, skill-first, single-user customization | Personal AI platform with broad channel + node ecosystem | Practical chat runtime, Telegram-first with shared core |
+| Runtime stack | Node.js + Claude Agent SDK + containers | TypeScript/Node.js control plane + multi-surface stack | Rust + Tokio + unified agent engine |
+| Channel stance | WhatsApp-first base | Broad native + extension channels | Telegram-first, plus Discord/Web and optional expansions |
+| Extensibility style | Prefer skills that transform forked code | Platform modules, tools, nodes, apps, and ecosystem surfaces | Built-in tools + skills + sub-agent composition |
+| Session and memory | Simpler base persistence model | Platform-level session/routing model | Durable sessions + context compaction + layered memory |
+| Security emphasis | OS-level isolation by default | Policy/pairing/allowlist controls in gateway model | App-level authorization + hardening path |
+| Ops complexity | Low-to-moderate | Highest (in exchange for capability breadth) | Moderate (feature-rich, but loop architecture remains focused) |
 
-## Why MicroClaw Is Not “Another OpenClaw”
+## Notable Public Signals (as of 2026-02-14)
 
-OpenClaw has gone very deep on the “personal AI platform” direction: multi-channel support, gateway control plane, nodes, voice, canvas, web surfaces, remote access, and skill ecosystem.
+- NanoClaw README now foregrounds **Agent Swarms** and keeps a strong skill-first philosophy.
+- OpenClaw README/docs continue expanding multi-channel, node, voice, and canvas workflows.
+- MicroClaw remains focused on the mid-complexity runtime space: robust agent loop, durable state, and practical operational features.
 
-That is not inherently good or bad. It is a complexity budget decision.
+## Choosing by Use Case
 
-MicroClaw makes different tradeoffs:
+### Choose NanoClaw if
 
-- It does not try to cover every surface at once; it optimizes the Telegram path first.
-- It does not build a heavy control plane first; it prioritizes a robust agent loop, tool execution, session recovery, scheduling, and memory.
-- It uses Rust and a straightforward process model to reduce hidden runtime state.
+- You want the smallest understandable base and plan to customize by code transformation skills.
+- You prioritize container-isolation defaults over broad built-in surfaces.
 
-So it is not copying OpenClaw. It is optimizing for a different complexity tier.
+### Choose OpenClaw if
 
-## Why MicroClaw Is Not “NanoClaw in Rust”
+- You want the widest integrated platform: many channels, nodes, voice, canvas, and gateway tooling.
+- You accept higher operational and configuration complexity for that breadth.
 
-NanoClaw’s value proposition is clear: keep the core tiny, understandable, and isolation-first, then customize through skills instead of bloating the base.
+### Choose MicroClaw if
 
-MicroClaw shares the “personal assistant should be controllable” philosophy, but applies it differently:
-
-- NanoClaw emphasizes minimizing infrastructure.
-- MicroClaw emphasizes practical built-ins for daily use, including:
-  - Full session resume with tool interaction context
-  - Built-in context compaction
-  - Sub-agents with restricted tool sets
-  - Planning/todo tools
-  - On-demand skill activation
-
-In short: NanoClaw pushes minimal core purity; MicroClaw adds one practical layer above that core.
-
-## The Core Difference: Where You Place Complexity
-
-In personal AI assistants, complexity does not disappear. You choose where it lives.
-
-- NanoClaw puts complexity into your fork-level customization workflow.
-- OpenClaw puts complexity into platform breadth and ecosystem depth.
-- MicroClaw puts complexity into built-in high-frequency features while keeping the architecture traceable.
-
-That is why all three can succeed and coexist.
-
-## Selection Guide by Real Use Case
-
-### Choose NanoClaw if:
-
-- You strongly prioritize container isolation boundaries.
-- You are comfortable adding capabilities via skills and fork-level changes.
-- You want to understand the core code path quickly.
-
-### Choose OpenClaw if:
-
-- You need unified access across many channels and device nodes.
-- You care about voice, canvas, remote gateway, and platform-grade automation.
-- You are willing to pay higher ops/config complexity for a higher feature ceiling.
-
-### Choose MicroClaw if:
-
-- Telegram is your primary interface and you want fast time-to-value.
-- You need tool execution + automation, but also robust session recovery and context management.
-- You want a better balance between capability and maintainability.
-
-## What MicroClaw Should Do Next
-
-Based on this comparison, the next high-leverage steps for MicroClaw are not random feature additions:
-
-1. Strengthen default safety boundaries for high-risk tools
-2. Improve behavior consistency across channels (Telegram/WhatsApp/Discord)
-3. Clarify skill/tool boundaries to reduce prompt overhead and misuse
-4. Improve observability for scheduler/session/tool failures
-
-The goal is not to become OpenClaw. The goal is to make the “mid-complexity, high-utility assistant” category more reliable.
+- Telegram-centric workflows are your immediate priority.
+- You want strong session continuity, memory quality, tool orchestration, and scheduler support without adopting the largest platform footprint.
 
 ## Final Take
 
-This is not a “which one is best” debate. It is a “what kind of assistant do you want to operate” decision.
+This is not a winner-take-all ranking. It is a complexity-placement decision:
 
-- If you want a controllable scalpel: NanoClaw  
-- If you want a powerful workstation platform: OpenClaw  
-- If you want a dependable daily engineering vehicle: MicroClaw
+- NanoClaw: complexity pushed into fork customization
+- OpenClaw: complexity pushed into platform breadth
+- MicroClaw: complexity concentrated on high-frequency runtime features
 
-Choosing the right path matters more than chasing feature trends.
+Pick the one that matches your operations budget and workflow style.
 
 ## References
 
-- NanoClaw: https://github.com/gavrielc/nanoclaw
-- NanoClaw README: https://raw.githubusercontent.com/gavrielc/nanoclaw/main/README.md
+- NanoClaw: https://github.com/qwibitai/nanoclaw
+- NanoClaw README: https://raw.githubusercontent.com/qwibitai/nanoclaw/main/README.md
 - OpenClaw: https://github.com/openclaw/openclaw
 - OpenClaw Docs: https://docs.openclaw.ai
 - MicroClaw: https://github.com/microclaw/microclaw
+- MicroClaw Docs: https://microclaw.ai/docs/overview

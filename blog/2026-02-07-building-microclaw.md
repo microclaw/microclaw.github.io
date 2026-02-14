@@ -1,152 +1,105 @@
 ---
 slug: /building-microclaw
-title: "Building MicroClaw: A Practical Agentic Assistant for Telegram"
+title: "Building MicroClaw: A Practical Agent Runtime for Telegram and Beyond"
 authors: [microclaw]
 tags: [architecture, rust, telegram, agents]
 ---
 
-MicroClaw is a Rust-based AI assistant that lives directly in your chats. It is built for one specific goal: turn chat into a reliable execution surface, not just a text interface.
+MicroClaw is a Rust-based AI assistant that treats chat as an execution surface, not only a text interface.
 
-MicroClaw can run shell commands, read and edit files, search code, browse the web, schedule recurring tasks, and maintain persistent memory. It is Telegram-first today, with optional WhatsApp and Discord paths, and it is designed to stay understandable as it grows.
+It can run shell and file tools, browse the web, schedule jobs, and persist memory/session state so multi-step work can continue across turns.
 
-This post is a full introduction to the project: where the idea came from, what design decisions shaped it, and how the architecture works in practice.
+![MicroClaw runtime overview](/img/blog/refresh-2026-02/01-building-microclaw-overview.svg)
 
 <!-- truncate -->
 
-## Where the Idea Came From
+## 2026-02-14 Update Snapshot
 
-MicroClaw was inspired by two things happening at the same time:
+This post was refreshed on **February 14, 2026** to match the current codebase and docs.
 
-1. The rise of **NanoClaw**, which proved that personal AI assistants should be understandable, self-hostable, and opinionated.
-2. The release wave around **Claude Opus 4.6**, which made long-context, tool-heavy assistant workflows feel much more practical for real daily use.
+Current shape:
 
-NanoClaw showed that small and focused systems can be powerful. Opus 4.6 showed that model capability had reached a point where multi-step reasoning with tools could be trustworthy enough to build on.
+- Shared agent loop with iterative `tool_use` / `tool_result` execution
+- Channel adapters for Telegram, Discord, and Web API surfaces
+- Provider abstraction for Anthropic + OpenAI-compatible endpoints
+- Durable session resume with context compaction
+- Layered memory: file memory (`AGENTS.md`) + structured SQLite memory
+- Scheduler + memory reflection background jobs
+- Usage and memory-observability endpoints for operations
 
-MicroClaw started as a question:  
-Can we keep the spirit of NanoClaw, but build a Telegram-first assistant in Rust with stronger session continuity, operational stability, and practical built-ins?
+## Why This Runtime Exists
 
-The answer became this project.
+Most chat bots still behave like single-turn wrappers:
 
-## The Problem MicroClaw Solves
+1. Receive text
+2. Produce text
+3. Lose execution context
 
-Most chat bots are still single-turn wrappers:
+MicroClaw is built for a different loop:
 
-- user sends text
-- model returns text
-- conversation state is shallow
-- no durable execution context
+1. Interpret an incoming task
+2. Decide when tools are needed
+3. Execute tools and read outputs
+4. Iterate until done
+5. Persist state for continuation
 
-That is fine for Q&A, but weak for real work.
-
-MicroClaw treats each message as an **agentic task loop**. For each incoming message, the model can:
-
-1. Decide whether to answer directly or use tools
-2. Execute one or more tools
-3. Read tool outputs
-4. Keep iterating until the task is done
-5. Persist the state for the next turn
-
-This turns chat from “ask and answer” into “plan, execute, and continue.”
-
-## What Makes MicroClaw Different
-
-MicroClaw is designed around four practical requirements.
-
-### 1) Durable conversations, not stateless prompts
-
-Sessions are persisted in SQLite with full tool context (`tool_use` and `tool_result` blocks).  
-When a new message arrives, the assistant can resume from real prior execution state, not just a truncated chat summary.
-
-### 2) Memory that can evolve over time
-
-MicroClaw supports global and per-chat `AGENTS.md` memory.
-The assistant can read and update memory through tools, so preferences and project context survive across days or weeks.
-
-### 3) Operational features built in
-
-It includes production-relevant features out of the box:
-
-- context compaction for oversized sessions
-- scheduled one-shot and recurring tasks
-- continuous typing indicator during long tool loops
-- group catch-up behavior for mention-based activation
-- message splitting for platform limits
-
-### 4) Controlled delegation
-
-MicroClaw includes a `sub_agent` tool that launches a restricted inner agent with a reduced tool set.  
-This allows decomposition of complex work while keeping clear safety boundaries.
+That makes it suitable for long-running workflows instead of one-shot Q&A.
 
 ## Core Capabilities
 
-- Chat-native tool execution (`bash`, file operations, `glob`, `grep`, web search/fetch)
-- Persistent session resume including tool interaction history
-- Context compaction for long-running sessions
-- Global + per-chat persistent memory via `AGENTS.md`
-- Scheduler for cron and one-time tasks
-- Skill activation for domain-specific instructions
-- Todo/plan tools for structured multi-step execution
-- Optional cross-surface integrations (Telegram-first, plus optional WhatsApp/Discord)
+- Chat-native tool execution (`bash`, file ops, search/fetch, scheduler, memory)
+- Full session resume including prior tool interaction context
+- Context compaction for long-running conversations
+- Global and per-chat memory via `AGENTS.md`
+- Structured memory records in SQLite for queryable recall
+- One-shot and cron-style scheduled runs
+- Sub-agent delegation with reduced tool permissions
 
-## High-level architecture
+## Runtime Architecture
 
-At a high level, every message follows the same execution path:
+MicroClaw keeps one shared execution core and separates channel concerns into adapters.
 
-1. Store message in SQLite
-2. Load session state, recent history, and memory
-3. Call LLM with tool definitions
-4. If `tool_use` is requested, execute tool(s) and loop
-5. If `end_turn`, send response and persist updated session
+- **Adapters**: Telegram / Discord / Web handle input-output constraints
+- **Engine**: shared reasoning and tool loop
+- **Persistence**: messages, sessions, tasks, memories, observability
+- **Background workers**: scheduler and memory reflector
 
-The scheduler reuses this same loop.  
-That means scheduled tasks are not “dumb reminders” but full agent invocations with tools, reasoning, and memory access.
+This keeps behavior consistent while allowing channels/providers to evolve independently.
 
 ## Why Rust
 
-MicroClaw is written in Rust for reliability and operational clarity:
+Rust is used here for operational reliability, not novelty:
 
-- Single binary deployment (`cargo build --release`)
-- Strong typing for protocol/message block structures
-- Explicit shared-state boundaries (`Arc<Database>`)
-- Predictable async behavior via Tokio
-- Lower accidental complexity in long-running bot processes
-
-Rust is not used for novelty. It is used because this project is a long-lived process that handles concurrency, persistence, and external APIs continuously.
+- Explicit concurrency with Tokio for long-lived processes
+- Predictable shared state boundaries
+- Strong typing for tool/message/state protocols
+- Single-binary deployment for simpler operations
 
 ## Design Principles
 
-MicroClaw follows a few strict rules:
+- `execution-first`: useful assistants should complete tasks, not only chat
+- `state-is-a-feature`: session and memory quality are first-class
+- `small-core-practical-edges`: keep core loop clear, add high-frequency features
+- `layered-safety`: tool-level checks + chat access controls + deployment hardening
+- `composable-growth`: evolve through tools and skills, avoid loop fragmentation
 
-- **Execution-first**: a useful assistant must do work, not only generate text.
-- **State is a feature**: preserving session and memory quality is as important as model quality.
-- **Simple core, practical edges**: keep architecture small, but include features needed in real daily workflows.
-- **Safety by layers**: combine tool-level checks, chat access controls, and deployment hardening.
-- **Composable growth**: add capabilities via tools and skills without breaking the core loop.
+## Real Workflow Examples
 
-## Example Workflows
+- "Scan this repo for breaking changes and draft release notes."
+- "Weekdays 9am: send me an AI news briefing from selected sources."
+- "Read these logs, identify likely root causes, and propose fixes."
+- "Remember my response style preference and apply it in future sessions."
 
-Here are the kinds of tasks MicroClaw is designed for:
+## Current Priorities
 
-- “Search this repo for API breaking changes and draft release notes.”
-- “Every weekday at 9am, send me an AI news briefing from selected sources.”
-- “Read this error log, find likely root causes, and propose fixes.”
-- “Remember that I prefer concise responses and Rust code examples.”
-- “Break this migration into a todo plan and execute step by step.”
+1. Stronger default boundaries for high-risk tools
+2. Better cross-channel behavior consistency
+3. Clearer skill/tool boundary to reduce misuse
+4. Better failure observability for sessions/scheduler/tools
 
-These are not one-shot prompts. They are iterative workflows with context and state.
+## References
 
-## Project status
-
-MicroClaw is under active development. Current priorities are:
-
-1. Stronger default safety boundaries for tool execution
-2. Better multi-channel consistency across Telegram/WhatsApp/Discord
-3. Better observability for scheduler/session/tool failures
-4. Smoother onboarding and configuration UX
-
-If you want to explore the full docs, start here:
-
-- https://microclaw.ai/docs/overview
-- https://microclaw.ai/docs/architecture
-- https://microclaw.ai/docs/tools
-- Source code: https://github.com/microclaw/microclaw
+- MicroClaw repository: https://github.com/microclaw/microclaw
+- Overview docs: https://microclaw.ai/docs/overview
+- Architecture docs: https://microclaw.ai/docs/architecture
+- Tools docs: https://microclaw.ai/docs/tools
