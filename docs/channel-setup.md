@@ -15,10 +15,15 @@ MicroClaw can run with any combination of channels. You only need at least one o
 
 ### 1. Create a bot token
 
-1. Open Telegram and chat with `@BotFather`
+1. Open Telegram and start a chat with `@BotFather`
 2. Run `/newbot`
-3. Copy the token (`123456:ABC...`)
-4. Set a username (for example `my_microclaw_bot`)
+3. Enter a display name (for example `MicroClaw Dev Bot`)
+4. Enter a username that ends with `bot` (for example `my_microclaw_bot`)
+5. BotFather returns an HTTP API token (format like `123456:ABC...`) and your bot username
+6. Copy the token immediately and keep it secret
+7. Save token to your config as `telegram_bot_token`
+8. Save username (without `@`) to your config as `bot_username`
+9. Optional but useful in groups: run `/setprivacy` in BotFather and choose `Disable` if you want the bot to see non-mention group messages
 
 ### 2. Configure MicroClaw
 
@@ -30,6 +35,8 @@ bot_username: "my_microclaw_bot"
 Notes:
 - `bot_username` is required when Telegram is enabled.
 - In group chats, mention `@bot_username` to trigger replies.
+- `bot_username` should not include `@` in config.
+- If you rotate token in BotFather (`/revoke`), update `telegram_bot_token` and restart MicroClaw.
 
 ### 3. Verify
 
@@ -41,14 +48,31 @@ Notes:
 
 ### 1. Create a Discord bot
 
-1. Go to Discord Developer Portal
-2. Create an Application
-3. Create a Bot and copy the bot token
-4. In OAuth2 URL Generator:
-   - Scopes: `bot`
-   - Bot permissions: `View Channels`, `Send Messages`, `Read Message History` (and others as needed)
-5. In **Bot -> Privileged Gateway Intents**, enable **Message Content Intent** (recommended)
-6. Invite the bot to your server
+1. Open the Discord Developer Portal: `https://discord.com/developers/applications`
+2. Optional reference: Discord Developers intro docs `https://docs.discord.com/developers/intro`
+3. Click **New Application**, enter a name, then click **Create**
+4. In the left sidebar, open **Bot**
+5. Click **Add Bot**, then confirm
+6. Under the bot profile, click **Reset Token** (or **Copy** if token is already shown), then copy the bot token
+7. Save that token to your MicroClaw config as `discord_bot_token`
+8. Still in the Developer Portal, open **OAuth2 -> URL Generator**
+9. In **Scopes**, check:
+   - `bot`
+   - `applications.commands` (recommended, enables slash commands)
+10. In **Bot Permissions**, select at least:
+   - `View Channels`
+   - `Send Messages`
+   - `Read Message History`
+   - `Mention Everyone` is not required
+11. Scroll to the bottom, find **GENERATED URL**, then click **Copy**
+12. Paste the copied URL into your browser and open it
+13. In the Discord authorization page:
+   - Choose your target server
+   - Click **Continue**
+   - Review permissions
+   - Click **Authorize**
+14. In the Developer Portal under **Bot -> Privileged Gateway Intents**, enable **Message Content Intent** (recommended), then save changes
+15. Restart MicroClaw after intent changes
 
 ### 2. Configure MicroClaw
 
@@ -113,6 +137,8 @@ Then check:
 - In guild channels, mention the bot (for example `@my_bot hello`)
 - If using `discord_allowed_channels`, verify channel IDs are correct
 - Enable **Message Content Intent** in Discord Developer Portal (`Bot -> Privileged Gateway Intents`)
+- If you could not select your server during invite, verify your Discord account has `Manage Server` permission in that server
+- If `GENERATED URL` does not appear, re-check that `bot` is selected in OAuth2 scopes
 
 ### Discord shows `4014 Disallowed intent(s)`
 
@@ -127,4 +153,3 @@ Current MicroClaw behavior:
 - MicroClaw first starts with `MESSAGE_CONTENT`
 - If Discord returns `4014`, MicroClaw automatically falls back to non-privileged intents so the bot can still run
 - Full guild message-content behavior requires `Message Content Intent`
-
