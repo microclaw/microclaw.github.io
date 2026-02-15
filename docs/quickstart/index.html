@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.ca572b06.css">
-<script src="/assets/js/runtime~main.5739d87c.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.7e02eec4.js" defer="defer"></script>
 <script src="/assets/js/main.0a67a518.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -32,6 +32,8 @@
 <ul>
 <li class="">Telegram bot token (from @BotFather), or</li>
 <li class="">Discord bot token, or</li>
+<li class="">Slack app token + bot token (Socket Mode), or</li>
+<li class="">Feishu/Lark app credentials (app_id + app_secret), or</li>
 <li class="">local Web UI mode (<code>web_enabled: true</code>)</li>
 </ul>
 </li>
@@ -77,7 +79,7 @@ For <code>openai-codex</code>, you can run <code>codex login</code> first (OAuth
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-run">5. Run<a href="#5-run" class="hash-link" aria-label="Direct link to 5. Run" title="Direct link to 5. Run" translate="no">​</a></h2>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">microclaw start</span><br></span></code></pre></div></div>
 <p>That is it. On first launch, if required config is missing, <code>start</code> will auto-open the config flow.
-After setup, the runtime initializes SQLite, starts scheduler, and boots configured adapters (Telegram/Discord/Web).</p>
+After setup, the runtime initializes SQLite, starts scheduler, and boots configured adapters (Telegram/Discord/Slack/Feishu/Web).</p>
 <p>If <code>web_enabled: true</code> (default), local Web UI is available at:</p>
 <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">http://127.0.0.1:10961</span><br></span></code></pre></div></div>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-optional-run-as-persistent-gateway-service">6. Optional: run as persistent gateway service<a href="#6-optional-run-as-persistent-gateway-service" class="hash-link" aria-label="Direct link to 6. Optional: run as persistent gateway service" title="Direct link to 6. Optional: run as persistent gateway service" translate="no">​</a></h2>

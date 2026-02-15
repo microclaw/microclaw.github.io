@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.ca572b06.css">
-<script src="/assets/js/runtime~main.5739d87c.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.7e02eec4.js" defer="defer"></script>
 <script src="/assets/js/main.0a67a518.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -32,6 +32,8 @@
 <ul>
 <li class="">Telegram (<code>telegram_bot_token</code> + <code>bot_username</code>)</li>
 <li class="">Discord (<code>discord_bot_token</code>)</li>
+<li class="">Slack (<code>channels.slack.bot_token</code> + <code>channels.slack.app_token</code>)</li>
+<li class="">Feishu/Lark (<code>channels.feishu.app_id</code> + <code>channels.feishu.app_secret</code>)</li>
 <li class="">Web UI (<code>web_enabled: true</code>)</li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="optional">Optional<a href="#optional" class="hash-link" aria-label="Direct link to Optional" title="Direct link to Optional" translate="no">​</a></h2>
@@ -40,6 +42,8 @@
 <ul>
 <li class="">Telegram enabled: <code>telegram_bot_token</code> and <code>bot_username</code> are required.</li>
 <li class="">Discord enabled: <code>discord_bot_token</code> is required.</li>
+<li class="">Slack enabled: <code>channels.slack.bot_token</code> and <code>channels.slack.app_token</code> are required. Optional: <code>allowed_channels</code>.</li>
+<li class="">Feishu/Lark enabled: <code>channels.feishu.app_id</code> and <code>channels.feishu.app_secret</code> are required. Optional: <code>connection_mode</code> (websocket/webhook), <code>domain</code> (feishu/lark/custom URL), <code>allowed_chats</code>.</li>
 <li class="">Web-only mode is valid: keep <code>web_enabled: true</code> (default) and leave other channel tokens empty.</li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="supported-llm_provider-values">Supported <code>llm_provider</code> values<a href="#supported-llm_provider-values" class="hash-link" aria-label="Direct link to supported-llm_provider-values" title="Direct link to supported-llm_provider-values" translate="no">​</a></h2>

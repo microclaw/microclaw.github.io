@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.ca572b06.css">
-<script src="/assets/js/runtime~main.5739d87c.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.7e02eec4.js" defer="defer"></script>
 <script src="/assets/js/main.0a67a518.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -40,7 +40,7 @@
 <li class=""><code>core</code> (current: spread across <code>channels/*</code>, <code>tools/*</code>, <code>llm.rs</code>): agent loop, tool orchestration, context handling.</li>
 <li class=""><code>storage</code> (<code>db.rs</code>, memory files): chat/task/session persistence.</li>
 <li class=""><code>skills</code> (<code>skills.rs</code>, tool activation/sync): skill discovery and loading.</li>
-<li class=""><code>gateway/channel adapters</code> (<code>channels/telegram.rs</code>, <code>channels/discord.rs</code>, <code>web.rs</code>): platform-specific ingress/egress.</li>
+<li class=""><code>gateway/channel adapters</code> (<code>channels/telegram.rs</code>, <code>channels/discord.rs</code>, <code>channels/slack.rs</code>, <code>channels/feishu.rs</code>, <code>web.rs</code>): platform-specific ingress/egress.</li>
 <li class=""><code>channel boundary</code> (<code>channel.rs</code>, <code>channels/delivery.rs</code>): chat routing, dispatch policy, and per-channel delivery.</li>
 <li class=""><code>runtime</code> (<code>main.rs</code>, <code>runtime.rs</code>, <code>scheduler.rs</code>, <code>gateway.rs</code>, <code>doctor.rs</code>): process boot, background jobs, diagnostics.</li>
 </ul>
