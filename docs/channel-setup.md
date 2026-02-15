@@ -4,11 +4,13 @@ title: Channel Setup
 sidebar_position: 4
 ---
 
-This guide explains how to connect MicroClaw to Telegram and Discord.
+This guide explains how to connect MicroClaw to Telegram, Discord, Slack, and Feishu/Lark.
 
 MicroClaw can run with any combination of channels. You only need at least one of:
 - Telegram
 - Discord
+- Slack
+- Feishu / Lark
 - Web UI (`web_enabled: true`)
 
 ## Telegram
@@ -96,6 +98,79 @@ Notes:
 2. Send `/skills` in an allowed Discord channel
 3. Confirm the bot replies
 
+## Slack
+
+### 1. Create a Slack app
+
+1. Go to [api.slack.com/apps](https://api.slack.com/apps) and click **Create New App**
+2. Choose **From scratch**, enter a name, and select your workspace
+3. In the left sidebar, open **Socket Mode** and enable it
+4. Create an app-level token with `connections:write` scope -- this is your `app_token` (starts with `xapp-`)
+5. In the left sidebar, open **OAuth & Permissions**
+6. Under **Bot Token Scopes**, add: `chat:write`, `channels:history`, `groups:history`, `im:history`, `mpim:history`, `app_mentions:read`
+7. Click **Install to Workspace** and authorize -- copy the **Bot User OAuth Token** (starts with `xoxb-`) as your `bot_token`
+8. In the left sidebar, open **Event Subscriptions** and enable events
+9. Under **Subscribe to bot events**, add: `message.channels`, `message.groups`, `message.im`, `message.mpim`, `app_mention`
+10. Save changes
+
+### 2. Configure MicroClaw
+
+```yaml
+channels:
+  slack:
+    bot_token: "xoxb-..."
+    app_token: "xapp-..."
+    # Optional: restrict to specific channel IDs
+    # allowed_channels: []
+```
+
+### 3. Verify
+
+1. Start MicroClaw: `microclaw start`
+2. Send `/skills` in a Slack DM with the bot
+3. Confirm the bot replies
+
+## Feishu / Lark
+
+### 1. Create a Feishu app
+
+1. Go to [Feishu Open Platform](https://open.feishu.cn/app) (or [Lark Developer](https://open.larksuite.com/app) for international)
+2. Click **Create Custom App**
+3. In **Credentials & Basic Info**, copy the `App ID` and `App Secret`
+4. In **Permissions & Scopes**, add: `im:message`, `im:message:send_as_bot`, `im:resource`
+5. In **Events & Callbacks**, select **Long Connection** mode (recommended) or configure a webhook URL
+6. Under **Event Subscriptions**, add: `im.message.receive_v1`
+7. Publish the app version and approve it in your organization admin panel
+
+### 2. Configure MicroClaw
+
+```yaml
+channels:
+  feishu:
+    app_id: "cli_xxx"
+    app_secret: "xxx"
+    # "websocket" (default, no public URL needed) or "webhook"
+    connection_mode: "websocket"
+    # "feishu" (China), "lark" (international), or custom URL
+    domain: "feishu"
+    # Optional: restrict to specific chat IDs
+    # allowed_chats: []
+    # Webhook-only settings:
+    # webhook_path: "/feishu/events"
+    # verification_token: ""
+```
+
+Notes:
+- WebSocket mode (default) requires no public URL -- works behind NAT/firewall, ideal for local development.
+- Webhook mode requires a publicly accessible URL. Configure `webhook_path` and optionally `verification_token`.
+- Set `domain: "lark"` for international Lark accounts.
+
+### 3. Verify
+
+1. Start MicroClaw: `microclaw start`
+2. Send `/skills` in a Feishu DM with the bot
+3. Confirm the bot replies
+
 ## Multi-channel Example
 
 ```yaml
@@ -109,6 +184,15 @@ telegram_bot_token: "123456:ABC..."
 bot_username: "my_microclaw_bot"
 discord_bot_token: "..."
 web_enabled: true
+
+channels:
+  slack:
+    bot_token: "xoxb-..."
+    app_token: "xapp-..."
+  feishu:
+    app_id: "cli_xxx"
+    app_secret: "xxx"
+    domain: "feishu"
 ```
 
 ## Troubleshooting

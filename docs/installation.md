@@ -136,7 +136,7 @@ cp target/release/microclaw /usr/local/bin/
 
 Runtime boot behavior:
 - starts scheduler
-- starts configured adapters (Telegram/Discord/Web)
+- starts configured adapters (Telegram/Discord/Slack/Feishu/Web)
 - can run without Telegram when other channels are enabled
 
 ```sh

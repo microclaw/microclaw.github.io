@@ -17,6 +17,8 @@ For anti-drift defaults, use [Generated Config Defaults](./generated-config-defa
 At runtime, at least one channel must be enabled:
 - Telegram (`telegram_bot_token` + `bot_username`)
 - Discord (`discord_bot_token`)
+- Slack (`channels.slack.bot_token` + `channels.slack.app_token`)
+- Feishu/Lark (`channels.feishu.app_id` + `channels.feishu.app_secret`)
 - Web UI (`web_enabled: true`)
 
 ## Optional
@@ -53,6 +55,8 @@ At runtime, at least one channel must be enabled:
 
 - Telegram enabled: `telegram_bot_token` and `bot_username` are required.
 - Discord enabled: `discord_bot_token` is required.
+- Slack enabled: `channels.slack.bot_token` and `channels.slack.app_token` are required. Optional: `allowed_channels`.
+- Feishu/Lark enabled: `channels.feishu.app_id` and `channels.feishu.app_secret` are required. Optional: `connection_mode` (websocket/webhook), `domain` (feishu/lark/custom URL), `allowed_chats`.
 - Web-only mode is valid: keep `web_enabled: true` (default) and leave other channel tokens empty.
 
 ## Supported `llm_provider` values

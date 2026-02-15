@@ -12,6 +12,8 @@ Get MicroClaw running in a few minutes.
 - at least one channel entry point:
   - Telegram bot token (from @BotFather), or
   - Discord bot token, or
+  - Slack app token + bot token (Socket Mode), or
+  - Feishu/Lark app credentials (app_id + app_secret), or
   - local Web UI mode (`web_enabled: true`)
 - LLM API key (Anthropic/OpenAI/OpenRouter/DeepSeek/etc.)
   - `openai-codex` supports OAuth (`codex login`) or `api_key` (for OpenAI-compatible proxy endpoints)
@@ -113,7 +115,7 @@ microclaw start
 ```
 
 That is it. On first launch, if required config is missing, `start` will auto-open the config flow.
-After setup, the runtime initializes SQLite, starts scheduler, and boots configured adapters (Telegram/Discord/Web).
+After setup, the runtime initializes SQLite, starts scheduler, and boots configured adapters (Telegram/Discord/Slack/Feishu/Web).
 
 If `web_enabled: true` (default), local Web UI is available at:
 

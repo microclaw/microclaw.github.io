@@ -26,6 +26,8 @@ src/
     channels/delivery.rs# Channel-specific text delivery clients
     channels/telegram.rs# Telegram adapter
     channels/discord.rs # Discord adapter
+    channels/slack.rs   # Slack adapter (Socket Mode)
+    channels/feishu.rs  # Feishu/Lark adapter (WS or webhook)
     config.rs           # Loads microclaw.config.yaml
     llm.rs              # Provider adapters (Anthropic/OpenAI-compatible/Codex)
     llm_types.rs        # Shared message/tool protocol types
