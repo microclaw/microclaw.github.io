@@ -88,6 +88,32 @@ bot_username: "my_bot"
 web_enabled: true
 ```
 
+### Optional: run `bash` tool in Docker sandbox
+
+Default behavior is host execution (`sandbox.mode: "off"`).  
+To route `bash` tool calls into Docker containers:
+
+```yaml
+sandbox:
+  mode: "all"
+  backend: "auto"
+  image: "ubuntu:25.10"
+  container_prefix: "microclaw-sandbox"
+  no_network: true
+  require_runtime: false
+```
+
+Quick verification:
+
+```sh
+docker info
+docker run --rm ubuntu:25.10 echo ok
+```
+
+Then start MicroClaw and ask it to run:
+- `cat /etc/os-release`
+- `pwd`
+
 ## 4. Preflight diagnostics (recommended)
 
 ```sh

@@ -34,6 +34,13 @@ At runtime, at least one channel must be enabled:
 | `llm_base_url` | provider preset default | Optional custom base URL |
 | `data_dir` | `./microclaw.data` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
 | `working_dir` | `./tmp` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
+| `working_dir_isolation` | `chat` | Working directory isolation mode for `bash/read_file/write_file/edit_file/glob/grep`: `shared` uses `working_dir/shared`, `chat` isolates each chat under `working_dir/chat/<channel>/<chat_id>` |
+| `sandbox.mode` | `off` | Bash execution mode: `off` runs on host; `all` routes bash tool calls to Docker containers |
+| `sandbox.backend` | `auto` | Sandbox backend (`auto`/`docker`) |
+| `sandbox.image` | `ubuntu:25.10` | Base image used for sandbox containers |
+| `sandbox.container_prefix` | `microclaw-sandbox` | Prefix for sandbox container names |
+| `sandbox.no_network` | `true` | If true, sandbox containers run with `--network=none` |
+| `sandbox.require_runtime` | `false` | If true and Docker is unavailable while `sandbox.mode=all`, command fails fast instead of host fallback |
 | `max_tokens` | `8192` | Max tokens per LLM response |
 | `max_tool_iterations` | `100` | Max tool-use loop iterations per message |
 | `max_document_size_mb` | `100` | Maximum allowed inbound Telegram document size (files above limit are rejected with a hint message) |
@@ -50,6 +57,26 @@ At runtime, at least one channel must be enabled:
 | `embedding_model` | provider default | Embedding model name |
 | `embedding_dim` | provider default | Embedding vector dimension used by sqlite-vec index |
 | `soul_path` | unset | Path to a `SOUL.md` file that defines bot personality, voice, and values. If unset, checks `data_dir/SOUL.md` then `./SOUL.md` |
+
+## Docker sandbox
+
+To run `bash` tool calls in containers, set:
+
+```yaml
+sandbox:
+  mode: "all"
+  backend: "auto"
+  image: "ubuntu:25.10"
+  container_prefix: "microclaw-sandbox"
+  no_network: true
+  require_runtime: false
+```
+
+Behavior:
+- `sandbox.mode: "off"` (default): host execution.
+- `sandbox.mode: "all"` + Docker unavailable:
+  - `require_runtime: false`: fallback to host with warning.
+  - `require_runtime: true`: fail fast.
 
 ## Channel-specific required fields
 
