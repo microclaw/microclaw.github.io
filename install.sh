@@ -174,7 +174,7 @@ fallback_install() {
   local os="$1"
   if [ "$os" = "darwin" ] && need_cmd brew; then
     log "Falling back to Homebrew..."
-    brew tap everettjf/tap
+    brew tap microclaw/tap
     brew install microclaw
     return 0
   fi
@@ -232,7 +232,7 @@ main() {
         err "Homebrew not found"
         exit 1
       fi
-      brew tap everettjf/tap
+      brew tap microclaw/tap
       brew install microclaw
       ;;
     cargo)
