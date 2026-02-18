@@ -31,7 +31,7 @@ This installer only installs prebuilt GitHub release binaries.
 ### Homebrew (macOS)
 
 ```sh
-brew tap everettjf/tap
+brew tap microclaw/tap
 brew install microclaw
 ```
 

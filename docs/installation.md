@@ -114,7 +114,7 @@ Quick symptom map:
 ## Homebrew (macOS)
 
 ```sh
-brew tap everettjf/tap
+brew tap microclaw/tap
 brew install microclaw
 ```
 
@@ -230,7 +230,7 @@ If installed via Homebrew:
 
 ```sh
 brew uninstall microclaw
-brew untap everettjf/tap
+brew untap microclaw/tap
 ```
 
 Optional cleanup (remove local runtime data):
