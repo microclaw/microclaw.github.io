@@ -15,7 +15,7 @@ const INSTALL_OPTIONS = [
   {
     id: 'brew',
     label: 'Homebrew',
-    command: 'brew tap microclaw/tap && brew install microclaw',
+    command: 'brew update && brew tap microclaw/tap && brew install microclaw',
     hint: 'Best for Mac developers',
   },
   {
