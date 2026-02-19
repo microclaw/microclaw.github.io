@@ -17,8 +17,8 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.50b9aeb4.css">
-<script src="/assets/js/runtime~main.be809322.js" defer="defer"></script>
-<script src="/assets/js/main.1a522bce.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.1f91bb4d.js" defer="defer"></script>
+<script src="/assets/js/main.25dd0582.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -46,7 +46,7 @@
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">microclaw start</span><br></span></code></pre></div></div>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="find-chat-ids">Find chat IDs<a href="#find-chat-ids" class="hash-link" aria-label="Direct link to Find chat IDs" title="Direct link to Find chat IDs" translate="no">​</a></h2>
 <p>If chats already have messages stored, query SQLite:</p>
-<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlite3 microclaw.data/runtime/microclaw.db \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &quot;SELECT chat_id, chat_title, chat_type, last_message_time FROM chats ORDER BY last_message_time DESC;&quot;</span><br></span></code></pre></div></div>
+<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">sqlite3 ~/.microclaw/runtime/microclaw.db \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  &quot;SELECT chat_id, chat_title, chat_type, last_message_time FROM chats ORDER BY last_message_time DESC;&quot;</span><br></span></code></pre></div></div>
 <p>Use the <code>chat_id</code> values from this output in <code>control_chat_ids</code>.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="quick-verification">Quick verification<a href="#quick-verification" class="hash-link" aria-label="Direct link to Quick verification" title="Direct link to Quick verification" translate="no">​</a></h2>
 <p>From a non-control chat:</p>
