@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.50b9aeb4.css">
-<script src="/assets/js/runtime~main.081f4c1a.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.c5199053.js" defer="defer"></script>
 <script src="/assets/js/main.0a67a518.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -37,8 +37,9 @@
 <p>Current runtime boundary:</p>
 <ul>
 <li class=""><code>src/runtime.rs</code>: boots enabled adapters</li>
-<li class=""><code>src/channel.rs</code>: channel routing + policy + dispatcher orchestration</li>
-<li class=""><code>src/channels/delivery.rs</code>: concrete per-channel text delivery implementations</li>
+<li class=""><code>crates/microclaw-channels/src/channel.rs</code>: channel routing + policy + dispatcher orchestration</li>
+<li class=""><code>crates/microclaw-channels/src/channel_adapter.rs</code>: adapter trait + channel registry</li>
+<li class=""><code>crates/microclaw-channels/src/delivery.rs</code>: delivery boundary notes (delivery now lives in adapter implementations)</li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="gateway-responsibilities-target-model">Gateway responsibilities (target model)<a href="#gateway-responsibilities-target-model" class="hash-link" aria-label="Direct link to Gateway responsibilities (target model)" title="Direct link to Gateway responsibilities (target model)" translate="no">​</a></h2>
 <p>Gateway should own:</p>
