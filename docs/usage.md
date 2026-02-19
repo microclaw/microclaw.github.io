@@ -16,6 +16,8 @@ When `web_enabled: true`, MicroClaw serves a local Web UI (default `http://127.0
 - If there are no sessions yet, Web UI auto-generates a key like `session-YYYYMMDDHHmmss`
 - The first message in that session automatically persists it in SQLite
 
+For operator endpoints (auth/session/metrics/self-check), see [Web Operator API](./web-operator-api).
+
 ---
 
 ## Basics

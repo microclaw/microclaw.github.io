@@ -24,7 +24,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Usage',
-      items: ['usage', 'skills', 'tools', 'memory', 'scheduler'],
+      items: ['usage', 'web-operator-api', 'skills', 'tools', 'memory', 'scheduler'],
     },
     {
       type: 'category',
