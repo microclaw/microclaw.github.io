@@ -2,11 +2,155 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://microclaw.ai/blog</id>
     <title>MicroClaw Blog</title>
-    <updated>2026-02-14T00:00:00.000Z</updated>
+    <updated>2026-02-19T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://microclaw.ai/blog"/>
     <subtitle>MicroClaw Blog</subtitle>
     <icon>https://microclaw.ai/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[MicroClaw Feb 19: What Changed in the Past Week]]></title>
+        <id>https://microclaw.ai/blog/microclaw-february-2026-updates</id>
+        <link href="https://microclaw.ai/blog/microclaw-february-2026-updates"/>
+        <updated>2026-02-19T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[MicroClaw has moved quickly in February, with significant updates across ClawHub integration, voice handling, path compatibility, modularization, web/auth hardening, and release automation.]]></summary>
+        <content type="html"><![CDATA[<p>MicroClaw has moved quickly in February, with significant updates across ClawHub integration, voice handling, path compatibility, modularization, web/auth hardening, and release automation.</p>
+<p>This post summarizes the direction and outcomes based on the <strong>50 most recent commits</strong> on <code>main</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="scope-and-time-window">Scope and Time Window<a href="https://microclaw.ai/blog/microclaw-february-2026-updates#scope-and-time-window" class="hash-link" aria-label="Direct link to Scope and Time Window" title="Direct link to Scope and Time Window" translate="no">​</a></h2>
+<p>This update covers the most recent 50 commits up to <strong>February 19, 2026</strong>.</p>
+<p>At a high level, the work clusters into six tracks:</p>
+<ul>
+<li class="">ClawHub and skills lifecycle</li>
+<li class="">provider/runtime compatibility</li>
+<li class="">config/path compatibility and migration safety</li>
+<li class="">web/auth/ops hardening</li>
+<li class="">modular crate boundaries and codebase cleanup</li>
+<li class="">release and deployment reliability</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-clawhub-from-initial-integration-to-production-friendly-flow">1) ClawHub: From Initial Integration to Production-Friendly Flow<a href="https://microclaw.ai/blog/microclaw-february-2026-updates#1-clawhub-from-initial-integration-to-production-friendly-flow" class="hash-link" aria-label="Direct link to 1) ClawHub: From Initial Integration to Production-Friendly Flow" title="Direct link to 1) ClawHub: From Initial Integration to Production-Friendly Flow" translate="no">​</a></h2>
+<p>The registry path is now substantially more practical.</p>
+<p>Key outcomes from this cycle:</p>
+<ul>
+<li class=""><code>microclaw skill</code> command set is usable for search/install/list/inspect workflows</li>
+<li class="">async runtime panic scenarios were removed in CLI/tool execution paths</li>
+<li class="">transient failures now have retry behavior in key flows</li>
+<li class=""><code>/reload-skills</code> support was added in multiple channels to reduce restart dependency</li>
+<li class="">follow-up fixes corrected install result semantics and endpoint behavior</li>
+</ul>
+<p>Operationally, this means less friction for skill discovery and activation, and fewer false-positive install states.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-voice-transcription-cloud--local-execution-modes">2) Voice Transcription: Cloud + Local Execution Modes<a href="https://microclaw.ai/blog/microclaw-february-2026-updates#2-voice-transcription-cloud--local-execution-modes" class="hash-link" aria-label="Direct link to 2) Voice Transcription: Cloud + Local Execution Modes" title="Direct link to 2) Voice Transcription: Cloud + Local Execution Modes" translate="no">​</a></h2>
+<p>Voice handling now supports both hosted and local execution paths.</p>
+<p>Highlights:</p>
+<ul>
+<li class="">OpenAI remains the default provider path</li>
+<li class="">local command-based transcription is now configurable</li>
+<li class="">failure-path cleanup was tightened to avoid temp-file leaks</li>
+</ul>
+<p>This gives teams more flexibility in privacy/performance/cost tradeoffs while preserving a simple default for most users.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-path-and-data-compatibility-hardening-after-real-world-merge-pressure">3) Path and Data Compatibility: Hardening After Real-World Merge Pressure<a href="https://microclaw.ai/blog/microclaw-february-2026-updates#3-path-and-data-compatibility-hardening-after-real-world-merge-pressure" class="hash-link" aria-label="Direct link to 3) Path and Data Compatibility: Hardening After Real-World Merge Pressure" title="Direct link to 3) Path and Data Compatibility: Hardening After Real-World Merge Pressure" translate="no">​</a></h2>
+<p>A major focus in the follow-up work was preventing path regressions.</p>
+<p>Important corrections included:</p>
+<ul>
+<li class="">restoring dynamic <code>data_dir</code> behavior for skills/lockfile defaults</li>
+<li class="">aligning assertions and cross-platform path expectations</li>
+<li class="">clarifying skills source layout (<code>skills/built-in</code>) vs runtime state layout</li>
+</ul>
+<p>Net effect: upgrades are safer for existing deployments that already depend on custom data roots.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-runtime-and-provider-compatibility">4) Runtime and Provider Compatibility<a href="https://microclaw.ai/blog/microclaw-february-2026-updates#4-runtime-and-provider-compatibility" class="hash-link" aria-label="Direct link to 4) Runtime and Provider Compatibility" title="Direct link to 4) Runtime and Provider Compatibility" translate="no">​</a></h2>
+<p>The runtime also received compatibility-focused cleanup:</p>
+<ul>
+<li class="">DeepSeek/tool-call behavior fixes</li>
+<li class="">replacement of brittle model-name checks with provider capability flags</li>
+<li class="">improved LLM/provider conventions in docs to reduce future drift</li>
+</ul>
+<p>This lowers maintenance risk as provider APIs evolve.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-webauthops-and-modularity-progress">5) Web/Auth/Ops and Modularity Progress<a href="https://microclaw.ai/blog/microclaw-february-2026-updates#5-webauthops-and-modularity-progress" class="hash-link" aria-label="Direct link to 5) Web/Auth/Ops and Modularity Progress" title="Direct link to 5) Web/Auth/Ops and Modularity Progress" translate="no">​</a></h2>
+<p>Beyond feature work, a lot of value in this batch is structural:</p>
+<ul>
+<li class="">auth/metrics and config self-check hardening</li>
+<li class="">web handler refactors and module split cleanup</li>
+<li class="">continued modular extraction into workspace crates (<code>core/storage/tools/channels/app</code>)</li>
+<li class="">removal of temporary wrappers/shims after migration milestones</li>
+</ul>
+<p>These changes improve long-term maintainability and make feature iteration less risky.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-release-and-delivery-cadence">6) Release and Delivery Cadence<a href="https://microclaw.ai/blog/microclaw-february-2026-updates#6-release-and-delivery-cadence" class="hash-link" aria-label="Direct link to 6) Release and Delivery Cadence" title="Direct link to 6) Release and Delivery Cadence" translate="no">​</a></h2>
+<p>This period also included active release execution work:</p>
+<ul>
+<li class="">version bumps through <code>0.0.83</code>, <code>0.0.85</code>, <code>0.0.86</code></li>
+<li class="">release/build script refinements</li>
+<li class="">Homebrew tap updates and release packaging flow maintenance</li>
+</ul>
+<p>The direction is clear: keep shipping while steadily tightening quality gates and deployment repeatability.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-to-expect-next">What to Expect Next<a href="https://microclaw.ai/blog/microclaw-february-2026-updates#what-to-expect-next" class="hash-link" aria-label="Direct link to What to Expect Next" title="Direct link to What to Expect Next" translate="no">​</a></h2>
+<p>Given this trajectory, near-term priorities are likely to continue around:</p>
+<ul>
+<li class="">ClawHub reliability and skill lifecycle UX</li>
+<li class="">cross-channel consistency in runtime behavior</li>
+<li class="">deployment smoothness and fewer manual release interventions</li>
+<li class="">further simplification after modularization milestones</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="appendix-50-recent-commits-covered">Appendix: 50 Recent Commits Covered<a href="https://microclaw.ai/blog/microclaw-february-2026-updates#appendix-50-recent-commits-covered" class="hash-link" aria-label="Direct link to Appendix: 50 Recent Commits Covered" title="Direct link to Appendix: 50 Recent Commits Covered" translate="no">​</a></h2>
+<ul>
+<li class=""><code>1a67c37</code> chore: trigger CI for release 0.0.86 finalize</li>
+<li class=""><code>4b8f7b1</code> bump version to 0.0.86</li>
+<li class=""><code>d6a030e</code> Merge pull request #45 from microclaw/fix/pr44-followup</li>
+<li class=""><code>7d2aba1</code> fix ignore</li>
+<li class=""><code>30e00f4</code> mv skill dir</li>
+<li class=""><code>94dcfe9</code> docs: regenerate config defaults artifact</li>
+<li class=""><code>8c30d3d</code> fix: follow up PR44 path and clawhub install regressions</li>
+<li class=""><code>0ab79bc</code> Merge pull request #44 from klampatech/feature/clawhub-integration-fixes</li>
+<li class=""><code>45e1ddf</code> chore: remove test artifacts from PR</li>
+<li class=""><code>039c11f</code> bump version to 0.0.85</li>
+<li class=""><code>60fb947</code> docs: add llm provider capability-based conventions</li>
+<li class=""><code>c09a3bc</code> Merge origin/main into feature branch and resolve conflicts</li>
+<li class=""><code>10ae7b6</code> refactor(llm): replace DeepSeek model-name checks with provider capability flags</li>
+<li class=""><code>a933732</code> Merge pull request #43 from mission-deny-the-mission/fix/deepseek-reasoning</li>
+<li class=""><code>bf4fb7e</code> feat(clawhub): integrate ClawHub skills and add local voice transcription</li>
+<li class=""><code>d49b1a3</code> Merge pull request #42 from microclaw/feature/ops-hardening-feb19</li>
+<li class=""><code>40516fd</code> Fix windows path assertions and document path compatibility</li>
+<li class=""><code>98e67c9</code> Improve skill availability diagnostics and filtering</li>
+<li class=""><code>3606842</code> Move built-in skill sources to skills/built-in</li>
+<li class=""><code>9715f8a</code> Update working_dir default to home-based path</li>
+<li class=""><code>5597f39</code> Simplify data/skills path logic without env overrides</li>
+<li class=""><code>5068792</code> fix deepseek reasoning/tool-call compatibility</li>
+<li class=""><code>65567cd</code> Default data_dir to ~/.microclaw when not configured</li>
+<li class=""><code>82351af</code> Add configurable skills_dir override</li>
+<li class=""><code>216dac9</code> Harden web metrics/auth flow and adopt ~/.microclaw skills home</li>
+<li class=""><code>7456f0c</code> Merge pull request #41 from microclaw/codex/fix-clawhub-pr39</li>
+<li class=""><code>7053399</code> refactor clawhub config, test templates, and gateway adapter</li>
+<li class=""><code>bf6d7b7</code> extract clawhub core into microclaw-clawhub crate</li>
+<li class=""><code>d85f226</code> update generated config defaults and include clawhub fixes</li>
+<li class=""><code>5852ffa</code> fix clawhub merge fallout and restore lint clean</li>
+<li class=""><code>3d95bec</code> Merge pull request #39 from klampatech/feat/clawhub-integration</li>
+<li class=""><code>e58a244</code> Merge branch 'feature/clawhub-init-v0' into feat/clawhub-integration</li>
+<li class=""><code>432e2aa</code> bump version to 0.0.83</li>
+<li class=""><code>6185b81</code> Merge pull request #40 from microclaw/feature/auth-feature</li>
+<li class=""><code>d80571e</code> Fix legacy sessions schema index init ordering</li>
+<li class=""><code>5fd4314</code> Add merge notes and rollback steps to upgrade guide</li>
+<li class=""><code>4f278a8</code> Use platform hook scripts in hook block test</li>
+<li class=""><code>c8a3a8e</code> Fix Windows hook block test command quoting</li>
+<li class=""><code>450c77c</code> Add config self-check UI and split web config/stream modules</li>
+<li class=""><code>b2df265</code> Refactor web handlers and harden config/OTLP checks</li>
+<li class=""><code>1215d2a</code> lots of features</li>
+<li class=""><code>f5ca180</code> bump version to 0.0.82</li>
+<li class=""><code>faa2ad6</code> chore: trigger CI on main</li>
+<li class=""><code>8e11fba</code> feat(clawhub): complete ClawHub integration v1</li>
+<li class=""><code>3d59af4</code> bump version to 0.0.81</li>
+<li class=""><code>4083f56</code> docs: align architecture and runtime docs with crate layout</li>
+<li class=""><code>e33288f</code> Merge pull request #38 from microclaw/pr/final-cleanup-remove-usage-wrapper</li>
+<li class=""><code>eb96f48</code> refactor(storage): remove usage wrapper module and use storage usage API directly</li>
+<li class=""><code>e07bf93</code> Merge pull request #37 from microclaw/pr/finalize-modularity-boundaries</li>
+<li class=""><code>5780822</code> refactor(modularity): finalize crate imports and remove legacy shim modules</li>
+</ul>]]></content>
+        <author>
+            <name>Everett</name>
+            <uri>https://github.com/microclaw</uri>
+        </author>
+        <category label="Architecture" term="Architecture"/>
+        <category label="Agentic AI" term="Agentic AI"/>
+        <category label="Rust" term="Rust"/>
+        <category label="Chat" term="Chat"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Built with Rust: MicroClaw as a Multi-Channel Agent Runtime]]></title>
         <id>https://microclaw.ai/blog/built-with-rust-microclaw-runtime</id>

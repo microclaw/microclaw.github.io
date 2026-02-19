@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="blog-wrapper blog-post-page plugin-blog plugin-id-default" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">MicroClaw Feb 19: What Changed in the Past Week | MicroClaw</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://microclaw.ai/img/social-card.svg"><meta data-rh="true" name="twitter:image" content="https://microclaw.ai/img/social-card.svg"><meta data-rh="true" property="og:url" content="https://microclaw.ai/blog/microclaw-february-2026-updates"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_tag" content="default"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:docusaurus_tag" content="default"><meta data-rh="true" property="og:title" content="MicroClaw Feb 19: What Changed in the Past Week | MicroClaw"><meta data-rh="true" name="description" content="MicroClaw has moved quickly in February, with significant updates across ClawHub integration, voice handling, path compatibility, modularization, web/auth hardening, and release automation."><meta data-rh="true" property="og:description" content="MicroClaw has moved quickly in February, with significant updates across ClawHub integration, voice handling, path compatibility, modularization, web/auth hardening, and release automation."><meta data-rh="true" property="og:type" content="article"><meta data-rh="true" property="article:published_time" content="2026-02-19T00:00:00.000Z"><meta data-rh="true" property="article:author" content="https://github.com/microclaw"><meta data-rh="true" property="article:tag" content="Architecture,Agentic AI,Rust,Chat"><link data-rh="true" rel="icon" href="/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://microclaw.ai/blog/microclaw-february-2026-updates"><link data-rh="true" rel="alternate" href="https://microclaw.ai/blog/microclaw-february-2026-updates" hreflang="en"><link data-rh="true" rel="alternate" href="https://microclaw.ai/blog/microclaw-february-2026-updates" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","@id":"https://microclaw.ai/blog/microclaw-february-2026-updates","mainEntityOfPage":"https://microclaw.ai/blog/microclaw-february-2026-updates","url":"https://microclaw.ai/blog/microclaw-february-2026-updates","headline":"MicroClaw Feb 19: What Changed in the Past Week","name":"MicroClaw Feb 19: What Changed in the Past Week","description":"MicroClaw has moved quickly in February, with significant updates across ClawHub integration, voice handling, path compatibility, modularization, web/auth hardening, and release automation.","datePublished":"2026-02-19T00:00:00.000Z","author":{"@type":"Person","name":"Everett","description":"MicroClaw Maintainer","url":"https://github.com/microclaw","image":"https://github.com/microclaw.png"},"keywords":[],"isPartOf":{"@type":"Blog","@id":"https://microclaw.ai/blog","name":"Blog"}}</script><link rel="alternate" type="application/rss+xml" href="/blog/rss.xml" title="MicroClaw RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/blog/atom.xml" title="MicroClaw Atom Feed">
+
+
+
+
+<link rel="preconnect" href="https://www.google-analytics.com">
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6MJPZ80E4Z"></script>
+<script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-6MJPZ80E4Z",{anonymize_ip:!0})</script>
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.50b9aeb4.css">
+<script src="/assets/js/runtime~main.781c8480.js" defer="defer"></script>
+<script src="/assets/js/main.e71cb76f.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/img/logo.png"><link rel="preload" as="image" href="https://github.com/microclaw.png"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/"><div class="navbar__logo"><img src="/img/logo.png" alt="MicroClaw Logo" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/img/logo.png" alt="MicroClaw Logo" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">MicroClaw</b></a><a class="navbar__item navbar__link" href="/docs/overview">Docs</a><a class="navbar__item navbar__link" href="/docs/quickstart">Quickstart</a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/blog">Blog</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/microclaw/microclaw" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="container margin-vert--lg"><div class="row"><aside class="col col--3"><nav class="sidebar_re4s thin-scrollbar" aria-label="Blog recent posts navigation"><div class="sidebarItemTitle_pO2u margin-bottom--md">Recent posts</div><div role="group"><h3 class="yearGroupHeading_rMGB">2026</h3><ul class="sidebarItemList_Yudw clean-list"><li class="sidebarItem__DBe"><a aria-current="page" class="sidebarItemLink_mo7H sidebarItemLinkActive_I1ZP" href="/blog/microclaw-february-2026-updates">MicroClaw Feb 19: What Changed in the Past Week</a></li><li class="sidebarItem__DBe"><a class="sidebarItemLink_mo7H" href="/blog/built-with-rust-microclaw-runtime">Built with Rust: MicroClaw as a Multi-Channel Agent Runtime</a></li><li class="sidebarItem__DBe"><a class="sidebarItemLink_mo7H" href="/blog/microclaw-vs-nanoclaw-openclaw">MicroClaw vs NanoClaw vs OpenClaw: Updated Three-Path Comparison</a></li><li class="sidebarItem__DBe"><a class="sidebarItemLink_mo7H" href="/blog/building-microclaw">Building MicroClaw: A Practical Agent Runtime for Telegram and Beyond</a></li></ul></div></nav></aside><main class="col col--7"><article class=""><header><h1 class="title_f1Hy">MicroClaw Feb 19: What Changed in the Past Week</h1><div class="container_mt6G margin-vert--md"><time datetime="2026-02-19T00:00:00.000Z">February 19, 2026</time> · <!-- -->5 min read</div><div class="margin-top--md margin-bottom--sm row"><div class="col col--12 authorCol_Hf19"><div class="avatar margin-bottom--sm"><a class="avatar__photo-link" href="/blog/authors/microclaw"><img class="avatar__photo authorImage_XqGP" src="https://github.com/microclaw.png" alt="Everett"></a><div class="avatar__intro authorDetails_lV9A"><div class="avatar__name"><a href="/blog/authors/microclaw"><span class="authorName_yefp" translate="no">Everett</span></a></div><small class="authorTitle_nd0D" title="MicroClaw Maintainer">MicroClaw Maintainer</small><div class="authorSocials_rSDt"><a href="https://x.com/everettjf" target="_blank" rel="noopener noreferrer" class="authorSocialLink_owbf" title="X"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 1200 1227" style="--dark:#000;--light:#fff" class="authorSocialIcon_XYv3 xSvg_y3PF"><path d="M714.163 519.284 1160.89 0h-105.86L667.137 450.887 357.328 0H0l468.492 681.821L0 1226.37h105.866l409.625-476.152 327.181 476.152H1200L714.137 519.284h.026ZM569.165 687.828l-47.468-67.894-377.686-540.24h162.604l304.797 435.991 47.468 67.894 396.2 566.721H892.476L569.165 687.854v-.026Z"></path></svg></a><a href="https://discord.gg/pvmezwkAk5" target="_blank" rel="noopener noreferrer" class="authorSocialLink_owbf" title="discord"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="authorSocialIcon_XYv3"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M1.2 12a10.8 10.8 0 1 0 21.6 0a10.8 10.8 0 0 0 -21.6 0"></path><path d="M1.92 8.4h20.16"></path><path d="M1.92 15.6h20.16"></path><path d="M11.4 1.2a20.4 20.4 0 0 0 0 21.6"></path><path d="M12.6 1.2a20.4 20.4 0 0 1 0 21.6"></path></svg></a></div></div></div></div></div></header><div id="__blog-post-container" class="markdown"><p>MicroClaw has moved quickly in February, with significant updates across ClawHub integration, voice handling, path compatibility, modularization, web/auth hardening, and release automation.</p>
+<p>This post summarizes the direction and outcomes based on the <strong>50 most recent commits</strong> on <code>main</code>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="scope-and-time-window">Scope and Time Window<a href="#scope-and-time-window" class="hash-link" aria-label="Direct link to Scope and Time Window" title="Direct link to Scope and Time Window" translate="no">​</a></h2>
+<p>This update covers the most recent 50 commits up to <strong>February 19, 2026</strong>.</p>
+<p>At a high level, the work clusters into six tracks:</p>
+<ul>
+<li class="">ClawHub and skills lifecycle</li>
+<li class="">provider/runtime compatibility</li>
+<li class="">config/path compatibility and migration safety</li>
+<li class="">web/auth/ops hardening</li>
+<li class="">modular crate boundaries and codebase cleanup</li>
+<li class="">release and deployment reliability</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-clawhub-from-initial-integration-to-production-friendly-flow">1) ClawHub: From Initial Integration to Production-Friendly Flow<a href="#1-clawhub-from-initial-integration-to-production-friendly-flow" class="hash-link" aria-label="Direct link to 1) ClawHub: From Initial Integration to Production-Friendly Flow" title="Direct link to 1) ClawHub: From Initial Integration to Production-Friendly Flow" translate="no">​</a></h2>
+<p>The registry path is now substantially more practical.</p>
+<p>Key outcomes from this cycle:</p>
+<ul>
+<li class=""><code>microclaw skill</code> command set is usable for search/install/list/inspect workflows</li>
+<li class="">async runtime panic scenarios were removed in CLI/tool execution paths</li>
+<li class="">transient failures now have retry behavior in key flows</li>
+<li class=""><code>/reload-skills</code> support was added in multiple channels to reduce restart dependency</li>
+<li class="">follow-up fixes corrected install result semantics and endpoint behavior</li>
+</ul>
+<p>Operationally, this means less friction for skill discovery and activation, and fewer false-positive install states.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-voice-transcription-cloud--local-execution-modes">2) Voice Transcription: Cloud + Local Execution Modes<a href="#2-voice-transcription-cloud--local-execution-modes" class="hash-link" aria-label="Direct link to 2) Voice Transcription: Cloud + Local Execution Modes" title="Direct link to 2) Voice Transcription: Cloud + Local Execution Modes" translate="no">​</a></h2>
+<p>Voice handling now supports both hosted and local execution paths.</p>
+<p>Highlights:</p>
+<ul>
+<li class="">OpenAI remains the default provider path</li>
+<li class="">local command-based transcription is now configurable</li>
+<li class="">failure-path cleanup was tightened to avoid temp-file leaks</li>
+</ul>
+<p>This gives teams more flexibility in privacy/performance/cost tradeoffs while preserving a simple default for most users.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-path-and-data-compatibility-hardening-after-real-world-merge-pressure">3) Path and Data Compatibility: Hardening After Real-World Merge Pressure<a href="#3-path-and-data-compatibility-hardening-after-real-world-merge-pressure" class="hash-link" aria-label="Direct link to 3) Path and Data Compatibility: Hardening After Real-World Merge Pressure" title="Direct link to 3) Path and Data Compatibility: Hardening After Real-World Merge Pressure" translate="no">​</a></h2>
+<p>A major focus in the follow-up work was preventing path regressions.</p>
+<p>Important corrections included:</p>
+<ul>
+<li class="">restoring dynamic <code>data_dir</code> behavior for skills/lockfile defaults</li>
+<li class="">aligning assertions and cross-platform path expectations</li>
+<li class="">clarifying skills source layout (<code>skills/built-in</code>) vs runtime state layout</li>
+</ul>
+<p>Net effect: upgrades are safer for existing deployments that already depend on custom data roots.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-runtime-and-provider-compatibility">4) Runtime and Provider Compatibility<a href="#4-runtime-and-provider-compatibility" class="hash-link" aria-label="Direct link to 4) Runtime and Provider Compatibility" title="Direct link to 4) Runtime and Provider Compatibility" translate="no">​</a></h2>
+<p>The runtime also received compatibility-focused cleanup:</p>
+<ul>
+<li class="">DeepSeek/tool-call behavior fixes</li>
+<li class="">replacement of brittle model-name checks with provider capability flags</li>
+<li class="">improved LLM/provider conventions in docs to reduce future drift</li>
+</ul>
+<p>This lowers maintenance risk as provider APIs evolve.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-webauthops-and-modularity-progress">5) Web/Auth/Ops and Modularity Progress<a href="#5-webauthops-and-modularity-progress" class="hash-link" aria-label="Direct link to 5) Web/Auth/Ops and Modularity Progress" title="Direct link to 5) Web/Auth/Ops and Modularity Progress" translate="no">​</a></h2>
+<p>Beyond feature work, a lot of value in this batch is structural:</p>
+<ul>
+<li class="">auth/metrics and config self-check hardening</li>
+<li class="">web handler refactors and module split cleanup</li>
+<li class="">continued modular extraction into workspace crates (<code>core/storage/tools/channels/app</code>)</li>
+<li class="">removal of temporary wrappers/shims after migration milestones</li>
+</ul>
+<p>These changes improve long-term maintainability and make feature iteration less risky.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-release-and-delivery-cadence">6) Release and Delivery Cadence<a href="#6-release-and-delivery-cadence" class="hash-link" aria-label="Direct link to 6) Release and Delivery Cadence" title="Direct link to 6) Release and Delivery Cadence" translate="no">​</a></h2>
+<p>This period also included active release execution work:</p>
+<ul>
+<li class="">version bumps through <code>0.0.83</code>, <code>0.0.85</code>, <code>0.0.86</code></li>
+<li class="">release/build script refinements</li>
+<li class="">Homebrew tap updates and release packaging flow maintenance</li>
+</ul>
+<p>The direction is clear: keep shipping while steadily tightening quality gates and deployment repeatability.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-to-expect-next">What to Expect Next<a href="#what-to-expect-next" class="hash-link" aria-label="Direct link to What to Expect Next" title="Direct link to What to Expect Next" translate="no">​</a></h2>
+<p>Given this trajectory, near-term priorities are likely to continue around:</p>
+<ul>
+<li class="">ClawHub reliability and skill lifecycle UX</li>
+<li class="">cross-channel consistency in runtime behavior</li>
+<li class="">deployment smoothness and fewer manual release interventions</li>
+<li class="">further simplification after modularization milestones</li>
+</ul>
+<hr>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="appendix-50-recent-commits-covered">Appendix: 50 Recent Commits Covered<a href="#appendix-50-recent-commits-covered" class="hash-link" aria-label="Direct link to Appendix: 50 Recent Commits Covered" title="Direct link to Appendix: 50 Recent Commits Covered" translate="no">​</a></h2>
+<ul>
+<li class=""><code>1a67c37</code> chore: trigger CI for release 0.0.86 finalize</li>
+<li class=""><code>4b8f7b1</code> bump version to 0.0.86</li>
+<li class=""><code>d6a030e</code> Merge pull request #45 from microclaw/fix/pr44-followup</li>
+<li class=""><code>7d2aba1</code> fix ignore</li>
+<li class=""><code>30e00f4</code> mv skill dir</li>
+<li class=""><code>94dcfe9</code> docs: regenerate config defaults artifact</li>
+<li class=""><code>8c30d3d</code> fix: follow up PR44 path and clawhub install regressions</li>
+<li class=""><code>0ab79bc</code> Merge pull request #44 from klampatech/feature/clawhub-integration-fixes</li>
+<li class=""><code>45e1ddf</code> chore: remove test artifacts from PR</li>
+<li class=""><code>039c11f</code> bump version to 0.0.85</li>
+<li class=""><code>60fb947</code> docs: add llm provider capability-based conventions</li>
+<li class=""><code>c09a3bc</code> Merge origin/main into feature branch and resolve conflicts</li>
+<li class=""><code>10ae7b6</code> refactor(llm): replace DeepSeek model-name checks with provider capability flags</li>
+<li class=""><code>a933732</code> Merge pull request #43 from mission-deny-the-mission/fix/deepseek-reasoning</li>
+<li class=""><code>bf4fb7e</code> feat(clawhub): integrate ClawHub skills and add local voice transcription</li>
+<li class=""><code>d49b1a3</code> Merge pull request #42 from microclaw/feature/ops-hardening-feb19</li>
+<li class=""><code>40516fd</code> Fix windows path assertions and document path compatibility</li>
+<li class=""><code>98e67c9</code> Improve skill availability diagnostics and filtering</li>
+<li class=""><code>3606842</code> Move built-in skill sources to skills/built-in</li>
+<li class=""><code>9715f8a</code> Update working_dir default to home-based path</li>
+<li class=""><code>5597f39</code> Simplify data/skills path logic without env overrides</li>
+<li class=""><code>5068792</code> fix deepseek reasoning/tool-call compatibility</li>
+<li class=""><code>65567cd</code> Default data_dir to ~/.microclaw when not configured</li>
+<li class=""><code>82351af</code> Add configurable skills_dir override</li>
+<li class=""><code>216dac9</code> Harden web metrics/auth flow and adopt ~/.microclaw skills home</li>
+<li class=""><code>7456f0c</code> Merge pull request #41 from microclaw/codex/fix-clawhub-pr39</li>
+<li class=""><code>7053399</code> refactor clawhub config, test templates, and gateway adapter</li>
+<li class=""><code>bf6d7b7</code> extract clawhub core into microclaw-clawhub crate</li>
+<li class=""><code>d85f226</code> update generated config defaults and include clawhub fixes</li>
+<li class=""><code>5852ffa</code> fix clawhub merge fallout and restore lint clean</li>
+<li class=""><code>3d95bec</code> Merge pull request #39 from klampatech/feat/clawhub-integration</li>
+<li class=""><code>e58a244</code> Merge branch &#x27;feature/clawhub-init-v0&#x27; into feat/clawhub-integration</li>
+<li class=""><code>432e2aa</code> bump version to 0.0.83</li>
+<li class=""><code>6185b81</code> Merge pull request #40 from microclaw/feature/auth-feature</li>
+<li class=""><code>d80571e</code> Fix legacy sessions schema index init ordering</li>
+<li class=""><code>5fd4314</code> Add merge notes and rollback steps to upgrade guide</li>
+<li class=""><code>4f278a8</code> Use platform hook scripts in hook block test</li>
+<li class=""><code>c8a3a8e</code> Fix Windows hook block test command quoting</li>
+<li class=""><code>450c77c</code> Add config self-check UI and split web config/stream modules</li>
+<li class=""><code>b2df265</code> Refactor web handlers and harden config/OTLP checks</li>
+<li class=""><code>1215d2a</code> lots of features</li>
+<li class=""><code>f5ca180</code> bump version to 0.0.82</li>
+<li class=""><code>faa2ad6</code> chore: trigger CI on main</li>
+<li class=""><code>8e11fba</code> feat(clawhub): complete ClawHub integration v1</li>
+<li class=""><code>3d59af4</code> bump version to 0.0.81</li>
+<li class=""><code>4083f56</code> docs: align architecture and runtime docs with crate layout</li>
+<li class=""><code>e33288f</code> Merge pull request #38 from microclaw/pr/final-cleanup-remove-usage-wrapper</li>
+<li class=""><code>eb96f48</code> refactor(storage): remove usage wrapper module and use storage usage API directly</li>
+<li class=""><code>e07bf93</code> Merge pull request #37 from microclaw/pr/finalize-modularity-boundaries</li>
+<li class=""><code>5780822</code> refactor(modularity): finalize crate imports and remove legacy shim modules</li>
+</ul></div><footer class="docusaurus-mt-lg"><div class="row margin-top--sm theme-blog-footer-edit-meta-row"><div class="col"><b>Tags:</b><ul class="tags_jXut padding--none margin-left--sm"><li class="tag_QGVx"><a rel="tag" class="tag_zVej tagRegular_sFm0" href="/blog/tags/architecture">Architecture</a></li><li class="tag_QGVx"><a rel="tag" class="tag_zVej tagRegular_sFm0" href="/blog/tags/agents">Agentic AI</a></li><li class="tag_QGVx"><a rel="tag" class="tag_zVej tagRegular_sFm0" href="/blog/tags/rust">Rust</a></li><li class="tag_QGVx"><a rel="tag" class="tag_zVej tagRegular_sFm0" href="/blog/tags/chat">Chat</a></li></ul></div></div><div class="row margin-top--sm theme-blog-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/microclaw/microclaw/tree/main/blog/2026-02-19-microclaw-february-updates.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Blog post page navigation"><a class="pagination-nav__link pagination-nav__link--next" href="/blog/built-with-rust-microclaw-runtime"><div class="pagination-nav__sublabel">Older post</div><div class="pagination-nav__label">Built with Rust: MicroClaw as a Multi-Channel Agent Runtime</div></a></nav></main><div class="col col--2"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#scope-and-time-window" class="table-of-contents__link toc-highlight">Scope and Time Window</a></li><li><a href="#1-clawhub-from-initial-integration-to-production-friendly-flow" class="table-of-contents__link toc-highlight">1) ClawHub: From Initial Integration to Production-Friendly Flow</a></li><li><a href="#2-voice-transcription-cloud--local-execution-modes" class="table-of-contents__link toc-highlight">2) Voice Transcription: Cloud + Local Execution Modes</a></li><li><a href="#3-path-and-data-compatibility-hardening-after-real-world-merge-pressure" class="table-of-contents__link toc-highlight">3) Path and Data Compatibility: Hardening After Real-World Merge Pressure</a></li><li><a href="#4-runtime-and-provider-compatibility" class="table-of-contents__link toc-highlight">4) Runtime and Provider Compatibility</a></li><li><a href="#5-webauthops-and-modularity-progress" class="table-of-contents__link toc-highlight">5) Web/Auth/Ops and Modularity Progress</a></li><li><a href="#6-release-and-delivery-cadence" class="table-of-contents__link toc-highlight">6) Release and Delivery Cadence</a></li><li><a href="#what-to-expect-next" class="table-of-contents__link toc-highlight">What to Expect Next</a></li><li><a href="#appendix-50-recent-commits-covered" class="table-of-contents__link toc-highlight">Appendix: 50 Recent Commits Covered</a></li></ul></div></div></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Docs</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/docs/overview">Overview</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/quickstart">Quickstart</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">Project</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/microclaw/microclaw" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/microclaw/microclaw/issues" target="_blank" rel="noopener noreferrer" class="footer__link-item">Issues<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/microclaw/microclaw/releases" target="_blank" rel="noopener noreferrer" class="footer__link-item">Releases<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://discord.gg/pvmezwkAk5" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">More</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/blog">Blog</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/license">License</a></li><li class="footer__item"><a href="https://x.com/everettjf" target="_blank" rel="noopener noreferrer" class="footer__link-item">X (Author)<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://x.com/microclaw" target="_blank" rel="noopener noreferrer" class="footer__link-item">X (MicroClaw)<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 MicroClaw.</div></div></div></footer></div>
+</body>
+</html>
