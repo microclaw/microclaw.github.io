@@ -53,6 +53,7 @@ const sidebars = {
         'license',
         'faq',
         'roadmap',
+        'release-checklist',
         'about',
       ],
     },
