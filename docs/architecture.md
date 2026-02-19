@@ -38,3 +38,16 @@ Channel event -> Gateway adapter -> Agent engine -> LLM + Tools loop
 2. [Skills Architecture](./architecture-skills)
 3. [MCP Architecture](./architecture-mcp)
 4. [Channels and Gateway](./architecture-channels)
+
+## Execution policy layer
+
+Tool runtime includes an explicit execution policy tag:
+- `host-only`
+- `sandbox-only`
+- `dual`
+
+Current baseline:
+- `bash`: `dual`
+- file mutation tools (`write_file`, `edit_file`): `host-only`
+
+Policy is evaluated before execution and combined with risk/approval checks.

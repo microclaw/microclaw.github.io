@@ -61,3 +61,4 @@ From a control chat:
 
 - This is authorization at tool execution time, using trusted caller context from runtime.
 - It does not sandbox host command/file access by itself. Keep host deployment locked down.
+- To inspect sandbox posture and execution policy state in Web UI, open Settings and run config self-check (Security posture card).

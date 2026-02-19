@@ -41,6 +41,7 @@ At runtime, at least one channel must be enabled:
 | `sandbox.container_prefix` | `microclaw-sandbox` | Prefix for sandbox container names |
 | `sandbox.no_network` | `true` | If true, sandbox containers run with `--network=none` |
 | `sandbox.require_runtime` | `false` | If true and Docker is unavailable while `sandbox.mode=all`, command fails fast instead of host fallback |
+| `sandbox.mount_allowlist_path` | unset | Optional external mount allowlist file (one allowed root path per line) |
 | `max_tokens` | `8192` | Max tokens per LLM response |
 | `max_tool_iterations` | `100` | Max tool-use loop iterations per message |
 | `max_document_size_mb` | `100` | Maximum allowed inbound Telegram document size (files above limit are rejected with a hint message) |
@@ -81,6 +82,19 @@ Behavior:
 - `sandbox.mode: "all"` + Docker unavailable:
   - `require_runtime: false`: fallback to host with warning.
   - `require_runtime: true`: fail fast.
+
+Quick opt-in:
+
+```sh
+microclaw setup --enable-sandbox
+microclaw doctor sandbox
+```
+
+Optional hardening files:
+- mount allowlist: `~/.config/microclaw/mount-allowlist.txt`
+- file path allowlist: `~/.config/microclaw/path-allowlist.txt`
+
+Each file supports one absolute path per line (`#` comments allowed).
 
 ## Channel-specific required fields
 

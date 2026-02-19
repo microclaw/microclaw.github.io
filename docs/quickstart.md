@@ -91,7 +91,14 @@ web_enabled: true
 ### Optional: run `bash` tool in Docker sandbox
 
 Default behavior is host execution (`sandbox.mode: "off"`).  
-To route `bash` tool calls into Docker containers:
+To enable sandbox quickly:
+
+```sh
+microclaw setup --enable-sandbox
+microclaw doctor sandbox
+```
+
+Or set it manually to route `bash` tool calls into Docker containers:
 
 ```yaml
 sandbox:
@@ -101,6 +108,8 @@ sandbox:
   container_prefix: "microclaw-sandbox"
   no_network: true
   require_runtime: false
+  # optional external allowlist file (one allowed root per line)
+  # mount_allowlist_path: "~/.config/microclaw/mount-allowlist.txt"
 ```
 
 Quick verification:
@@ -110,6 +119,10 @@ docker info
 docker run --rm ubuntu:25.10 echo ok
 ```
 
+Optional hardening:
+- `~/.config/microclaw/mount-allowlist.txt`: sandbox mount allowlist.
+- `~/.config/microclaw/path-allowlist.txt`: file tool path allowlist.
+
 Then start MicroClaw and ask it to run:
 - `cat /etc/os-release`
 - `pwd`
@@ -118,6 +131,12 @@ Then start MicroClaw and ask it to run:
 
 ```sh
 microclaw doctor
+```
+
+Sandbox-only diagnostics:
+
+```sh
+microclaw doctor sandbox
 ```
 
 For support tickets, attach JSON output:
