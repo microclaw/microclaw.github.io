@@ -76,8 +76,8 @@ Manual `microclaw.config.yaml` configuration is also supported:
 llm_provider: "anthropic"
 api_key: "sk-ant-..."
 model: "claude-sonnet-4-5-20250929"
-data_dir: "./microclaw.data"
-working_dir: "./tmp"
+data_dir: "~/.microclaw"
+working_dir: "~/.microclaw/working_dir"
 working_dir_isolation: "chat" # optional; defaults to "chat"
 max_document_size_mb: 100
 

@@ -72,7 +72,7 @@ Summary: pass=<n> warn=<n> fail=<n>
 - Shell runtime (`bash/sh` or `pwsh/powershell`)
 - Node.js + npm + `agent-browser`
 - PowerShell execution policy (Windows)
-- MCP dependency commands from `microclaw.data/mcp.json`
+- MCP dependency commands from `~/.microclaw/mcp.json` (or your configured `data_dir`)
 
 ### PowerShell execution policy notes
 
@@ -100,7 +100,7 @@ Use this triage path when running in native Windows terminals (PowerShell / CMD,
    - install Node.js LTS
    - run `npm install -g agent-browser` and `agent-browser install`
 5. If any `mcp.<name>.command` is `FAIL`:
-   - install that command (or use absolute path in `microclaw.data/mcp.json`)
+   - install that command (or use absolute path in `~/.microclaw/mcp.json`)
 6. Re-run `microclaw doctor` until `fail=0`, then start:
    - `microclaw start`
 
@@ -157,8 +157,8 @@ Or manually create `microclaw.config.yaml`:
 llm_provider: "anthropic"
 api_key: "..."
 model: "claude-sonnet-4-5-20250929"
-data_dir: "./microclaw.data"
-working_dir: "./tmp"
+data_dir: "~/.microclaw"
+working_dir: "~/.microclaw/working_dir"
 max_document_size_mb: 100
 
 # Enable at least one channel:
@@ -190,7 +190,7 @@ microclaw gateway uninstall
 Platform behavior:
 - macOS: `launchd` user agent
 - Linux: `systemd --user` unit
-- Logs: hourly files in `microclaw.data/runtime/logs/` as `microclaw-YYYY-MM-DD-HH.log`
+- Logs: hourly files in `~/.microclaw/runtime/logs/` as `microclaw-YYYY-MM-DD-HH.log`
 - Retention: files older than 30 days are auto-deleted
 
 ## Optional: browser automation
@@ -236,6 +236,6 @@ brew untap microclaw/tap
 Optional cleanup (remove local runtime data):
 
 ```sh
-rm -rf ./microclaw.data/runtime
+rm -rf ~/.microclaw/runtime
 rm -rf ~/.microclaw
 ```

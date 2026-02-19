@@ -64,7 +64,7 @@ MicroClaw can archive full conversations to markdown files for later reference.
 Archives are stored at:
 
 ```
-microclaw.data/runtime/groups/<channel>/<chat_id>/conversations/<YYYYMMDD-HHMMSS>.md
+~/.microclaw/runtime/groups/<channel>/<chat_id>/conversations/<YYYYMMDD-HHMMSS>.md
 ```
 
 Each message is saved with its role (user/assistant) and full content including tool calls and results.
@@ -223,8 +223,8 @@ MicroClaw has persistent memory stored in `AGENTS.md` files, plus structured mem
 
 AGENTS.md scopes:
 
-- **Global memory**: Shared across all chats (`microclaw.data/runtime/groups/AGENTS.md`)
-- **Chat memory**: Specific to one chat (`microclaw.data/runtime/groups/{chat_id}/AGENTS.md`)
+- **Global memory**: Shared across all chats (`~/.microclaw/runtime/groups/AGENTS.md`)
+- **Chat memory**: Specific to one chat (`~/.microclaw/runtime/groups/{chat_id}/AGENTS.md`)
 
 Memory is automatically injected into the system prompt on every request.
 Structured memory is also injected with a token budget and relevance ranking.
@@ -298,7 +298,7 @@ Use this panel to tune `reflector_interval_mins`, `memory_token_budget`, and sem
 
 ## Agent Skills
 
-MicroClaw auto-discovers local skills from `microclaw.data/skills/*/SKILL.md`.  
+MicroClaw auto-discovers local skills from `~/.microclaw/skills/*/SKILL.md`.  
 Use `/skills` in chat to list all available skills.
 
 See the dedicated skills reference for per-skill details: [Skills](./skills).
@@ -522,8 +522,8 @@ microclaw help        # Show help and all configuration options
 | `api_key` | Yes* | - | LLM API key (`ollama` can leave this empty; `openai-codex` supports OAuth or `api_key`) |
 | `bot_username` | Yes | - | Bot username (without @) |
 | `model` | No | provider-specific (`claude-sonnet-4-5-20250929` for `anthropic`) | LLM model ID |
-| `data_dir` | No | `./microclaw.data` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
-| `working_dir` | No | `./tmp` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
+| `data_dir` | No | `~/.microclaw` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
+| `working_dir` | No | `~/.microclaw/working_dir` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
 | `max_tokens` | No | `8192` | Max tokens per response |
 | `max_tool_iterations` | No | `100` | Max tool loop iterations |
 | `max_document_size_mb` | No | `100` | Max inbound Telegram document size (MB); larger files are rejected |

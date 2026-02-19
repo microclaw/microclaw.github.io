@@ -262,14 +262,14 @@ You: Search the web for "Rust error handling best practices", fetch the first re
 After running tests, verify data was stored correctly:
 
 ```sh
-sqlite3 microclaw.data/runtime/microclaw.db "SELECT COUNT(*) FROM messages;"
-sqlite3 microclaw.data/runtime/microclaw.db "SELECT * FROM scheduled_tasks;"
-sqlite3 microclaw.data/runtime/microclaw.db "SELECT * FROM chats;"
+sqlite3 ~/.microclaw/runtime/microclaw.db "SELECT COUNT(*) FROM messages;"
+sqlite3 ~/.microclaw/runtime/microclaw.db "SELECT * FROM scheduled_tasks;"
+sqlite3 ~/.microclaw/runtime/microclaw.db "SELECT * FROM chats;"
 ```
 
 ## Cleanup
 
 ```sh
 rm -f /tmp/microclaw_test.txt /tmp/microclaw_*.txt
-sqlite3 microclaw.data/runtime/microclaw.db "UPDATE scheduled_tasks SET status='cancelled' WHERE status='active';"
+sqlite3 ~/.microclaw/runtime/microclaw.db "UPDATE scheduled_tasks SET status='cancelled' WHERE status='active';"
 ```

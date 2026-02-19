@@ -4,7 +4,11 @@ title: Skills
 sidebar_position: 7
 ---
 
-MicroClaw auto-discovers local skills from `microclaw.data/skills/*/SKILL.md`.
+MicroClaw auto-discovers local skills from `<skills_dir>/*/SKILL.md`.
+
+Path rules:
+- If `skills_dir` is explicitly configured, that path is used.
+- If `skills_dir` is not configured, skills default to `<data_dir>/skills` (with `data_dir` defaulting to `~/.microclaw`).
 
 Use `/skills` in chat to list all available skills.  
 When a request matches a skill, the model can call `activate_skill` to load and follow that skill's full workflow.
@@ -135,4 +139,4 @@ Example tool input:
 
 - Apple-related skills are macOS-only.
 - First use may require granting Terminal automation/privacy permissions in macOS System Settings.
-- You can add your own skills by creating a new subdirectory under `microclaw.data/skills/` with a `SKILL.md` file.
+- You can add your own skills by creating a new subdirectory under `~/.microclaw/skills/` with a `SKILL.md` file.

@@ -39,7 +39,7 @@ microclaw start
 If chats already have messages stored, query SQLite:
 
 ```sh
-sqlite3 microclaw.data/runtime/microclaw.db \
+sqlite3 ~/.microclaw/runtime/microclaw.db \
   "SELECT chat_id, chat_title, chat_type, last_message_time FROM chats ORDER BY last_message_time DESC;"
 ```
 

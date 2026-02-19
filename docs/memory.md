@@ -11,7 +11,7 @@ MicroClaw has two complementary memory systems that are both injected into the s
 Manually written key-value style notes in `AGENTS.md` files. The LLM writes these via the `write_memory` tool.
 
 ```
-microclaw.data/runtime/groups/
+~/.microclaw/runtime/groups/
     AGENTS.md                 # Global memory (shared across all chats)
     {chat_id}/
         AGENTS.md             # Per-chat memory
@@ -19,7 +19,7 @@ microclaw.data/runtime/groups/
 
 - LLM can read and write memory using `read_memory` and `write_memory`
 - Memory is wrapped in `<global_memory>` and `<chat_memory>` tags
-- The memory files live under `DATA_DIR/runtime` (default `./microclaw.data/runtime`)
+- The memory files live under `DATA_DIR/runtime` (default `~/.microclaw/runtime`)
 - `write_memory` to `scope: "global"` requires the caller chat to be in `control_chat_ids`
 - `write_memory` also persists a structured memory row into SQLite (`memories` table)
 - Explicit commands like `remember ...` / `记住...` also use a deterministic fast path into structured memory

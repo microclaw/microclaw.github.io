@@ -35,7 +35,7 @@ Skill workflows are provided by local `SKILL.md` files (for example `apple-notes
 | 19 | `export_chat` | chat | Export chat history to markdown |
 | 20 | `sub_agent` | Agent | Delegate a bounded sub-task to a restricted sub-agent |
 | 21 | `activate_skill` | Skills | Load specialized local skill instructions |
-| 22 | `sync_skills` | Skills | Sync external skills into local `microclaw.data/skills` with normalized metadata |
+| 22 | `sync_skills` | Skills | Sync external skills into local `~/.microclaw/skills` with normalized metadata |
 | 23 | `todo_read` | Planning | Read persistent todo list for a chat |
 | 24 | `todo_write` | Planning | Write/replace persistent todo list for a chat |
 | 25 | `structured_memory_search` | Memory | Search structured memories (keyword, optional archived include) |

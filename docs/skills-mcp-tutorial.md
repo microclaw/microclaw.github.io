@@ -16,7 +16,7 @@ Use this page as the operational guide for production setups.
 ### 1) Create the skill folder
 
 ```bash
-mkdir -p microclaw.data/skills/my-skill
+mkdir -p ~/.microclaw/skills/my-skill
 ```
 
 ### 2) Add `SKILL.md`
@@ -123,7 +123,7 @@ The synced `SKILL.md` includes normalized fields:
 ### 1) Start from minimal production config
 
 ```bash
-cp mcp.minimal.example.json microclaw.data/mcp.json
+cp mcp.minimal.example.json ~/.microclaw/mcp.json
 ```
 
 This gives you one safe local MCP server (`filesystem` via `stdio`).
@@ -194,7 +194,7 @@ mcp_filesystem_read_file
 
 ## Common pitfalls
 
-- `mcp.json` placed in wrong directory: must be `microclaw.data/mcp.json`
+- `mcp.json` placed in wrong directory: by default it should be `~/.microclaw/mcp.json` (or `<data_dir>/mcp.json` if you changed `data_dir`)
 - Missing runtime dependency (`npx`, server binary, auth token)
 - Skill appears in repo but not in `/skills`: usually platform/deps filter
 - Remote MCP endpoint responds non-JSON-RPC payload

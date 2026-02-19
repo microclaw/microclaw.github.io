@@ -32,8 +32,8 @@ At runtime, at least one channel must be enabled:
 | `llm_provider` | `anthropic` | Provider preset ID (or custom ID). `anthropic` uses native Anthropic API, others use OpenAI-compatible API |
 | `model` | provider-specific | Model name |
 | `llm_base_url` | provider preset default | Optional custom base URL |
-| `data_dir` | `./microclaw.data` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
-| `working_dir` | `./tmp` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
+| `data_dir` | `~/.microclaw` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
+| `working_dir` | `~/.microclaw/working_dir` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
 | `working_dir_isolation` | `chat` | Working directory isolation mode for `bash/read_file/write_file/edit_file/glob/grep`: `shared` uses `working_dir/shared`, `chat` isolates each chat under `working_dir/chat/<channel>/<chat_id>` |
 | `sandbox.mode` | `off` | Bash execution mode: `off` runs on host; `all` routes bash tool calls to Docker containers |
 | `sandbox.backend` | `auto` | Sandbox backend (`auto`/`docker`) |
@@ -57,6 +57,10 @@ At runtime, at least one channel must be enabled:
 | `embedding_model` | provider default | Embedding model name |
 | `embedding_dim` | provider default | Embedding vector dimension used by sqlite-vec index |
 | `soul_path` | unset | Path to a `SOUL.md` file that defines bot personality, voice, and values. If unset, checks `data_dir/SOUL.md` then `./SOUL.md` |
+
+Path compatibility:
+- If users already configured `data_dir` / `skills_dir` / `working_dir`, those values keep working unchanged.
+- If not configured, defaults are `data_dir=~/.microclaw`, `skills_dir=<data_dir>/skills`, `working_dir=~/.microclaw/working_dir`.
 
 ## Docker sandbox
 

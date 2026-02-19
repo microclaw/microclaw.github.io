@@ -49,6 +49,13 @@ src/
 | `Tool` / `ToolResult` | `microclaw_tools::runtime` | Shared tool trait + result/auth primitives |
 | `LlmProvider` | `llm.rs` | Provider abstraction for Anthropic and OpenAI-compatible APIs |
 
+## LLM provider conventions
+
+- Keep `src/llm.rs` model-agnostic: do not branch on specific model names.
+- Encode provider-specific behavior as capability flags (for example reasoning-field bridging or optional request params), then branch on capabilities.
+- Add provider/model presets in setup/config surfaces, but keep request/translation logic in `llm.rs` driven by capabilities.
+- Add tests for capability combinations rather than individual model name strings.
+
 ## Adding a new tool
 
 1. Create `src/tools/my_tool.rs`
