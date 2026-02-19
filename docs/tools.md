@@ -324,4 +324,6 @@ Manage a scheduled task by ID.
 2. Add `pub mod my_tool;` to `src/tools/mod.rs`
 3. Register in `ToolRegistry::new()` with `Box::new(my_tool::MyTool::new(...))`
 
+Trait/runtime note: `Tool` and `ToolResult` live in `microclaw_tools::runtime`; `src/tools/mod.rs` reuses those shared primitives.
+
 If your tool needs shared state (Bot, Database), add a constructor that accepts the dependency.

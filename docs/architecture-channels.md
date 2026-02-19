@@ -18,8 +18,9 @@ Each adapter handles platform specifics (message format, mention rules, send API
 
 Current runtime boundary:
 - `src/runtime.rs`: boots enabled adapters
-- `src/channel.rs`: channel routing + policy + dispatcher orchestration
-- `src/channels/delivery.rs`: concrete per-channel text delivery implementations
+- `crates/microclaw-channels/src/channel.rs`: channel routing + policy + dispatcher orchestration
+- `crates/microclaw-channels/src/channel_adapter.rs`: adapter trait + channel registry
+- `crates/microclaw-channels/src/delivery.rs`: delivery boundary notes (delivery now lives in adapter implementations)
 
 ## Gateway responsibilities (target model)
 

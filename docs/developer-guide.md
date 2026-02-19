@@ -19,22 +19,24 @@ cargo run -- start
 ## Project structure
 
 ```
+crates/
+    microclaw-core/      # Shared error/types/text modules
+    microclaw-storage/   # SQLite + memory + usage reporting
+    microclaw-tools/     # Tool runtime primitives and shared helper engines
+    microclaw-channels/  # Channel abstraction boundary
+    microclaw-app/       # App support modules (logging/skills/transcribe)
+
 src/
     main.rs             # CLI entrypoint
     runtime.rs          # Runtime bootstrap + adapter startup
-    channel.rs          # Chat routing + channel dispatcher orchestration
-    channels/delivery.rs# Channel-specific text delivery clients
     channels/telegram.rs# Telegram adapter
     channels/discord.rs # Discord adapter
     channels/slack.rs   # Slack adapter (Socket Mode)
     channels/feishu.rs  # Feishu/Lark adapter (WS or webhook)
     config.rs           # Loads microclaw.config.yaml
     llm.rs              # Provider adapters (Anthropic/OpenAI-compatible/Codex)
-    llm_types.rs        # Shared message/tool protocol types
-    db.rs               # SQLite tables + queries
-    memory.rs           # AGENTS.md memory manager
     scheduler.rs        # Background scheduler
-    tools/              # Tool trait + implementations
+    tools/              # Built-in tool implementations + registry assembly
 ```
 
 ## Key types
@@ -42,14 +44,15 @@ src/
 | Type | Location | Description |
 |---|---|---|
 | `AppState` | `runtime.rs` | Shared runtime state for all adapters |
-| `Database` | `db.rs` | SQLite wrapper with `Mutex<Connection>` |
+| `Database` | `microclaw_storage::db` | SQLite wrapper with `Mutex<Connection>` |
 | `ToolRegistry` | `tools/mod.rs` | `Vec<Box<dyn Tool>>` dispatch |
+| `Tool` / `ToolResult` | `microclaw_tools::runtime` | Shared tool trait + result/auth primitives |
 | `LlmProvider` | `llm.rs` | Provider abstraction for Anthropic and OpenAI-compatible APIs |
 
 ## Adding a new tool
 
 1. Create `src/tools/my_tool.rs`
-2. Implement the `Tool` trait
+2. Implement the `Tool` trait from `microclaw_tools::runtime`
 3. Add `pub mod my_tool;` to `src/tools/mod.rs`
 4. Register it in `ToolRegistry::new()`
 
