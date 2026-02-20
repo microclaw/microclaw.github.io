@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.50b9aeb4.css">
-<script src="/assets/js/runtime~main.faa24140.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.628c92bc.js" defer="defer"></script>
 <script src="/assets/js/main.e71cb76f.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -62,8 +62,9 @@
 <ul>
 <li class="">semantic KNN (<code>sqlite-vec</code> + configured embedding provider)</li>
 <li class="">fallback keyword relevance scoring (CJK-aware tokenizer) with recency tie-break</li>
+<li class="">MCP-backed query ordering when a memory MCP backend is active (<code>memory_query</code> + <code>memory_upsert</code>)</li>
 </ul>
-<p>This preserves baseline behavior when semantic memory is not available.</p>
+<p>When MCP memory backend is active, local sqlite-vec KNN ranking is not applied to MCP-backed rows; query ordering comes from MCP results, with automatic SQLite fallback on MCP failures.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="sub-agent-inheritance-and-isolation">Sub-agent inheritance and isolation<a href="#sub-agent-inheritance-and-isolation" class="hash-link" aria-label="Direct link to Sub-agent inheritance and isolation" title="Direct link to Sub-agent inheritance and isolation" translate="no">​</a></h2>
 <p>Current model:</p>
 <ul>

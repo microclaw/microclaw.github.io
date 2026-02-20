@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.50b9aeb4.css">
-<script src="/assets/js/runtime~main.faa24140.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.628c92bc.js" defer="defer"></script>
 <script src="/assets/js/main.e71cb76f.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -42,6 +42,15 @@
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="tool-exposure">Tool exposure<a href="#tool-exposure" class="hash-link" aria-label="Direct link to Tool exposure" title="Direct link to Tool exposure" translate="no">​</a></h2>
 <p>MCP tools are registered into the same runtime tool registry with namespaced identifiers.
 This keeps planner behavior consistent between built-in tools and MCP tools.</p>
+<p>Additionally, MicroClaw can use MCP as a structured-memory backend when a server exposes:</p>
+<ul>
+<li class=""><code>memory_query</code></li>
+<li class=""><code>memory_upsert</code></li>
+</ul>
+<p>In that mode, memory operations become MCP-first with automatic fallback to local SQLite on per-call failures.</p>
+<p>Minimal config sketch:</p>
+<div class="language-json codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-json codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token property" style="color:#36acaa">&quot;mcpServers&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token property" style="color:#36acaa">&quot;memory&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token property" style="color:#36acaa">&quot;transport&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;streamable_http&quot;</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token property" style="color:#36acaa">&quot;endpoint&quot;</span><span class="token operator" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">&quot;http://127.0.0.1:8090/mcp&quot;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">}</span><br></span></code></pre></div></div>
+<p>This server is considered memory-capable only when it exposes both <code>memory_query</code> and <code>memory_upsert</code>.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="operational-guidance">Operational guidance<a href="#operational-guidance" class="hash-link" aria-label="Direct link to Operational guidance" title="Direct link to Operational guidance" translate="no">​</a></h2>
 <ul>
 <li class="">Start with minimal local MCP config.</li>
