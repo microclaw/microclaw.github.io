@@ -10,7 +10,7 @@ Get MicroClaw running in a few minutes.
 
 - Rust 1.70+ (2021 edition)
 - at least one channel entry point:
-  - Telegram bot token (from @BotFather), or
+  - Telegram bot token (legacy single-account) or Telegram `channels.telegram.accounts` (recommended multi-account), or
   - Discord bot token, or
   - Slack app token + bot token (Socket Mode), or
   - Feishu/Lark app credentials (app_id + app_secret), or
@@ -84,6 +84,17 @@ max_document_size_mb: 100
 # Pick one or more channels:
 telegram_bot_token: "123456:ABC-DEF1234..."
 bot_username: "my_bot"
+# Recommended Telegram multi-account mode:
+# channels:
+#   telegram:
+#     default_account: "main"
+#     accounts:
+#       main:
+#         bot_token: "123456:ABC-DEF1234..."
+#         bot_username: "my_bot"
+#       support:
+#         bot_token: "987654:XYZ-DEF9999..."
+#         bot_username: "support_bot"
 # Optional channel overrides:
 # channels:
 #   telegram:
