@@ -24,7 +24,7 @@ MicroClaw can run with any combination of channels. You only need at least one o
 5. BotFather returns an HTTP API token (format like `123456:ABC...`) and your bot username
 6. Copy the token immediately and keep it secret
 7. Save token to your config as `telegram_bot_token`
-8. Save username (without `@`) to your config as `bot_username`
+8. Save username (without `@`) to your config as global `bot_username` or channel override `channels.telegram.bot_username`
 9. Optional but useful in groups: run `/setprivacy` in BotFather and choose `Disable` if you want the bot to see non-mention group messages
 
 ### 2. Configure MicroClaw
@@ -32,10 +32,15 @@ MicroClaw can run with any combination of channels. You only need at least one o
 ```yaml
 telegram_bot_token: "123456:ABC-DEF1234..."
 bot_username: "my_microclaw_bot"
+
+# Optional per-channel override:
+# channels:
+#   telegram:
+#     bot_username: "my_microclaw_bot"
 ```
 
 Notes:
-- `bot_username` is required when Telegram is enabled.
+- Telegram needs a username from either global `bot_username` or `channels.telegram.bot_username`.
 - In group chats, mention `@bot_username` to trigger replies.
 - `bot_username` should not include `@` in config.
 - If you rotate token in BotFather (`/revoke`), update `telegram_bot_token` and restart MicroClaw.
@@ -186,13 +191,21 @@ discord_bot_token: "..."
 web_enabled: true
 
 channels:
+  telegram:
+    bot_username: "my_microclaw_bot"
+  discord:
+    bot_username: "my_discord_bot"
   slack:
     bot_token: "xoxb-..."
     app_token: "xapp-..."
+    bot_username: "my_slack_bot"
   feishu:
     app_id: "cli_xxx"
     app_secret: "xxx"
     domain: "feishu"
+    bot_username: "my_feishu_bot"
+  web:
+    bot_username: "my_web_bot"
 ```
 
 ## Troubleshooting

@@ -15,7 +15,7 @@ For anti-drift defaults, use [Generated Config Defaults](./generated-config-defa
 | `api_key` | LLM API key (`ollama` can be empty; `openai-codex` supports OAuth or `api_key`) |
 
 At runtime, at least one channel must be enabled:
-- Telegram (`telegram_bot_token` + `bot_username`)
+- Telegram (`telegram_bot_token` + either global `bot_username` or `channels.telegram.bot_username`)
 - Discord (`discord_bot_token`)
 - Slack (`channels.slack.bot_token` + `channels.slack.app_token`)
 - Feishu/Lark (`channels.feishu.app_id` + `channels.feishu.app_secret`)
@@ -26,7 +26,7 @@ At runtime, at least one channel must be enabled:
 | Key | Default | Description |
 |---|---|---|
 | `telegram_bot_token` | `""` | Telegram bot token from @BotFather (required only if Telegram is enabled) |
-| `bot_username` | `""` | Telegram bot username without `@` (required only if Telegram is enabled) |
+| `bot_username` | `""` | Global default bot username (used by all channels unless overridden) |
 | `discord_bot_token` | unset | Discord bot token (required only if Discord is enabled) |
 | `web_enabled` | `true` | Enable local Web UI channel |
 | `llm_provider` | `anthropic` | Provider preset ID (or custom ID). `anthropic` uses native Anthropic API, others use OpenAI-compatible API |
@@ -98,7 +98,10 @@ Each file supports one absolute path per line (`#` comments allowed).
 
 ## Channel-specific required fields
 
-- Telegram enabled: `telegram_bot_token` and `bot_username` are required.
+`channels.<name>.bot_username` is optional for all channels.  
+If set, it overrides global `bot_username` for that channel.
+
+- Telegram enabled: `telegram_bot_token` and either global `bot_username` or `channels.telegram.bot_username` are required.
 - Discord enabled: `discord_bot_token` is required.
 - Slack enabled: `channels.slack.bot_token` and `channels.slack.app_token` are required. Optional: `allowed_channels`.
 - Feishu/Lark enabled: `channels.feishu.app_id` and `channels.feishu.app_secret` are required. Optional: `connection_mode` (websocket/webhook), `domain` (feishu/lark/custom URL), `allowed_chats`.

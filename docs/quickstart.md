@@ -84,6 +84,10 @@ max_document_size_mb: 100
 # Pick one or more channels:
 telegram_bot_token: "123456:ABC-DEF1234..."
 bot_username: "my_bot"
+# Optional channel overrides:
+# channels:
+#   telegram:
+#     bot_username: "my_bot"
 # discord_bot_token: "..."
 web_enabled: true
 ```

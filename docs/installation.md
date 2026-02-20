@@ -164,7 +164,18 @@ max_document_size_mb: 100
 # Enable at least one channel:
 telegram_bot_token: "..."
 bot_username: "..."
+# Optional channel overrides:
+# channels:
+#   telegram:
+#     bot_username: "..."
 # discord_bot_token: "..."
+# channels:
+#   slack:
+#     bot_token: "..."
+#     app_token: "..."
+#   feishu:
+#     app_id: "..."
+#     app_secret: "..."
 web_enabled: true
 ```
 

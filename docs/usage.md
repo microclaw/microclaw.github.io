@@ -520,7 +520,7 @@ microclaw help        # Show help and all configuration options
 |---|---|---|---|
 | `telegram_bot_token` | Yes | - | Bot token from @BotFather |
 | `api_key` | Yes* | - | LLM API key (`ollama` can leave this empty; `openai-codex` supports OAuth or `api_key`) |
-| `bot_username` | Yes | - | Bot username (without @) |
+| `bot_username` | Yes* | - | Global default bot username |
 | `model` | No | provider-specific (`claude-sonnet-4-5-20250929` for `anthropic`) | LLM model ID |
 | `data_dir` | No | `~/.microclaw` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
 | `working_dir` | No | `~/.microclaw/working_dir` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
@@ -528,3 +528,4 @@ microclaw help        # Show help and all configuration options
 | `max_tool_iterations` | No | `100` | Max tool loop iterations |
 | `max_document_size_mb` | No | `100` | Max inbound Telegram document size (MB); larger files are rejected |
 | `max_history_messages` | No | `50` | Chat history context size |
+`*` `bot_username` can be overridden per channel with optional `channels.<name>.bot_username`.
