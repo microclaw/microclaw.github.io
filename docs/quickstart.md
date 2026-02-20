@@ -11,9 +11,9 @@ Get MicroClaw running in a few minutes.
 - Rust 1.70+ (2021 edition)
 - at least one channel entry point:
   - Telegram bot token (legacy single-account) or Telegram `channels.telegram.accounts` (recommended multi-account), or
-  - Discord bot token, or
-  - Slack app token + bot token (Socket Mode), or
-  - Feishu/Lark app credentials (app_id + app_secret), or
+  - Discord bot token (legacy) or Discord `channels.discord.accounts`, or
+  - Slack app token + bot token (legacy Socket Mode) or Slack `channels.slack.accounts`, or
+  - Feishu/Lark app credentials (legacy) or Feishu `channels.feishu.accounts`, or
   - local Web UI mode (`web_enabled: true`)
 - LLM API key (Anthropic/OpenAI/OpenRouter/DeepSeek/etc.)
   - `openai-codex` supports OAuth (`codex login`) or `api_key` (for OpenAI-compatible proxy endpoints)
@@ -95,6 +95,17 @@ bot_username: "my_bot"
 #       support:
 #         bot_token: "987654:XYZ-DEF9999..."
 #         bot_username: "support_bot"
+# Recommended Discord/Slack/Feishu multi-account mode:
+# channels:
+#   discord:
+#     accounts:
+#       main: { bot_token: "DISCORD_TOKEN_MAIN" }
+#   slack:
+#     accounts:
+#       main: { bot_token: "xoxb-main...", app_token: "xapp-main..." }
+#   feishu:
+#     accounts:
+#       main: { app_id: "cli_xxx", app_secret: "xxx" }
 # Optional channel overrides:
 # channels:
 #   telegram:

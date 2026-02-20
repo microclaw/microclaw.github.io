@@ -16,9 +16,9 @@ For anti-drift defaults, use [Generated Config Defaults](./generated-config-defa
 
 At runtime, at least one channel must be enabled:
 - Telegram (legacy: `telegram_bot_token`; recommended: `channels.telegram.accounts.<id>.bot_token`)
-- Discord (`discord_bot_token`)
-- Slack (`channels.slack.bot_token` + `channels.slack.app_token`)
-- Feishu/Lark (`channels.feishu.app_id` + `channels.feishu.app_secret`)
+- Discord (legacy: `discord_bot_token`; recommended: `channels.discord.accounts.<id>.bot_token`)
+- Slack (legacy: `channels.slack.bot_token` + `channels.slack.app_token`; recommended: per-account tokens under `channels.slack.accounts.<id>`)
+- Feishu/Lark (legacy: `channels.feishu.app_id` + `channels.feishu.app_secret`; recommended: per-account credentials under `channels.feishu.accounts.<id>`)
 - Web UI (`web_enabled: true`)
 
 ## Optional
@@ -30,6 +30,19 @@ At runtime, at least one channel must be enabled:
 | `channels.telegram.accounts.<id>.bot_token` | unset | Telegram bot token for a specific account (recommended multi-account mode) |
 | `channels.telegram.accounts.<id>.bot_username` | unset | Telegram username for a specific account (without `@`) |
 | `channels.telegram.accounts.<id>.allowed_groups` | `[]` | Optional Telegram group allowlist scoped to that account |
+| `channels.discord.default_account` | unset | Default Discord account ID in multi-account mode. If unset, uses `default` when present, otherwise first account key (sorted) |
+| `channels.discord.accounts.<id>.bot_token` | unset | Discord bot token for a specific account |
+| `channels.discord.accounts.<id>.allowed_channels` | `[]` | Optional Discord channel allowlist scoped to that account |
+| `channels.discord.accounts.<id>.no_mention` | `false` | If true, that Discord account replies in guild channels without mention |
+| `channels.slack.default_account` | unset | Default Slack account ID in multi-account mode |
+| `channels.slack.accounts.<id>.bot_token` | unset | Slack bot token for a specific account |
+| `channels.slack.accounts.<id>.app_token` | unset | Slack app token (Socket Mode) for a specific account |
+| `channels.slack.accounts.<id>.allowed_channels` | `[]` | Optional Slack channel allowlist scoped to that account |
+| `channels.feishu.default_account` | unset | Default Feishu/Lark account ID in multi-account mode |
+| `channels.feishu.accounts.<id>.app_id` | unset | Feishu/Lark app ID for a specific account |
+| `channels.feishu.accounts.<id>.app_secret` | unset | Feishu/Lark app secret for a specific account |
+| `channels.feishu.accounts.<id>.domain` | `feishu` | Domain for that account (`feishu`, `lark`, or custom URL) |
+| `channels.feishu.accounts.<id>.allowed_chats` | `[]` | Optional Feishu chat allowlist scoped to that account |
 | `bot_username` | `""` | Global default bot username (used by all channels unless overridden) |
 | `discord_bot_token` | unset | Discord bot token (required only if Discord is enabled) |
 | `web_enabled` | `true` | Enable local Web UI channel |
@@ -108,9 +121,15 @@ If set, it overrides global `bot_username` for that channel.
 - Telegram enabled:
   - Legacy single-account: `telegram_bot_token` + username (`bot_username` or `channels.telegram.bot_username`)
   - Multi-account: at least one enabled `channels.telegram.accounts.<id>.bot_token`
-- Discord enabled: `discord_bot_token` is required.
-- Slack enabled: `channels.slack.bot_token` and `channels.slack.app_token` are required. Optional: `allowed_channels`.
-- Feishu/Lark enabled: `channels.feishu.app_id` and `channels.feishu.app_secret` are required. Optional: `connection_mode` (websocket/webhook), `domain` (feishu/lark/custom URL), `allowed_chats`.
+- Discord enabled:
+  - Legacy single-account: `discord_bot_token`
+  - Multi-account: at least one enabled `channels.discord.accounts.<id>.bot_token`
+- Slack enabled:
+  - Legacy single-account: `channels.slack.bot_token` and `channels.slack.app_token`
+  - Multi-account: at least one enabled account with both `channels.slack.accounts.<id>.bot_token` and `channels.slack.accounts.<id>.app_token`
+- Feishu/Lark enabled:
+  - Legacy single-account: `channels.feishu.app_id` and `channels.feishu.app_secret`
+  - Multi-account: at least one enabled account with `channels.feishu.accounts.<id>.app_id` and `channels.feishu.accounts.<id>.app_secret`
 - Web-only mode is valid: keep `web_enabled: true` (default) and leave other channel tokens empty.
 
 ## Supported `llm_provider` values

@@ -40,7 +40,7 @@ These tests require a running bot with valid credentials.
 
 ### Prerequisites
 
-1. A working `microclaw.config.yaml` file with Telegram configured (legacy `telegram_bot_token` or multi-account `channels.telegram.accounts`), a matching Telegram username (`bot_username`, `channels.telegram.bot_username`, or `channels.telegram.accounts.<id>.bot_username`), and LLM auth (`api_key` for most providers, or OAuth via `codex login` for `openai-codex`)
+1. A working `microclaw.config.yaml` file with at least one channel configured (legacy token fields or multi-account `channels.<name>.accounts`), matching bot username overrides when needed (`bot_username`, `channels.<name>.bot_username`, or `channels.<name>.accounts.<id>.bot_username`), and LLM auth (`api_key` for most providers, or OAuth via `codex login` for `openai-codex`)
 2. Bot is running: `cargo run -- start`
 3. A chat account with a private chat open to the bot
 4. (For group tests) A chat group with the bot added as a member

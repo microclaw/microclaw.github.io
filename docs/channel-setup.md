@@ -109,6 +109,22 @@ discord_bot_token: "YOUR_DISCORD_BOT_TOKEN"
 #   - 987654321098765432
 ```
 
+Recommended multi-account mode:
+
+```yaml
+channels:
+  discord:
+    default_account: "main"
+    accounts:
+      main:
+        bot_token: "DISCORD_TOKEN_MAIN"
+      ops:
+        bot_token: "DISCORD_TOKEN_OPS"
+        no_mention: true
+        # Optional channel restriction for this account
+        # allowed_channels: [123456789012345678]
+```
+
 Notes:
 - If `discord_allowed_channels` is empty, MicroClaw listens in all channels it can access.
 - In guild channels, MicroClaw replies when the bot is mentioned.
@@ -146,6 +162,23 @@ channels:
     # allowed_channels: []
 ```
 
+Recommended multi-account mode:
+
+```yaml
+channels:
+  slack:
+    default_account: "main"
+    accounts:
+      main:
+        bot_token: "xoxb-main..."
+        app_token: "xapp-main..."
+      support:
+        bot_token: "xoxb-support..."
+        app_token: "xapp-support..."
+        # Optional account-specific channel filter
+        # allowed_channels: ["C123ABC456"]
+```
+
 ### 3. Verify
 
 1. Start MicroClaw: `microclaw start`
@@ -180,6 +213,25 @@ channels:
     # Webhook-only settings:
     # webhook_path: "/feishu/events"
     # verification_token: ""
+```
+
+Recommended multi-account mode:
+
+```yaml
+channels:
+  feishu:
+    default_account: "main"
+    accounts:
+      main:
+        app_id: "cli_xxx"
+        app_secret: "xxx"
+        domain: "feishu"
+      intl:
+        app_id: "cli_yyy"
+        app_secret: "yyy"
+        domain: "lark"
+        # Optional account-specific chat filter
+        # allowed_chats: ["oc_xxx"]
 ```
 
 Notes:
