@@ -34,6 +34,21 @@ Additionally, MicroClaw can use MCP as a structured-memory backend when a server
 
 In that mode, memory operations become MCP-first with automatic fallback to local SQLite on per-call failures.
 
+Minimal config sketch:
+
+```json
+{
+  "mcpServers": {
+    "memory": {
+      "transport": "streamable_http",
+      "endpoint": "http://127.0.0.1:8090/mcp"
+    }
+  }
+}
+```
+
+This server is considered memory-capable only when it exposes both `memory_query` and `memory_upsert`.
+
 ## Operational guidance
 
 - Start with minimal local MCP config.

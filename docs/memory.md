@@ -40,6 +40,26 @@ Fallback behavior:
 - if MCP is not configured, unavailable, times out, or returns an invalid payload, MicroClaw transparently falls back to built-in SQLite memory for that operation
 - file memory (`AGENTS.md`) remains local and unchanged
 
+Minimal `mcp.json` example:
+
+```json
+{
+  "defaultProtocolVersion": "2025-11-05",
+  "mcpServers": {
+    "memory": {
+      "transport": "streamable_http",
+      "endpoint": "http://127.0.0.1:8090/mcp",
+      "headers": {
+        "Authorization": "Bearer REPLACE_ME"
+      },
+      "request_timeout_secs": 60
+    }
+  }
+}
+```
+
+The `memory` server must expose MCP tools named exactly `memory_query` and `memory_upsert`.
+
 ## Chat identity mapping
 
 SQLite stores chats with two identities:
