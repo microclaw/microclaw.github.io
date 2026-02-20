@@ -172,6 +172,12 @@ For support tickets, attach JSON output:
 microclaw doctor --json
 ```
 
+If you already have legacy single-token channel fields and want to normalize to account-based config:
+
+```sh
+microclaw doctor --migrate-channels
+```
+
 Text output includes clear status markers:
 
 ```text

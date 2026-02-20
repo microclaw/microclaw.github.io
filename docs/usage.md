@@ -505,6 +505,7 @@ microclaw start       # Start the bot
 microclaw setup      # Interactive setup wizard
 microclaw doctor      # Cross-platform preflight diagnostics
 microclaw doctor --json # Machine-readable diagnostic output
+microclaw doctor --migrate-channels # Migrate legacy channel tokens to channels.<name>.accounts
 microclaw setup       # Full-screen setup wizard
 microclaw gateway install # Install + enable persistent gateway service
 microclaw gateway status  # Show gateway service status
