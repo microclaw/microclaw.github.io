@@ -27,6 +27,13 @@ Protocol version is negotiated during initialize (default currently `2025-11-05`
 MCP tools are registered into the same runtime tool registry with namespaced identifiers.
 This keeps planner behavior consistent between built-in tools and MCP tools.
 
+Additionally, MicroClaw can use MCP as a structured-memory backend when a server exposes:
+
+- `memory_query`
+- `memory_upsert`
+
+In that mode, memory operations become MCP-first with automatic fallback to local SQLite on per-call failures.
+
 ## Operational guidance
 
 - Start with minimal local MCP config.

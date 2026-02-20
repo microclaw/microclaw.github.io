@@ -24,6 +24,22 @@ Manually written key-value style notes in `AGENTS.md` files. The LLM writes thes
 - `write_memory` also persists a structured memory row into SQLite (`memories` table)
 - Explicit commands like `remember ...` / `记住...` also use a deterministic fast path into structured memory
 
+## Optional MCP memory backend
+
+If MCP config contains a server that exposes both `memory_query` and `memory_upsert`, structured-memory operations switch to MCP-first mode.
+
+MCP-first coverage:
+
+- structured-memory reads and searches used during prompt construction
+- explicit `remember ...` fast-path writes
+- Reflector insert/update/supersede/touch operations
+- `structured_memory_search`, `structured_memory_update`, and `structured_memory_delete` tool operations
+
+Fallback behavior:
+
+- if MCP is not configured, unavailable, times out, or returns an invalid payload, MicroClaw transparently falls back to built-in SQLite memory for that operation
+- file memory (`AGENTS.md`) remains local and unchanged
+
 ## Chat identity mapping
 
 SQLite stores chats with two identities:
@@ -102,6 +118,7 @@ Runtime outcomes:
 - `sqlite-vec` enabled + embedding configured: semantic KNN retrieval and semantic dedup
 - `sqlite-vec` enabled + embedding not configured: vector table may exist but retrieval/dedup still falls back
 - `sqlite-vec` disabled: keyword retrieval + Jaccard dedup (stable baseline)
+- MCP memory backend enabled: retrieval order comes from MCP query results; local sqlite-vec KNN ranking is skipped
 
 ## Memory observability
 

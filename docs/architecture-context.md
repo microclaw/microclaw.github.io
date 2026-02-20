@@ -48,8 +48,9 @@ At prompt build time, structured memories are ordered by:
 
 - semantic KNN (`sqlite-vec` + configured embedding provider)
 - fallback keyword relevance scoring (CJK-aware tokenizer) with recency tie-break
+- MCP-backed query ordering when a memory MCP backend is active (`memory_query` + `memory_upsert`)
 
-This preserves baseline behavior when semantic memory is not available.
+When MCP memory backend is active, local sqlite-vec KNN ranking is not applied to MCP-backed rows; query ordering comes from MCP results, with automatic SQLite fallback on MCP failures.
 
 ## Sub-agent inheritance and isolation
 
