@@ -24,27 +24,44 @@ MicroClaw can run with any combination of channels. You only need at least one o
 4. Enter a username that ends with `bot` (for example `my_microclaw_bot`)
 5. BotFather returns an HTTP API token (format like `123456:ABC...`) and your bot username
 6. Copy the token immediately and keep it secret
-7. Save token to your config as `telegram_bot_token`
-8. Save username (without `@`) to your config as global `bot_username` or channel override `channels.telegram.bot_username`
+7. Save token to your config as `telegram_bot_token` (legacy single-account mode) or `channels.telegram.accounts.<id>.bot_token` (recommended multi-account mode)
+8. Save username (without `@`) to your config as global `bot_username`, `channels.telegram.bot_username`, or per-account `channels.telegram.accounts.<id>.bot_username`
 9. Optional but useful in groups: run `/setprivacy` in BotFather and choose `Disable` if you want the bot to see non-mention group messages
 
 ### 2. Configure MicroClaw
 
+Legacy single-account:
+
 ```yaml
 telegram_bot_token: "123456:ABC-DEF1234..."
 bot_username: "my_microclaw_bot"
+```
 
-# Optional per-channel override:
-# channels:
-#   telegram:
-#     bot_username: "my_microclaw_bot"
+Recommended multi-account (multi-token, multi-bot):
+
+```yaml
+channels:
+  telegram:
+    enabled: true
+    default_account: "main"
+    accounts:
+      main:
+        enabled: true
+        bot_token: "123456:ABC-DEF1234..."
+        bot_username: "my_microclaw_bot"
+      support:
+        enabled: true
+        bot_token: "987654:XYZ-DEF9999..."
+        bot_username: "my_support_bot"
+        # Optional group allowlist for this account only
+        # allowed_groups: [-1001234567890]
 ```
 
 Notes:
-- Telegram needs a username from either global `bot_username` or `channels.telegram.bot_username`.
-- In group chats, mention `@bot_username` to trigger replies.
+- In group chats, mention that account's username (for example `@my_support_bot`) to trigger replies.
+- In multi-account mode, each configured account runs as a separate Telegram bot in the same MicroClaw process.
 - `bot_username` should not include `@` in config.
-- If you rotate token in BotFather (`/revoke`), update `telegram_bot_token` and restart MicroClaw.
+- If you rotate token in BotFather (`/revoke`), update the corresponding `bot_token` and restart MicroClaw.
 
 ### 3. Verify
 
@@ -93,6 +110,22 @@ discord_bot_token: "YOUR_DISCORD_BOT_TOKEN"
 #   - 987654321098765432
 ```
 
+Recommended multi-account mode:
+
+```yaml
+channels:
+  discord:
+    default_account: "main"
+    accounts:
+      main:
+        bot_token: "DISCORD_TOKEN_MAIN"
+      ops:
+        bot_token: "DISCORD_TOKEN_OPS"
+        no_mention: true
+        # Optional channel restriction for this account
+        # allowed_channels: [123456789012345678]
+```
+
 Notes:
 - If `discord_allowed_channels` is empty, MicroClaw listens in all channels it can access.
 - In guild channels, MicroClaw replies when the bot is mentioned.
@@ -130,6 +163,23 @@ channels:
     # allowed_channels: []
 ```
 
+Recommended multi-account mode:
+
+```yaml
+channels:
+  slack:
+    default_account: "main"
+    accounts:
+      main:
+        bot_token: "xoxb-main..."
+        app_token: "xapp-main..."
+      support:
+        bot_token: "xoxb-support..."
+        app_token: "xapp-support..."
+        # Optional account-specific channel filter
+        # allowed_channels: ["C123ABC456"]
+```
+
 ### 3. Verify
 
 1. Start MicroClaw: `microclaw start`
@@ -164,6 +214,25 @@ channels:
     # Webhook-only settings:
     # webhook_path: "/feishu/events"
     # verification_token: ""
+```
+
+Recommended multi-account mode:
+
+```yaml
+channels:
+  feishu:
+    default_account: "main"
+    accounts:
+      main:
+        app_id: "cli_xxx"
+        app_secret: "xxx"
+        domain: "feishu"
+      intl:
+        app_id: "cli_yyy"
+        app_secret: "yyy"
+        domain: "lark"
+        # Optional account-specific chat filter
+        # allowed_chats: ["oc_xxx"]
 ```
 
 Notes:
@@ -225,14 +294,22 @@ api_key: "sk-ant-..."
 model: "claude-sonnet-4-5-20250929"
 
 # Channels (any combination)
-telegram_bot_token: "123456:ABC..."
-bot_username: "my_microclaw_bot"
+# Telegram legacy single-account (optional alternative to accounts):
+# telegram_bot_token: "123456:ABC..."
+# bot_username: "my_microclaw_bot"
 discord_bot_token: "..."
 web_enabled: true
 
 channels:
   telegram:
-    bot_username: "my_microclaw_bot"
+    default_account: "main"
+    accounts:
+      main:
+        bot_token: "123456:ABC..."
+        bot_username: "my_microclaw_bot"
+      ops:
+        bot_token: "345678:XYZ..."
+        bot_username: "my_ops_bot"
   discord:
     bot_username: "my_discord_bot"
   slack:
@@ -269,8 +346,8 @@ Then check:
 ### Telegram responds in private but not group
 
 - Confirm bot is added to the group
-- Mention `@bot_username` in group messages
-- Confirm `bot_username` matches BotFather username (without `@`)
+- Mention the active account username in group messages (for example `@my_microclaw_bot` or `@my_ops_bot`)
+- Confirm configured username matches BotFather username (without `@`)
 
 ### Discord bot is online but silent
 

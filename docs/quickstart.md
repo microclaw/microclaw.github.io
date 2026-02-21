@@ -10,10 +10,10 @@ Get MicroClaw running in a few minutes.
 
 - Rust 1.70+ (2021 edition)
 - at least one channel entry point:
-  - Telegram bot token (from @BotFather), or
-  - Discord bot token, or
-  - Slack app token + bot token (Socket Mode), or
-  - Feishu/Lark app credentials (app_id + app_secret), or
+  - Telegram bot token (legacy single-account) or Telegram `channels.telegram.accounts` (recommended multi-account), or
+  - Discord bot token (legacy) or Discord `channels.discord.accounts`, or
+  - Slack app token + bot token (legacy Socket Mode) or Slack `channels.slack.accounts`, or
+  - Feishu/Lark app credentials (legacy) or Feishu `channels.feishu.accounts`, or
   - IRC server + nick + channel list, or
   - local Web UI mode (`web_enabled: true`)
 - LLM API key (Anthropic/OpenAI/OpenRouter/DeepSeek/etc.)
@@ -57,6 +57,7 @@ microclaw setup
 ![Setup Wizard (placeholder)](/img/setup-wizard.png)
 
 It validates required fields, tests chat/LLM connectivity, and writes `microclaw.config.yaml` with backup.
+By default, channel credentials are written in multi-account shape (`channels.<channel>.default_account` + `channels.<channel>.accounts.main`).
 It also includes provider/model list pickers (`Enter` open list, `↑/↓` move, `Enter` confirm, `Esc` close).
 
 Built-in provider presets:
@@ -85,6 +86,28 @@ max_document_size_mb: 100
 # Pick one or more channels:
 telegram_bot_token: "123456:ABC-DEF1234..."
 bot_username: "my_bot"
+# Recommended Telegram multi-account mode:
+# channels:
+#   telegram:
+#     default_account: "main"
+#     accounts:
+#       main:
+#         bot_token: "123456:ABC-DEF1234..."
+#         bot_username: "my_bot"
+#       support:
+#         bot_token: "987654:XYZ-DEF9999..."
+#         bot_username: "support_bot"
+# Recommended Discord/Slack/Feishu multi-account mode:
+# channels:
+#   discord:
+#     accounts:
+#       main: { bot_token: "DISCORD_TOKEN_MAIN" }
+#   slack:
+#     accounts:
+#       main: { bot_token: "xoxb-main...", app_token: "xapp-main..." }
+#   feishu:
+#     accounts:
+#       main: { app_id: "cli_xxx", app_secret: "xxx" }
 # Optional channel overrides:
 # channels:
 #   telegram:

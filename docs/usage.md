@@ -521,9 +521,17 @@ microclaw help        # Show help and all configuration options
 
 | Key | Required | Default | Description |
 |---|---|---|---|
-| `telegram_bot_token` | Yes | - | Bot token from @BotFather |
+| `telegram_bot_token` | Yes (legacy mode) | - | Telegram bot token from @BotFather for single-account mode |
+| `channels.telegram.accounts.<id>.bot_token` | Yes (multi-account mode) | - | Telegram bot token per account (recommended for multi-token multi-bot) |
+| `channels.discord.accounts.<id>.bot_token` | Yes (multi-account mode) | - | Discord bot token per account |
+| `channels.slack.accounts.<id>.bot_token` | Yes (multi-account mode) | - | Slack bot token per account |
+| `channels.slack.accounts.<id>.app_token` | Yes (multi-account mode) | - | Slack app token (Socket Mode) per account |
+| `channels.feishu.accounts.<id>.app_id` | Yes (multi-account mode) | - | Feishu/Lark app ID per account |
+| `channels.feishu.accounts.<id>.app_secret` | Yes (multi-account mode) | - | Feishu/Lark app secret per account |
 | `api_key` | Yes* | - | LLM API key (`ollama` can leave this empty; `openai-codex` supports OAuth or `api_key`) |
 | `bot_username` | Yes* | - | Global default bot username |
+| `channels.telegram.default_account` | No | unset | Default Telegram account ID in multi-account mode |
+| `channels.telegram.accounts.<id>.bot_username` | No | unset | Per-account Telegram username (without `@`) |
 | `model` | No | provider-specific (`claude-sonnet-4-5-20250929` for `anthropic`) | LLM model ID |
 | `data_dir` | No | `~/.microclaw` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
 | `working_dir` | No | `~/.microclaw/working_dir` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
@@ -531,4 +539,4 @@ microclaw help        # Show help and all configuration options
 | `max_tool_iterations` | No | `100` | Max tool loop iterations |
 | `max_document_size_mb` | No | `100` | Max inbound Telegram document size (MB); larger files are rejected |
 | `max_history_messages` | No | `50` | Chat history context size |
-`*` `bot_username` can be overridden per channel with optional `channels.<name>.bot_username`.
+`*` `bot_username` can be overridden per channel with optional `channels.<name>.bot_username` and, in multi-account mode, `channels.<name>.accounts.<id>.bot_username`.
