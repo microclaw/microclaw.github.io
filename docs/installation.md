@@ -72,7 +72,7 @@ Summary: pass=<n> warn=<n> fail=<n>
 - Shell runtime (`bash/sh` or `pwsh/powershell`)
 - Node.js + npm + `agent-browser`
 - PowerShell execution policy (Windows)
-- MCP dependency commands from `~/.microclaw/mcp.json` (or your configured `data_dir`)
+- MCP dependency commands from `~/.microclaw/mcp.json` and `~/.microclaw/mcp.d/*.json` (or your configured `data_dir`)
 
 ### PowerShell execution policy notes
 
@@ -100,7 +100,7 @@ Use this triage path when running in native Windows terminals (PowerShell / CMD,
    - install Node.js LTS
    - run `npm install -g agent-browser` and `agent-browser install`
 5. If any `mcp.<name>.command` is `FAIL`:
-   - install that command (or use absolute path in `~/.microclaw/mcp.json`)
+   - install that command (or use absolute path in `~/.microclaw/mcp.json` or a file under `~/.microclaw/mcp.d/*.json`)
 6. Re-run `microclaw doctor` until `fail=0`, then start:
    - `microclaw start`
 

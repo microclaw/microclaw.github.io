@@ -7,7 +7,7 @@ sidebar_position: 3
 This tutorial covers two extension paths:
 
 1. Add or customize **Skills** (`SKILL.md` workflow packs)
-2. Extend **MCP** servers (`mcp.json` tool federation)
+2. Extend **MCP** servers (`mcp.json` + `mcp.d/*.json` tool federation)
 
 Use this page as the operational guide for production setups.
 
@@ -124,9 +124,15 @@ The synced `SKILL.md` includes normalized fields:
 
 ```bash
 cp mcp.minimal.example.json ~/.microclaw/mcp.json
+mkdir -p ~/.microclaw/mcp.d
 ```
 
 This gives you one safe local MCP server (`filesystem` via `stdio`).
+
+MicroClaw loads MCP config from:
+
+- `~/.microclaw/mcp.json`
+- `~/.microclaw/mcp.d/*.json` (loaded in filename order; later files override earlier ones for the same server key)
 
 ### 2) Add an additional MCP server
 
@@ -151,6 +157,17 @@ This gives you one safe local MCP server (`filesystem` via `stdio`).
     }
   }
 }
+```
+
+You can place this in either:
+
+- base config: `~/.microclaw/mcp.json`
+- a fragment such as `~/.microclaw/mcp.d/10-remote.json`
+
+For sidecar integrations (for example a bridge process), prefer a dedicated fragment:
+
+```bash
+cp mcp.hapi-bridge.example.json ~/.microclaw/mcp.d/hapi-bridge.json
 ```
 
 Accepted key aliases:
@@ -195,6 +212,7 @@ mcp_filesystem_read_file
 ## Common pitfalls
 
 - `mcp.json` placed in wrong directory: by default it should be `~/.microclaw/mcp.json` (or `<data_dir>/mcp.json` if you changed `data_dir`)
+- `mcp.d/*.json` fragments placed in wrong directory: use `<data_dir>/mcp.d/` (default `~/.microclaw/mcp.d/`)
 - Missing runtime dependency (`npx`, server binary, auth token)
 - Skill appears in repo but not in `/skills`: usually platform/deps filter
 - Remote MCP endpoint responds non-JSON-RPC payload

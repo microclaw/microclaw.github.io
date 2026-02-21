@@ -27,6 +27,7 @@ Manually written key-value style notes in `AGENTS.md` files. The LLM writes thes
 ## Optional MCP memory backend
 
 If MCP config contains a server that exposes both `memory_query` and `memory_upsert`, structured-memory operations switch to MCP-first mode.
+Config is loaded from `<data_dir>/mcp.json` plus optional fragments in `<data_dir>/mcp.d/*.json`.
 
 MCP-first coverage:
 
@@ -40,7 +41,7 @@ Fallback behavior:
 - if MCP is not configured, unavailable, times out, or returns an invalid payload, MicroClaw transparently falls back to built-in SQLite memory for that operation
 - file memory (`AGENTS.md`) remains local and unchanged
 
-Minimal `mcp.json` example:
+Minimal MCP config example (base file or fragment):
 
 ```json
 {

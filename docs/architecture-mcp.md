@@ -15,6 +15,11 @@ Supported transports:
 
 Protocol version is negotiated during initialize (default currently `2025-11-05`, configurable per server/global).
 
+Config sources are merged from:
+
+- `<data_dir>/mcp.json`
+- `<data_dir>/mcp.d/*.json` (filename order; later files override earlier definitions for the same server key)
+
 ## Reliability model
 
 - request timeout (`request_timeout_secs`)
