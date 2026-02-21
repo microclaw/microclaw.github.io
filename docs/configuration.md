@@ -30,20 +30,24 @@ At runtime, at least one channel must be enabled:
 | `channels.telegram.default_account` | unset | Default Telegram account ID in multi-account mode. If unset, uses `default` when present, otherwise first account key (sorted) |
 | `channels.telegram.accounts.<id>.bot_token` | unset | Telegram bot token for a specific account (recommended multi-account mode) |
 | `channels.telegram.accounts.<id>.bot_username` | unset | Telegram username for a specific account (without `@`) |
+| `channels.telegram.accounts.<id>.model` | unset | Optional per-bot model override for this Telegram account |
 | `channels.telegram.accounts.<id>.allowed_groups` | `[]` | Optional Telegram group allowlist scoped to that account |
 | `channels.discord.default_account` | unset | Default Discord account ID in multi-account mode. If unset, uses `default` when present, otherwise first account key (sorted) |
 | `channels.discord.accounts.<id>.bot_token` | unset | Discord bot token for a specific account |
 | `channels.discord.accounts.<id>.allowed_channels` | `[]` | Optional Discord channel allowlist scoped to that account |
 | `channels.discord.accounts.<id>.no_mention` | `false` | If true, that Discord account replies in guild channels without mention |
+| `channels.discord.accounts.<id>.model` | unset | Optional per-bot model override for this Discord account |
 | `channels.slack.default_account` | unset | Default Slack account ID in multi-account mode |
 | `channels.slack.accounts.<id>.bot_token` | unset | Slack bot token for a specific account |
 | `channels.slack.accounts.<id>.app_token` | unset | Slack app token (Socket Mode) for a specific account |
 | `channels.slack.accounts.<id>.allowed_channels` | `[]` | Optional Slack channel allowlist scoped to that account |
+| `channels.slack.accounts.<id>.model` | unset | Optional per-bot model override for this Slack account |
 | `channels.feishu.default_account` | unset | Default Feishu/Lark account ID in multi-account mode |
 | `channels.feishu.accounts.<id>.app_id` | unset | Feishu/Lark app ID for a specific account |
 | `channels.feishu.accounts.<id>.app_secret` | unset | Feishu/Lark app secret for a specific account |
 | `channels.feishu.accounts.<id>.domain` | `feishu` | Domain for that account (`feishu`, `lark`, or custom URL) |
 | `channels.feishu.accounts.<id>.allowed_chats` | `[]` | Optional Feishu chat allowlist scoped to that account |
+| `channels.feishu.accounts.<id>.model` | unset | Optional per-bot model override for this Feishu/Lark account |
 | `bot_username` | `""` | Global default bot username (used by all channels unless overridden) |
 | `discord_bot_token` | unset | Discord bot token (required only if Discord is enabled) |
 | `web_enabled` | `true` | Enable local Web UI channel |
@@ -145,6 +149,7 @@ If set, it overrides global `bot_username` for that channel.
 | `channels.irc.real_name` | `"MicroClaw"` | IRC real name sent in USER command |
 | `channels.irc.channels` | unset | Comma-separated channel list (for example `#general,#ops`) |
 | `channels.irc.password` | unset | Optional IRC server password |
+| `channels.irc.model` | unset | Optional model override for IRC bot |
 | `channels.irc.mention_required` | `"true"` | Whether channel messages require mention to trigger reply |
 | `channels.irc.tls` | `"false"` | Enable IRC TLS connection |
 | `channels.irc.tls_server_name` | unset | Optional TLS SNI/server name override |
