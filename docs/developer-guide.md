@@ -33,6 +33,7 @@ src/
     channels/discord.rs # Discord adapter
     channels/slack.rs   # Slack adapter (Socket Mode)
     channels/feishu.rs  # Feishu/Lark adapter (WS or webhook)
+    channels/irc.rs     # IRC adapter (plain/TLS)
     config.rs           # Loads microclaw.config.yaml
     llm.rs              # Provider adapters (Anthropic/OpenAI-compatible/Codex)
     scheduler.rs        # Background scheduler

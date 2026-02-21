@@ -7,7 +7,7 @@ tags: [architecture, rust, agents, telegram]
 
 MicroClaw is no longer just a channel bot. In its current form, it is a **Rust multi-channel agent runtime** with a shared agent engine, provider abstraction, durable session state, and layered memory.
 
-It supports Telegram, Discord, and Web through adapters, while keeping one core execution path for reasoning and tool use.
+It supports Telegram, Discord, Slack, Feishu/Lark, IRC, and Web through adapters, while keeping one core execution path for reasoning and tool use.
 
 Source code: https://github.com/microclaw/microclaw
 Quick Start: https://microclaw.ai/docs/quickstart

@@ -65,7 +65,7 @@ The `memory` server must expose MCP tools named exactly `memory_query` and `memo
 SQLite stores chats with two identities:
 
 - `chat_id`: internal primary key used by sessions/messages/tasks
-- `channel + external_chat_id`: source identity from Telegram/Discord/Web
+- `channel + external_chat_id`: source identity from Telegram/Discord/Slack/Feishu/IRC/Web
 
 This prevents cross-channel collisions when numeric IDs overlap. Existing databases are migrated automatically at startup. Structured memories also store `chat_channel` and `external_chat_id` for easier debugging.
 

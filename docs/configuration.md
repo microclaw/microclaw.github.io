@@ -19,6 +19,7 @@ At runtime, at least one channel must be enabled:
 - Discord (`discord_bot_token`)
 - Slack (`channels.slack.bot_token` + `channels.slack.app_token`)
 - Feishu/Lark (`channels.feishu.app_id` + `channels.feishu.app_secret`)
+- IRC (`channels.irc.server` + `channels.irc.nick` + `channels.irc.channels`)
 - Web UI (`web_enabled: true`)
 
 ## Optional
@@ -105,7 +106,24 @@ If set, it overrides global `bot_username` for that channel.
 - Discord enabled: `discord_bot_token` is required.
 - Slack enabled: `channels.slack.bot_token` and `channels.slack.app_token` are required. Optional: `allowed_channels`.
 - Feishu/Lark enabled: `channels.feishu.app_id` and `channels.feishu.app_secret` are required. Optional: `connection_mode` (websocket/webhook), `domain` (feishu/lark/custom URL), `allowed_chats`.
+- IRC enabled: `channels.irc.server`, `channels.irc.nick`, and `channels.irc.channels` are required. Optional: `port`, `password`, `mention_required`, `tls`, `tls_server_name`, `tls_danger_accept_invalid_certs`.
 - Web-only mode is valid: keep `web_enabled: true` (default) and leave other channel tokens empty.
+
+### IRC channel keys
+
+| Key | Default | Description |
+|---|---|---|
+| `channels.irc.server` | unset | IRC server host or IP |
+| `channels.irc.port` | `"6667"` | IRC port |
+| `channels.irc.nick` | unset | IRC bot nick |
+| `channels.irc.username` | unset | IRC username (defaults to nick when empty) |
+| `channels.irc.real_name` | `"MicroClaw"` | IRC real name sent in USER command |
+| `channels.irc.channels` | unset | Comma-separated channel list (for example `#general,#ops`) |
+| `channels.irc.password` | unset | Optional IRC server password |
+| `channels.irc.mention_required` | `"true"` | Whether channel messages require mention to trigger reply |
+| `channels.irc.tls` | `"false"` | Enable IRC TLS connection |
+| `channels.irc.tls_server_name` | unset | Optional TLS SNI/server name override |
+| `channels.irc.tls_danger_accept_invalid_certs` | `"false"` | Accept invalid TLS certs (testing only) |
 
 ## Supported `llm_provider` values
 

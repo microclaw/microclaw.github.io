@@ -10,7 +10,7 @@ A complete guide to using MicroClaw. Each section includes exact messages you ca
 
 When `web_enabled: true`, MicroClaw serves a local Web UI (default `http://127.0.0.1:10961`).
 
-- Session list shows all channels found in SQLite (`telegram`, `discord`, `slack`, `feishu`, `web`)
+- Session list shows all channels found in SQLite (`telegram`, `discord`, `slack`, `feishu`, `irc`, `web`)
 - You can review chat history and manage state (refresh / clear context / delete)
 - Non-web channels are read-only in Web UI by default; send from source channel
 - If there are no sessions yet, Web UI auto-generates a key like `session-YYYYMMDDHHmmss`
@@ -507,7 +507,10 @@ microclaw doctor      # Cross-platform preflight diagnostics
 microclaw doctor --json # Machine-readable diagnostic output
 microclaw setup       # Full-screen setup wizard
 microclaw gateway install # Install + enable persistent gateway service
+microclaw gateway install --force # Reinstall service files and restart
 microclaw gateway status  # Show gateway service status
+microclaw gateway status --json --deep # Structured status + platform detail
+microclaw gateway restart # Restart gateway service
 microclaw gateway stop    # Stop gateway service
 microclaw gateway logs 200 # Show recent runtime logs
 microclaw gateway uninstall # Remove gateway service

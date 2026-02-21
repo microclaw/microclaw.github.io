@@ -136,7 +136,7 @@ cp target/release/microclaw /usr/local/bin/
 
 Runtime boot behavior:
 - starts scheduler
-- starts configured adapters (Telegram/Discord/Slack/Feishu/Web)
+- starts configured adapters (Telegram/Discord/Slack/Feishu/IRC/Web)
 - can run without Telegram when other channels are enabled
 
 ```sh
@@ -176,12 +176,16 @@ bot_username: "..."
 #   feishu:
 #     app_id: "..."
 #     app_secret: "..."
+#   irc:
+#     server: "irc.example.com"
+#     nick: "microclaw"
+#     channels: "#general"
 web_enabled: true
 ```
 
 Use `microclaw help` (or `cargo run -- help`) for CLI usage.
 
-For full Telegram / Discord onboarding (token provisioning, webhook setup, verification), see [Channel Setup](./channel-setup).
+For full Telegram / Discord / Slack / Feishu / IRC onboarding (token provisioning, connection setup, verification), see [Channel Setup](./channel-setup).
 
 The interactive setup wizard supports provider/model selection (including `ollama`) and uses sensible defaults with Enter-to-confirm prompts.
 
@@ -191,9 +195,12 @@ MicroClaw supports a persistent gateway service manager:
 
 ```sh
 microclaw gateway install
+microclaw gateway install --force
 microclaw gateway status
+microclaw gateway status --json --deep
 microclaw gateway start
 microclaw gateway stop
+microclaw gateway restart
 microclaw gateway logs 200
 microclaw gateway uninstall
 ```
@@ -201,7 +208,7 @@ microclaw gateway uninstall
 Platform behavior:
 - macOS: `launchd` user agent
 - Linux: `systemd --user` unit
-- Logs: hourly files in `~/.microclaw/runtime/logs/` as `microclaw-YYYY-MM-DD-HH.log`
+- Logs: gateway service stdout/stderr in `~/.microclaw/runtime/logs/` as `microclaw-gateway.log` and `microclaw-gateway.error.log`
 - Retention: files older than 30 days are auto-deleted
 
 ## Optional: browser automation

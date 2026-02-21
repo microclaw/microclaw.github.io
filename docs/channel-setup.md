@@ -4,13 +4,14 @@ title: Channel Setup
 sidebar_position: 4
 ---
 
-This guide explains how to connect MicroClaw to Telegram, Discord, Slack, and Feishu/Lark.
+This guide explains how to connect MicroClaw to Telegram, Discord, Slack, Feishu/Lark, and IRC.
 
 MicroClaw can run with any combination of channels. You only need at least one of:
 - Telegram
 - Discord
 - Slack
 - Feishu / Lark
+- IRC
 - Web UI (`web_enabled: true`)
 
 ## Telegram
@@ -176,6 +177,45 @@ Notes:
 2. Send `/skills` in a Feishu DM with the bot
 3. Confirm the bot replies
 
+## IRC
+
+### 1. Prepare server details
+
+1. Confirm reachable IRC host and port
+2. Reserve a bot nick (and optional server password)
+3. Prepare one or more channels to auto-join (for example `#general,#ops`)
+4. If your network requires TLS, use `port: "6697"` and set `tls: "true"`
+
+### 2. Configure MicroClaw
+
+```yaml
+channels:
+  irc:
+    server: "irc.example.com"
+    port: "6667"
+    nick: "microclaw"
+    channels: "#general,#ops"
+    # Optional:
+    # username: "microclaw"
+    # real_name: "MicroClaw"
+    # password: ""
+    # mention_required: "true"
+    # tls: "false"
+    # tls_server_name: ""
+    # tls_danger_accept_invalid_certs: "false"
+```
+
+Notes:
+- In IRC private messages, MicroClaw replies to every message.
+- In IRC channels, default behavior is mention-triggered replies (`mention_required: "true"`).
+- For TLS deployments, keep certificate validation enabled unless you are testing locally.
+
+### 3. Verify
+
+1. Start MicroClaw: `microclaw start`
+2. In an IRC channel, mention your bot nick and send `/skills`
+3. Confirm the bot replies
+
 ## Multi-channel Example
 
 ```yaml
@@ -204,6 +244,10 @@ channels:
     app_secret: "xxx"
     domain: "feishu"
     bot_username: "my_feishu_bot"
+  irc:
+    server: "irc.example.com"
+    nick: "my_irc_bot"
+    channels: "#general"
   web:
     bot_username: "my_web_bot"
 ```

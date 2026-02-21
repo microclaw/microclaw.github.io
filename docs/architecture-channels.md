@@ -12,6 +12,7 @@ MicroClaw supports multiple channels with shared agent behavior and channel-spec
 - Discord
 - Slack (Socket Mode)
 - Feishu / Lark (WebSocket long connection or webhook)
+- IRC (plain TCP or TLS)
 - Web UI
 
 Each adapter handles platform specifics (message format, mention rules, send API), while reusing common agent/tool logic.

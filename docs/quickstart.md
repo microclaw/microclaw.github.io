@@ -14,6 +14,7 @@ Get MicroClaw running in a few minutes.
   - Discord bot token, or
   - Slack app token + bot token (Socket Mode), or
   - Feishu/Lark app credentials (app_id + app_secret), or
+  - IRC server + nick + channel list, or
   - local Web UI mode (`web_enabled: true`)
 - LLM API key (Anthropic/OpenAI/OpenRouter/DeepSeek/etc.)
   - `openai-codex` supports OAuth (`codex login`) or `api_key` (for OpenAI-compatible proxy endpoints)
@@ -89,6 +90,11 @@ bot_username: "my_bot"
 #   telegram:
 #     bot_username: "my_bot"
 # discord_bot_token: "..."
+# channels:
+#   irc:
+#     server: "irc.example.com"
+#     nick: "microclaw"
+#     channels: "#general"
 web_enabled: true
 ```
 
@@ -164,7 +170,7 @@ microclaw start
 ```
 
 That is it. On first launch, if required config is missing, `start` will auto-open the config flow.
-After setup, the runtime initializes SQLite, starts scheduler, and boots configured adapters (Telegram/Discord/Slack/Feishu/Web).
+After setup, the runtime initializes SQLite, starts scheduler, and boots configured adapters (Telegram/Discord/Slack/Feishu/IRC/Web).
 
 If `web_enabled: true` (default), local Web UI is available at:
 
@@ -176,7 +182,9 @@ http://127.0.0.1:10961
 
 ```sh
 microclaw gateway install
+microclaw gateway install --force
 microclaw gateway status
+microclaw gateway status --json --deep
 ```
 
 Lifecycle commands:
@@ -184,6 +192,7 @@ Lifecycle commands:
 ```sh
 microclaw gateway start
 microclaw gateway stop
+microclaw gateway restart
 microclaw gateway logs 200
 microclaw gateway uninstall
 ```

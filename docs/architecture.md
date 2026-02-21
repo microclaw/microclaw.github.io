@@ -8,7 +8,7 @@ This section explains how MicroClaw is designed for long-running agent workflows
 
 ## Design goals
 
-- Platform-agnostic agent core: conversation + tool loop should not be tightly coupled to Telegram/Discord/Web handlers.
+- Platform-agnostic agent core: conversation + tool loop should not be tightly coupled to Telegram/Discord/Slack/Feishu/IRC/Web handlers.
 - Safe-by-default execution: tool permissions, risk levels, and explicit approval for dangerous operations.
 - Durable state: sessions, messages, tasks, and memory persisted in SQLite/filesystem.
 - Single-binary operations: no required Python runtime, predictable deployment model.
