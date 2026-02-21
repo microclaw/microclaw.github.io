@@ -45,11 +45,7 @@ Bot: Alice updated the config...
 
 ## Bot Commands
 
-| Command | Description |
-|---|---|
-| `/reset` | Clear the current session (start a fresh conversation) |
-| `/skills` | List all available agent skills |
-| `/archive` | Save the current session to a markdown file |
+See [Slash Commands](./commands) for the complete, up-to-date list and behavior.
 
 ---
 

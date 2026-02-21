@@ -19,12 +19,30 @@ const sidebars = {
     {
       type: 'category',
       label: 'Getting Started',
-      items: ['overview', 'quickstart', 'installation', 'channel-setup', 'configuration', 'permissions'],
+      items: [
+        'overview',
+        'quickstart',
+        'installation',
+        {
+          type: 'category',
+          label: 'Channel Setup',
+          items: [
+            'channel-setup',
+            'channel-setup-telegram',
+            'channel-setup-discord',
+            'channel-setup-slack',
+            'channel-setup-feishu-lark',
+            'channel-setup-irc',
+          ],
+        },
+        'configuration',
+        'permissions',
+      ],
     },
     {
       type: 'category',
       label: 'Usage',
-      items: ['usage', 'web-operator-api', 'skills', 'tools', 'memory', 'scheduler'],
+      items: ['usage', 'commands', 'web-operator-api', 'skills', 'tools', 'memory', 'scheduler'],
     },
     {
       type: 'category',
