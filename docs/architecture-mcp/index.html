@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.50b9aeb4.css">
-<script src="/assets/js/runtime~main.cb9f08b2.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.da97e208.js" defer="defer"></script>
 <script src="/assets/js/main.e71cb76f.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -32,6 +32,11 @@
 <li class=""><code>streamable_http</code></li>
 </ul>
 <p>Protocol version is negotiated during initialize (default currently <code>2025-11-05</code>, configurable per server/global).</p>
+<p>Config sources are merged from:</p>
+<ul>
+<li class=""><code>&lt;data_dir&gt;/mcp.json</code></li>
+<li class=""><code>&lt;data_dir&gt;/mcp.d/*.json</code> (filename order; later files override earlier definitions for the same server key)</li>
+</ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="reliability-model">Reliability model<a href="#reliability-model" class="hash-link" aria-label="Direct link to Reliability model" title="Direct link to Reliability model" translate="no">​</a></h2>
 <ul>
 <li class="">request timeout (<code>request_timeout_secs</code>)</li>

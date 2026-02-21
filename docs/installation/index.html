@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.50b9aeb4.css">
-<script src="/assets/js/runtime~main.cb9f08b2.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.da97e208.js" defer="defer"></script>
 <script src="/assets/js/main.e71cb76f.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -59,7 +59,7 @@ It does not fall back to Homebrew or Cargo automatically.</p>
 <li class="">Shell runtime (<code>bash/sh</code> or <code>pwsh/powershell</code>)</li>
 <li class="">Node.js + npm + <code>agent-browser</code></li>
 <li class="">PowerShell execution policy (Windows)</li>
-<li class="">MCP dependency commands from <code>~/.microclaw/mcp.json</code> (or your configured <code>data_dir</code>)</li>
+<li class="">MCP dependency commands from <code>~/.microclaw/mcp.json</code> and <code>~/.microclaw/mcp.d/*.json</code> (or your configured <code>data_dir</code>)</li>
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="powershell-execution-policy-notes">PowerShell execution policy notes<a href="#powershell-execution-policy-notes" class="hash-link" aria-label="Direct link to PowerShell execution policy notes" title="Direct link to PowerShell execution policy notes" translate="no">​</a></h3>
 <p>If your environment blocks script execution, run PowerShell as your user and temporarily allow signed/local scripts:</p>
@@ -93,7 +93,7 @@ It does not fall back to Homebrew or Cargo automatically.</p>
 </li>
 <li class="">If any <code>mcp.&lt;name&gt;.command</code> is <code>FAIL</code>:<!-- -->
 <ul>
-<li class="">install that command (or use absolute path in <code>~/.microclaw/mcp.json</code>)</li>
+<li class="">install that command (or use absolute path in <code>~/.microclaw/mcp.json</code> or a file under <code>~/.microclaw/mcp.d/*.json</code>)</li>
 </ul>
 </li>
 <li class="">Re-run <code>microclaw doctor</code> until <code>fail=0</code>, then start:<!-- -->
