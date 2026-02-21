@@ -72,6 +72,17 @@ const config = {
 
   plugins: [
     [
+      '@easyops-cn/docusaurus-search-local',
+      {
+        // Search docs/blog pages without external services.
+        indexDocs: true,
+        indexBlog: true,
+        docsRouteBasePath: '/docs',
+        hashed: true,
+        language: ['en'],
+      },
+    ],
+    [
       '@docusaurus/plugin-google-gtag',
       {
         trackingID: 'G-6MJPZ80E4Z',
@@ -139,6 +150,7 @@ const config = {
           },
           {to: '/docs/quickstart', label: 'Quickstart', position: 'left'},
           {to: '/blog', label: 'Blog', position: 'left'},
+          {type: 'search', position: 'right'},
           {
             href: 'https://github.com/microclaw/microclaw',
             label: 'GitHub',
