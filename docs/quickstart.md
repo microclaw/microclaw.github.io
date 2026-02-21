@@ -142,7 +142,7 @@ sandbox:
   no_network: true
   require_runtime: false
   # optional external allowlist file (one allowed root per line)
-  # mount_allowlist_path: "~/.config/microclaw/mount-allowlist.txt"
+  # mount_allowlist_path: "~/.microclaw/sandbox-mount-allowlist.txt"
 ```
 
 Quick verification:
@@ -153,8 +153,8 @@ docker run --rm ubuntu:25.10 echo ok
 ```
 
 Optional hardening:
-- `~/.config/microclaw/mount-allowlist.txt`: sandbox mount allowlist.
-- `~/.config/microclaw/path-allowlist.txt`: file tool path allowlist.
+- `~/.microclaw/sandbox-mount-allowlist.txt`: sandbox mount allowlist.
+- `~/.microclaw/sandbox-path-allowlist.txt`: file tool path allowlist.
 
 Then start MicroClaw and ask it to run:
 - `cat /etc/os-release`

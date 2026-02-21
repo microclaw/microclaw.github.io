@@ -109,8 +109,8 @@ microclaw doctor sandbox
 ```
 
 Optional hardening files:
-- mount allowlist: `~/.config/microclaw/mount-allowlist.txt`
-- file path allowlist: `~/.config/microclaw/path-allowlist.txt`
+- mount allowlist: `~/.microclaw/sandbox-mount-allowlist.txt`
+- file path allowlist: `~/.microclaw/sandbox-path-allowlist.txt`
 
 Each file supports one absolute path per line (`#` comments allowed).
 
