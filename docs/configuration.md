@@ -54,6 +54,9 @@ At runtime, at least one channel must be enabled:
 | `llm_provider` | `anthropic` | Provider preset ID (or custom ID). `anthropic` uses native Anthropic API, others use OpenAI-compatible API |
 | `model` | provider-specific | Model name |
 | `llm_base_url` | provider preset default | Optional custom base URL |
+| `openai_compat_body_overrides` | `{}` | Global request-body overrides for OpenAI-compatible providers (`openai`, `openrouter`, `deepseek`, `ollama`, etc.) |
+| `openai_compat_body_overrides_by_provider` | `{}` | Provider-specific OpenAI-compatible request-body overrides (keyed by provider name, case-insensitive) |
+| `openai_compat_body_overrides_by_model` | `{}` | Model-specific OpenAI-compatible request-body overrides (keyed by exact model name) |
 | `data_dir` | `~/.microclaw` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
 | `working_dir` | `~/.microclaw/working_dir` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
 | `working_dir_isolation` | `chat` | Working directory isolation mode for `bash/read_file/write_file/edit_file/glob/grep`: `shared` uses `working_dir/shared`, `chat` isolates each chat under `working_dir/chat/<channel>/<chat_id>` |
@@ -84,6 +87,77 @@ At runtime, at least one channel must be enabled:
 Path compatibility:
 - If users already configured `data_dir` / `skills_dir` / `working_dir`, those values keep working unchanged.
 - If not configured, defaults are `data_dir=~/.microclaw`, `skills_dir=<data_dir>/skills`, `working_dir=~/.microclaw/working_dir`.
+
+## OpenAI-compatible body overrides
+
+Use these keys when a provider/model needs extra OpenAI-compatible request body parameters.
+
+Merge order (later wins):
+1. `openai_compat_body_overrides` (global)
+2. `openai_compat_body_overrides_by_provider[llm_provider]`
+3. `openai_compat_body_overrides_by_model[model]`
+
+Set a value to `null` to remove that key from the outgoing JSON body.
+
+```yaml
+llm_provider: "deepseek"
+model: "deepseek-chat"
+
+openai_compat_body_overrides:
+  temperature: 0.2
+  max_tokens: 4096
+
+openai_compat_body_overrides_by_provider:
+  deepseek:
+    top_p: null
+    reasoning_effort: "high"
+
+openai_compat_body_overrides_by_model:
+  deepseek-chat:
+    temperature: 0.0
+```
+
+Behavior details:
+- provider keys are normalized to lowercase during config load
+- model keys are trim-normalized and matched by exact model string
+- runtime-controlled fields such as stream mode and tool payload can still be set by MicroClaw depending on request path
+
+### With per-bot model overrides
+
+When `channels.<name>.accounts.<id>.model` is set, MicroClaw uses that bot/account model for requests on that channel account.
+`openai_compat_body_overrides_by_model` then matches against that effective model.
+
+```yaml
+llm_provider: "openrouter"
+model: "openai/gpt-4o-mini" # global default fallback
+
+channels:
+  telegram:
+    default_account: "main"
+    accounts:
+      main:
+        enabled: true
+        bot_token: "xxx"
+        model: "openai/gpt-4o-mini"
+      ops:
+        enabled: true
+        bot_token: "yyy"
+        model: "deepseek/deepseek-chat"
+
+openai_compat_body_overrides:
+  temperature: 0.2
+
+openai_compat_body_overrides_by_model:
+  "openai/gpt-4o-mini":
+    temperature: 0.0
+  "deepseek/deepseek-chat":
+    top_p: null
+    reasoning_effort: "high"
+```
+
+Notes:
+- `llm_provider` is still global today.
+- If two bots share the same model string, they share the same `by_model` override block.
 
 ## Docker sandbox
 
