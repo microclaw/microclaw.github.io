@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+
+cp ../install.sh ./static/install.sh || echo "failed copy install.sh"
+cp ../uninstall.sh ./static/uninstall.sh || echo "failed copy uninstall.sh"
+
 echo "git push"
 git add . || echo "git add failed, continue"
 git commit -m "quick update" || echo "git commit skipped/failed, continue"
