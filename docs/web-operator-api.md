@@ -14,6 +14,16 @@ MicroClaw Web supports:
 - Scoped API keys (`/api/auth/api_keys`)
 - Legacy bearer token (`web_auth_token`) for compatibility
 
+Password bootstrap behavior:
+
+- If no operator password exists at startup, MicroClaw initializes a temporary default password: `helloworld`.
+- `GET /api/auth/status` includes `has_password`, `authenticated`, and `using_default_password`.
+- Web UI prompts the operator to replace the default password after sign-in (skip is allowed for testing).
+- CLI helpers:
+  - `microclaw web-password --password <value>`
+  - `microclaw web-password --generate`
+  - `microclaw web-password --clear`
+
 Available scopes:
 
 - `operator.read`

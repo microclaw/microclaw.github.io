@@ -47,6 +47,13 @@ Bot: Alice updated the config...
 
 See [Slash Commands](./commands) for the complete, up-to-date list and behavior.
 
+## Plugins
+
+MicroClaw supports manifest-based plugins for slash commands, dynamic tools, and context providers.
+
+- Plugin docs: [Plugins](./plugins)
+- Control chat admin commands: `/plugins list`, `/plugins validate`, `/plugins reload`
+
 ---
 
 ## Conversation Archive
@@ -501,6 +508,9 @@ microclaw start       # Start the bot
 microclaw setup      # Interactive setup wizard
 microclaw doctor      # Cross-platform preflight diagnostics
 microclaw doctor --json # Machine-readable diagnostic output
+microclaw web-password --password <value> # Set Web UI operator password
+microclaw web-password --generate # Generate and set a random Web UI operator password
+microclaw web-password --clear # Clear password hash + revoke sessions
 microclaw setup       # Full-screen setup wizard
 microclaw gateway install # Install + enable persistent gateway service
 microclaw gateway install --force # Reinstall service files and restart

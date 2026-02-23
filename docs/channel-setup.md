@@ -27,6 +27,7 @@ Each channel guide includes:
 ## Web UI
 
 Web UI does not require token or bot-account setup.
+Web UI operator auth uses password login.
 
 Use normal startup and open your local web address from runtime logs.
 
@@ -37,6 +38,15 @@ microclaw start
 Default local address:
 
 - `http://127.0.0.1:10961`
+
+Web password notes:
+
+- If no operator password exists, MicroClaw initializes a temporary default password: `helloworld`.
+- After signing in, the UI prompts you to change the default password (you can skip temporarily).
+- CLI helpers:
+  - `microclaw web-password --password <value>`
+  - `microclaw web-password --generate`
+  - `microclaw web-password --clear`
 
 ## Before You Start
 

@@ -72,6 +72,8 @@ At runtime, at least one channel must be enabled:
 | `max_document_size_mb` | `100` | Maximum allowed inbound Telegram document size (files above limit are rejected with a hint message) |
 | `max_history_messages` | `50` | Number of recent messages sent as context |
 | `control_chat_ids` | `[]` | Chat IDs allowed to perform cross-chat tool actions |
+| `plugins.enabled` | `false` | Enable plugin manifest loading and plugin command/tool/context runtime |
+| `plugins.dir` | `<data_dir>/plugins` | Optional plugin manifest directory override |
 | `max_session_messages` | `40` | Message threshold that triggers context compaction |
 | `compact_keep_recent` | `20` | Number of recent messages kept verbatim during compaction |
 | `reflector_enabled` | `true` | Enable the background memory reflector (see [Memory System](./memory)) |
