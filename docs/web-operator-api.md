@@ -20,9 +20,10 @@ Password bootstrap behavior:
 - `GET /api/auth/status` includes `has_password`, `authenticated`, and `using_default_password`.
 - Web UI prompts the operator to replace the default password after sign-in (skip is allowed for testing).
 - CLI helpers:
-  - `microclaw web-password --password <value>`
-  - `microclaw web-password --generate`
-  - `microclaw web-password --clear`
+  - `microclaw web` (show usage)
+  - `microclaw web --password <value>`
+  - `microclaw web --generate`
+  - `microclaw web --clear`
 
 Available scopes:
 

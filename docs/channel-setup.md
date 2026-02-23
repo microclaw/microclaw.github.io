@@ -44,9 +44,10 @@ Web password notes:
 - If no operator password exists, MicroClaw initializes a temporary default password: `helloworld`.
 - After signing in, the UI prompts you to change the default password (you can skip temporarily).
 - CLI helpers:
-  - `microclaw web-password --password <value>`
-  - `microclaw web-password --generate`
-  - `microclaw web-password --clear`
+  - `microclaw web` (show usage)
+  - `microclaw web --password <value>`
+  - `microclaw web --generate`
+  - `microclaw web --clear`
 
 ## Before You Start
 
