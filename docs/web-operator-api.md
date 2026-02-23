@@ -22,8 +22,8 @@ Password bootstrap behavior:
 - CLI helpers:
   - `microclaw web` (show usage)
   - `microclaw web --password <value>`
-  - `microclaw web --generate`
-  - `microclaw web --clear`
+  - `microclaw web --password-generate`
+  - `microclaw web --password-clear`
 
 Available scopes:
 
