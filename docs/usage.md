@@ -509,9 +509,9 @@ microclaw setup      # Interactive setup wizard
 microclaw doctor      # Cross-platform preflight diagnostics
 microclaw doctor --json # Machine-readable diagnostic output
 microclaw web         # Show Web password command usage
-microclaw web --password <value> # Set Web UI operator password
-microclaw web --password-generate # Generate and set a random Web UI operator password
-microclaw web --password-clear # Clear password hash + revoke sessions
+microclaw web password <value> # Set Web UI operator password
+microclaw web password-generate # Generate and set a random Web UI operator password
+microclaw web password-clear # Clear password hash + revoke sessions
 microclaw setup       # Full-screen setup wizard
 microclaw gateway install # Install + enable persistent gateway service
 microclaw gateway install --force # Reinstall service files and restart

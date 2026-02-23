@@ -21,9 +21,9 @@ Password bootstrap behavior:
 - Web UI prompts the operator to replace the default password after sign-in (skip is allowed for testing).
 - CLI helpers:
   - `microclaw web` (show usage)
-  - `microclaw web --password <value>`
-  - `microclaw web --password-generate`
-  - `microclaw web --password-clear`
+  - `microclaw web password <value>`
+  - `microclaw web password-generate`
+  - `microclaw web password-clear`
 
 Available scopes:
 

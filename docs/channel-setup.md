@@ -45,9 +45,9 @@ Web password notes:
 - After signing in, the UI prompts you to change the default password (you can skip temporarily).
 - CLI helpers:
   - `microclaw web` (show usage)
-  - `microclaw web --password <value>`
-  - `microclaw web --password-generate`
-  - `microclaw web --password-clear`
+  - `microclaw web password <value>`
+  - `microclaw web password-generate`
+  - `microclaw web password-clear`
 
 ## Before You Start
 
