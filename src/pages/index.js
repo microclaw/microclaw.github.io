@@ -2,36 +2,89 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import styles from './index.module.css';
 
-const INSTALL_OPTIONS = [
-  {
-    id: 'install',
-    label: 'Install Script',
-    command: 'curl -fsSL https://microclaw.ai/install.sh | bash',
-    hint: 'Recommended for macOS/Linux',
-  },
-  {
-    id: 'brew',
-    label: 'Homebrew',
-    command: 'brew update && brew tap microclaw/tap && brew install microclaw',
-    hint: 'Best for Mac developers',
-  },
-  {
-    id: 'cargo',
-    label: 'Cargo',
-    command:
-      'git clone https://github.com/microclaw/microclaw.git && cd microclaw && cargo build --release',
-    hint: 'Build from source',
-  },
-  {
-    id: 'docker',
-    label: 'Doctor Check',
-    command: 'microclaw doctor --json',
-    hint: 'Verify runtime health before production',
-  },
+const SYSTEMS = [
+  {id: 'macos', label: 'macOS', icon: 'macos'},
+  {id: 'windows', label: 'Windows', icon: 'windows'},
+  {id: 'linux', label: 'Linux', icon: 'linux'},
 ];
+
+const INSTALL_OPTIONS_BY_SYSTEM = {
+  macos: [
+    {
+      id: 'install-script',
+      label: 'Install Script',
+      command: 'curl -fsSL https://microclaw.ai/install.sh | bash',
+      hint: 'Recommended for most macOS setups',
+    },
+    {
+      id: 'homebrew',
+      label: 'Homebrew',
+      command: 'brew tap microclaw/tap && brew install microclaw',
+      hint: 'Best for Homebrew-based workflows',
+    },
+    {
+      id: 'cargo',
+      label: 'Cargo',
+      command:
+        'git clone https://github.com/microclaw/microclaw.git && cd microclaw && cargo build --release',
+      hint: 'Build from source with Rust toolchain',
+    },
+  ],
+  windows: [
+    {
+      id: 'install-script',
+      label: 'PowerShell Script',
+      command: 'iwr https://microclaw.ai/install.ps1 -UseBasicParsing | iex',
+      hint: 'Recommended for native Windows installs',
+    },
+    {
+      id: 'cargo',
+      label: 'Cargo',
+      command:
+        'git clone https://github.com/microclaw/microclaw.git; cd microclaw; cargo build --release',
+      hint: 'Build from source with Rust toolchain',
+    },
+  ],
+  linux: [
+    {
+      id: 'install-script',
+      label: 'Install Script',
+      command: 'curl -fsSL https://microclaw.ai/install.sh | bash',
+      hint: 'Recommended for most Linux setups',
+    },
+    {
+      id: 'cargo',
+      label: 'Cargo',
+      command:
+        'git clone https://github.com/microclaw/microclaw.git && cd microclaw && cargo build --release',
+      hint: 'Build from source with Rust toolchain',
+    },
+  ],
+};
+
+function detectSystem() {
+  if (typeof navigator === 'undefined') {
+    return 'macos';
+  }
+
+  const platform = String(navigator.userAgentData?.platform || navigator.platform || '').toLowerCase();
+  const userAgent = String(navigator.userAgent || '').toLowerCase();
+  const source = `${platform} ${userAgent}`;
+
+  if (source.includes('win')) {
+    return 'windows';
+  }
+  if (source.includes('mac') || source.includes('darwin')) {
+    return 'macos';
+  }
+  if (source.includes('linux') || source.includes('x11')) {
+    return 'linux';
+  }
+  return 'macos';
+}
 
 const CAPABILITIES = [
   {
@@ -105,12 +158,27 @@ const USE_CASES = [
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
-  const [activeInstall, setActiveInstall] = useState(INSTALL_OPTIONS[0].id);
+  const [activeSystem, setActiveSystem] = useState('macos');
+  const [activeInstall, setActiveInstall] = useState(
+    INSTALL_OPTIONS_BY_SYSTEM.macos[0].id,
+  );
   const [copyStatus, setCopyStatus] = useState('idle');
 
+  useEffect(() => {
+    const system = detectSystem();
+    const fallbackInstall = INSTALL_OPTIONS_BY_SYSTEM[system]?.[0]?.id ?? INSTALL_OPTIONS_BY_SYSTEM.macos[0].id;
+    setActiveSystem(system);
+    setActiveInstall(fallbackInstall);
+  }, []);
+
+  const activeSystemOptions = useMemo(
+    () => INSTALL_OPTIONS_BY_SYSTEM[activeSystem] ?? INSTALL_OPTIONS_BY_SYSTEM.macos,
+    [activeSystem],
+  );
+
   const activeInstallOption = useMemo(
-    () => INSTALL_OPTIONS.find((item) => item.id === activeInstall) ?? INSTALL_OPTIONS[0],
-    [activeInstall],
+    () => activeSystemOptions.find((item) => item.id === activeInstall) ?? activeSystemOptions[0],
+    [activeInstall, activeSystemOptions],
   );
 
   const copyInstallCommand = async () => {
@@ -175,11 +243,45 @@ function HomepageHeader() {
 
           <div className={styles.installPanel}>
             <div className={styles.installHeader}>
-              <span>Quickstart CLI</span>
-              <span className={styles.pulseDot}>live</span>
+              <span>Quickstart</span>
+              <span className={styles.crabLane}>
+                <span className={styles.pulseDot} aria-label="rust">
+                  🦀
+                </span>
+              </span>
+            </div>
+            <div className={styles.systemSwitcher}>
+              <div className={styles.systemTabs}>
+                {SYSTEMS.map((system) => (
+                  <button
+                    key={system.id}
+                    type="button"
+                    onClick={() => {
+                      const fallbackInstall = INSTALL_OPTIONS_BY_SYSTEM[system.id]?.[0]?.id;
+                      setActiveSystem(system.id);
+                      if (fallbackInstall) {
+                        setActiveInstall(fallbackInstall);
+                      }
+                    }}
+                    className={`${styles.systemTab} ${
+                      activeSystem === system.id ? styles.systemTabActive : ''
+                    }`}>
+                    <span
+                      className={`${styles.systemIcon} ${
+                        system.icon === 'macos'
+                          ? styles.systemIconMac
+                          : system.icon === 'windows'
+                            ? styles.systemIconWindows
+                            : styles.systemIconLinux
+                      }`}
+                    />
+                    {system.label}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className={styles.installTabs}>
-              {INSTALL_OPTIONS.map((item) => (
+              {activeSystemOptions.map((item) => (
                 <button
                   key={item.id}
                   type="button"
