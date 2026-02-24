@@ -47,6 +47,11 @@ Bot: Alice updated the config...
 
 See [Slash Commands](./commands) for the complete, up-to-date list and behavior.
 
+Operational behavior:
+- Any message starting with `/` is treated as a command.
+- Slash commands are handled out-of-band and do not enter agent conversation history.
+- Unknown slash commands return `Unknown command.`.
+
 ## Plugins
 
 MicroClaw supports manifest-based plugins for slash commands, dynamic tools, and context providers.
