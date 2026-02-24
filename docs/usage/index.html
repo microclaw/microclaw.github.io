@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.b47debac.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.4419d6c0.js" defer="defer"></script>
 <script src="/assets/js/main.44447e2a.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -47,6 +47,12 @@
 <hr>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="bot-commands">Bot Commands<a href="#bot-commands" class="hash-link" aria-label="Direct link to Bot Commands" title="Direct link to Bot Commands" translate="no">​</a></h2>
 <p>See <a class="" href="/docs/commands">Slash Commands</a> for the complete, up-to-date list and behavior.</p>
+<p>Operational behavior:</p>
+<ul>
+<li class="">Any message starting with <code>/</code> is treated as a command.</li>
+<li class="">Slash commands are handled out-of-band and do not enter agent conversation history.</li>
+<li class="">Unknown slash commands return <code>Unknown command.</code>.</li>
+</ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="plugins">Plugins<a href="#plugins" class="hash-link" aria-label="Direct link to Plugins" title="Direct link to Plugins" translate="no">​</a></h2>
 <p>MicroClaw supports manifest-based plugins for slash commands, dynamic tools, and context providers.</p>
 <ul>
