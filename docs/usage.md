@@ -34,6 +34,7 @@ Bot: Hi! How can I help you today?
 ### Group chat
 
 In a group, the bot only responds when you @mention it. All messages are still stored for context.
+Slash commands follow the same default gate in groups/channels: mention is required unless `allow_group_slash_without_mention` is enabled.
 
 ```
 Alice: I updated the config
@@ -49,6 +50,7 @@ See [Slash Commands](./commands) for the complete, up-to-date list and behavior.
 
 Operational behavior:
 - Any message starting with `/` is treated as a command.
+- Mention-prefixed slash is supported (for example `@bot /status`, `<@U123> /status`).
 - Slash commands are handled out-of-band and do not enter agent conversation history.
 - Unknown slash commands return `Unknown command.`.
 

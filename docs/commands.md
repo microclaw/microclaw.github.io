@@ -23,9 +23,12 @@ Supported channels: Telegram, Discord, Slack, Feishu/Lark, IRC.
 ## Notes
 
 - Any input starting with `/` is treated as a command.
+- Inputs with leading mentions before slash are also treated as commands (for example `@bot /status`, `<@U123> /status`).
 - Commands are matched exactly (for example, `/reset`).
 - Scope is per chat/channel conversation, not global across all chats.
 - Slash command inputs are not appended to agent conversation history/session context.
 - Unknown slash commands return `Unknown command.`.
+- In group/server/channel chats, slash commands are mention-gated by default.
+- To disable mention-gating for group slash commands, set `allow_group_slash_without_mention: true`.
 - `/archive` is manual; automatic archive may also happen before context compaction.
 - `/model <name>` is currently informational and reports that runtime model switching is not yet supported.

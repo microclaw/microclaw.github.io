@@ -37,7 +37,10 @@ At runtime, at least one channel must be enabled:
 | `channels.discord.accounts.<id>.allowed_channels` | `[]` | Optional Discord channel allowlist scoped to that account |
 | `channels.discord.accounts.<id>.no_mention` | `false` | If true, that Discord account replies in guild channels without mention |
 | `channels.discord.accounts.<id>.model` | unset | Optional per-bot model override for this Discord account |
+| `allow_group_slash_without_mention` | `false` | If true, group/server/channel slash commands can run without @mention |
 | `channels.slack.default_account` | unset | Default Slack account ID in multi-account mode |
+
+By default, group/channel slash commands follow mention-gated behavior; enable `allow_group_slash_without_mention` only if you explicitly want permissive command triggering.
 | `channels.slack.accounts.<id>.bot_token` | unset | Slack bot token for a specific account |
 | `channels.slack.accounts.<id>.app_token` | unset | Slack app token (Socket Mode) for a specific account |
 | `channels.slack.accounts.<id>.allowed_channels` | `[]` | Optional Slack channel allowlist scoped to that account |
