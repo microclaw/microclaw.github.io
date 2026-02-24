@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.4419d6c0.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.dd997866.js" defer="defer"></script>
 <script src="/assets/js/main.44447e2a.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -42,7 +42,8 @@
 <p>In a private chat with the bot, every text message triggers a response. Just open a conversation and type.</p>
 <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">You: Hello</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Bot: Hi! How can I help you today?</span><br></span></code></pre></div></div>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="group-chat">Group chat<a href="#group-chat" class="hash-link" aria-label="Direct link to Group chat" title="Direct link to Group chat" translate="no">​</a></h3>
-<p>In a group, the bot only responds when you @mention it. All messages are still stored for context.</p>
+<p>In a group, the bot only responds when you @mention it. All messages are still stored for context.
+Slash commands follow the same default gate in groups/channels: mention is required unless <code>allow_group_slash_without_mention</code> is enabled.</p>
 <div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Alice: I updated the config</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Bob: @microclaw summarize what happened</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Bot: Alice updated the config...</span><br></span></code></pre></div></div>
 <hr>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="bot-commands">Bot Commands<a href="#bot-commands" class="hash-link" aria-label="Direct link to Bot Commands" title="Direct link to Bot Commands" translate="no">​</a></h2>
@@ -50,6 +51,7 @@
 <p>Operational behavior:</p>
 <ul>
 <li class="">Any message starting with <code>/</code> is treated as a command.</li>
+<li class="">Mention-prefixed slash is supported (for example <code>@bot /status</code>, <code>&lt;@U123&gt; /status</code>).</li>
 <li class="">Slash commands are handled out-of-band and do not enter agent conversation history.</li>
 <li class="">Unknown slash commands return <code>Unknown command.</code>.</li>
 </ul>
