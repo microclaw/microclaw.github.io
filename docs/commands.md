@@ -13,6 +13,7 @@ Supported channels: Telegram, Discord, Slack, Feishu/Lark, IRC.
 | Command | Description |
 |---|---|
 | `/reset` | Clear current chat context (session + chat history for that chat). |
+| `/stop` | Abort the active run in the current chat. Does not clear session or chat history. |
 | `/skills` | List all currently available skills discovered by runtime. |
 | `/reload-skills` | Reload skills from disk and return the reloaded count. |
 | `/archive` | Archive current in-memory session as a markdown conversation file. |
@@ -28,6 +29,7 @@ Supported channels: Telegram, Discord, Slack, Feishu/Lark, IRC.
 - Scope is per chat/channel conversation, not global across all chats.
 - Slash command inputs are not appended to agent conversation history/session context.
 - Unknown slash commands return `Unknown command.`.
+- `/stop` only aborts in-flight work for the current chat; it does not clear context.
 - In group/server/channel chats, slash commands are mention-gated by default.
 - To disable mention-gating for group slash commands, set `allow_group_slash_without_mention: true`.
 - `/archive` is manual; automatic archive may also happen before context compaction.

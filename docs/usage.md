@@ -53,6 +53,7 @@ Operational behavior:
 - Mention-prefixed slash is supported (for example `@bot /status`, `<@U123> /status`).
 - Slash commands are handled out-of-band and do not enter agent conversation history.
 - Unknown slash commands return `Unknown command.`.
+- `/stop` aborts only the current in-flight run; use `/reset` if you need to clear context.
 
 ## Plugins
 
