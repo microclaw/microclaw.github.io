@@ -137,6 +137,8 @@ Or set it manually to route `bash` tool calls into Docker containers:
 sandbox:
   mode: "all"
   backend: "auto"
+  security_profile: "hardened" # optional; hardened|standard|privileged (default hardened)
+  # cap_add: ["SETUID", "SETGID", "CHOWN"]
   image: "ubuntu:25.10"
   container_prefix: "microclaw-sandbox"
   no_network: true
@@ -155,6 +157,7 @@ docker run --rm ubuntu:25.10 echo ok
 Optional hardening:
 - `~/.microclaw/sandbox-mount-allowlist.txt`: sandbox mount allowlist.
 - `~/.microclaw/sandbox-path-allowlist.txt`: file tool path allowlist.
+- `sandbox.security_profile: "hardened"` is the default restrictive mode; use `"standard"` if sandboxed commands need default Docker capabilities.
 
 Then start MicroClaw and ask it to run:
 - `cat /etc/os-release`

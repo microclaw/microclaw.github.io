@@ -67,6 +67,8 @@ By default, group/channel slash commands follow mention-gated behavior; enable `
 | `sandbox.backend` | `auto` | Sandbox backend (`auto`/`docker`) |
 | `sandbox.image` | `ubuntu:25.10` | Base image used for sandbox containers |
 | `sandbox.container_prefix` | `microclaw-sandbox` | Prefix for sandbox container names |
+| `sandbox.security_profile` | `hardened` | Sandbox privilege profile: `hardened` (`--cap-drop ALL --security-opt no-new-privileges`), `standard` (Docker default caps), `privileged` (`--privileged`) |
+| `sandbox.cap_add` | `[]` | Optional extra Linux capabilities added with `--cap-add` (applies to `hardened` and `standard`) |
 | `sandbox.no_network` | `true` | If true, sandbox containers run with `--network=none` |
 | `sandbox.require_runtime` | `false` | If true and Docker is unavailable while `sandbox.mode=all`, command fails fast instead of host fallback |
 | `sandbox.mount_allowlist_path` | unset | Optional external mount allowlist file (one allowed root path per line) |
@@ -172,6 +174,8 @@ To run `bash` tool calls in containers, set:
 sandbox:
   mode: "all"
   backend: "auto"
+  security_profile: "hardened" # hardened|standard|privileged
+  # cap_add: ["SETUID", "SETGID", "CHOWN"]
   image: "ubuntu:25.10"
   container_prefix: "microclaw-sandbox"
   no_network: true
@@ -180,6 +184,11 @@ sandbox:
 
 Behavior:
 - `sandbox.mode: "off"` (default): host execution.
+- `sandbox.security_profile` defaults to `hardened`:
+  - `hardened`: `--cap-drop ALL --security-opt no-new-privileges` (most restrictive)
+  - `standard`: Docker default capabilities (useful when sandbox commands need `apt/chown/su`)
+  - `privileged`: full container privilege (`--privileged`), debugging only
+- `sandbox.cap_add` appends `--cap-add` entries for `hardened` and `standard`.
 - `sandbox.mode: "all"` + Docker unavailable:
   - `require_runtime: false`: fallback to host with warning.
   - `require_runtime: true`: fail fast.

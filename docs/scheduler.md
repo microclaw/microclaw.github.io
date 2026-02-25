@@ -32,6 +32,8 @@ Example: every 5 minutes
 3. Send the response to the original chat
 4. Update `next_run` (cron) or mark as `completed` (one-time)
 
+`next_run` is normalized and stored as UTC RFC3339 timestamps for both cron and one-time tasks.
+
 ## Manage tasks
 
 ```
