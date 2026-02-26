@@ -16,3 +16,18 @@ telegram:
 comparison:
   label: Comparison
   permalink: /comparison
+release:
+  label: Release
+  permalink: /release
+runtime:
+  label: Runtime
+  permalink: /runtime
+channels:
+  label: Channels
+  permalink: /channels
+web:
+  label: Web
+  permalink: /web
+reliability:
+  label: Reliability
+  permalink: /reliability

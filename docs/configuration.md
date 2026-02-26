@@ -314,6 +314,8 @@ Features:
 - provider/model list pickers (visible choices, not blind cycling)
 - local + online validation
 - safe `microclaw.config.yaml` write with backup
+- supports multi-account JSON editing (`channels.<name>.accounts`) for Telegram/Discord/dynamic channels
+- Web Settings panel supports the same multi-account JSON editing path (recommended for multi-bot ops)
 
 Preset providers:
 - `openai`

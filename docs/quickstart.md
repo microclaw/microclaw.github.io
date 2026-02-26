@@ -58,6 +58,7 @@ microclaw setup
 
 It validates required fields, tests chat/LLM connectivity, and writes `microclaw.config.yaml` with backup.
 By default, channel credentials are written in multi-account shape (`channels.<channel>.default_account` + `channels.<channel>.accounts.main`).
+For multi-bot operations, setup and Web Settings both support editing full `channels.<channel>.accounts` JSON.
 It also includes provider/model list pickers (`Enter` open list, `↑/↓` move, `Enter` confirm, `Esc` close).
 
 Built-in provider presets:
