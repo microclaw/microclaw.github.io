@@ -46,12 +46,17 @@ channels:
         bot_username: "my_microclaw_support_bot"
         # Optional per-account group allowlist
         # allowed_groups: [-1001234567890]
+        # Optional per-account DM sender allowlist (Telegram user IDs)
+        # allowed_user_ids: [123456789]
 ```
 
 Notes:
 
 - Each account runs as an independent Telegram bot in the same MicroClaw process.
 - Mention the specific bot username that should answer in group chats.
+- For group chats with multi-token multi-bot, configure each bot in BotFather:
+  - `Bot Settings -> Allow Groups`: enabled
+  - `Bot Settings -> Group Privacy`: disabled (`/setprivacy` -> `Disable`)
 
 ## Verify
 

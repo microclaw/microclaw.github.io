@@ -56,7 +56,7 @@ microclaw setup
 <!-- Placeholder: replace with real screenshot later -->
 ![Setup Wizard (placeholder)](/img/setup-wizard.png)
 
-It validates required fields, tests chat/LLM connectivity, and writes `microclaw.config.yaml` with backup.
+It validates required fields, tests chat/LLM connectivity, and writes `microclaw.config.yaml` with backup in `microclaw.config.backups/` (latest 50 kept).
 By default, channel credentials are written in multi-account shape (`channels.<channel>.default_account` + `channels.<channel>.accounts.main`).
 For multi-bot operations, setup and Web Settings both support editing full `channels.<channel>.accounts` JSON.
 It also includes provider/model list pickers (`Enter` open list, `↑/↓` move, `Enter` confirm, `Esc` close).
@@ -98,6 +98,8 @@ bot_username: "my_bot"
 #       support:
 #         bot_token: "987654:XYZ-DEF9999..."
 #         bot_username: "support_bot"
+# Telegram group chat note for multi-bot:
+#   In BotFather for each bot, enable Allow Groups and disable Group Privacy.
 # Recommended Discord/Slack/Feishu multi-account mode:
 # channels:
 #   discord:
