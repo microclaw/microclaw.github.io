@@ -4,10 +4,107 @@
         <title>MicroClaw Blog</title>
         <link>https://microclaw.ai/blog</link>
         <description>MicroClaw Blog</description>
-        <lastBuildDate>Thu, 19 Feb 2026 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 26 Feb 2026 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[MicroClaw Weekly Update: Feb 20 - Feb 26, 2026]]></title>
+            <link>https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26</link>
+            <guid>https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26</guid>
+            <pubDate>Thu, 26 Feb 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[This weekly update summarizes what changed in MicroClaw during February 20, 2026 to February 26, 2026.]]></description>
+            <content:encoded><![CDATA[<p>This weekly update summarizes what changed in MicroClaw during <strong>February 20, 2026 to February 26, 2026</strong>.</p>
+<p>The pace was high: channel coverage expanded, runtime reliability was hardened, and setup/config workflows became much better for multi-account bot operations.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="scope">Scope<a href="https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26#scope" class="hash-link" aria-label="Direct link to Scope" title="Direct link to Scope" translate="no">​</a></h2>
+<p>This post is based on the repository commit history in the 7-day window ending on <strong>February 26, 2026</strong>.</p>
+<p>At a high level, recent changes cluster into these tracks:</p>
+<ul>
+<li class="">multi-account and multi-bot usability</li>
+<li class="">channel reliability and dedup behavior</li>
+<li class="">slash-command safety and command UX</li>
+<li class="">plugin framework and extensibility</li>
+<li class="">web/auth/config hardening</li>
+<li class="">provider/runtime compatibility updates</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-multi-account-ux-moved-from-supported-to-operational">1) Multi-Account UX Moved From "Supported" to "Operational"<a href="https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26#1-multi-account-ux-moved-from-supported-to-operational" class="hash-link" aria-label="Direct link to 1) Multi-Account UX Moved From &quot;Supported&quot; to &quot;Operational&quot;" title="Direct link to 1) Multi-Account UX Moved From &quot;Supported&quot; to &quot;Operational&quot;" translate="no">​</a></h2>
+<p>Multi-account runtime support existed, but configuration surfaces were still uneven in day-to-day usage.</p>
+<p>Recent work closed that gap:</p>
+<ul>
+<li class="">setup and config paths continued migration toward account-based channel structure (<code>channels.&lt;name&gt;.accounts</code>)</li>
+<li class="">per-bot model overrides were propagated across runtime and setup</li>
+<li class="">setup/web config support was improved for multi-bot account editing workflows</li>
+</ul>
+<p>Practical result: operators can manage more than one token/bot per channel with less manual YAML editing and lower risk of accidental config regression.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-channel-runtime-reliability-duplicate-suppression-and-startup-guards">2) Channel Runtime Reliability: Duplicate Suppression and Startup Guards<a href="https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26#2-channel-runtime-reliability-duplicate-suppression-and-startup-guards" class="hash-link" aria-label="Direct link to 2) Channel Runtime Reliability: Duplicate Suppression and Startup Guards" title="Direct link to 2) Channel Runtime Reliability: Duplicate Suppression and Startup Guards" translate="no">​</a></h2>
+<p>A major reliability theme this week was “only process each inbound message once.”</p>
+<p>Highlights included:</p>
+<ul>
+<li class="">cross-channel inbound dedup tightening</li>
+<li class="">Telegram/Feishu duplicate handling fixes</li>
+<li class="">startup-time message guards to avoid replay noise</li>
+<li class="">Feishu webhook retry and control-path fixes</li>
+</ul>
+<p>These changes reduce repeated replies, improve idempotency under retries, and make cold starts less noisy in production.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-slash-commands-became-safer-and-more-predictable">3) Slash Commands Became Safer and More Predictable<a href="https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26#3-slash-commands-became-safer-and-more-predictable" class="hash-link" aria-label="Direct link to 3) Slash Commands Became Safer and More Predictable" title="Direct link to 3) Slash Commands Became Safer and More Predictable" translate="no">​</a></h2>
+<p>Slash command behavior was standardized and hardened:</p>
+<ul>
+<li class="">slash inputs are treated as commands (not normal chat history content)</li>
+<li class="">unknown command handling was documented and normalized</li>
+<li class="">mention-gating behavior in groups/channels was tightened by default</li>
+<li class="">permissive mode remains explicit via <code>allow_group_slash_without_mention</code></li>
+</ul>
+<p>Net effect: better command safety in group contexts and cleaner model context history.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-plugin-system-accelerated">4) Plugin System Accelerated<a href="https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26#4-plugin-system-accelerated" class="hash-link" aria-label="Direct link to 4) Plugin System Accelerated" title="Direct link to 4) Plugin System Accelerated" translate="no">​</a></h2>
+<p>The plugin line saw significant depth improvements:</p>
+<ul>
+<li class="">initial plugin framework for commands/tools/policies</li>
+<li class="">dynamic plugin tool naming without restart</li>
+<li class="">admin command and validation coverage improvements</li>
+<li class="">expanded matrix tests for plugin permissions and behavior</li>
+</ul>
+<p>This gives teams a more realistic path to extending MicroClaw without forking core runtime logic.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-channel-coverage-expanded">5) Channel Coverage Expanded<a href="https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26#5-channel-coverage-expanded" class="hash-link" aria-label="Direct link to 5) Channel Coverage Expanded" title="Direct link to 5) Channel Coverage Expanded" translate="no">​</a></h2>
+<p>During this window, channel support and channel architecture continued to broaden:</p>
+<ul>
+<li class="">IRC support matured</li>
+<li class="">Matrix support advanced quickly (including encrypted DM and stability work in this period)</li>
+<li class="">additional channel integrations (Signal, DingTalk, QQ) landed in channel/runtime paths</li>
+</ul>
+<p>Combined with multi-account direction, this strengthens the “single runtime, many ingress surfaces” strategy.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-webauthconfig-and-operator-hardening">6) Web/Auth/Config and Operator Hardening<a href="https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26#6-webauthconfig-and-operator-hardening" class="hash-link" aria-label="Direct link to 6) Web/Auth/Config and Operator Hardening" title="Direct link to 6) Web/Auth/Config and Operator Hardening" translate="no">​</a></h2>
+<p>Operator-facing reliability/security also moved forward:</p>
+<ul>
+<li class="">auth scope normalization and API key scope validation hardening</li>
+<li class="">web auth/session handling fixes</li>
+<li class="">config self-check/security posture improvements</li>
+<li class="">docs and generated artifact checks kept aligned with CI drift guards</li>
+</ul>
+<p>The direction is clear: reduce operational surprises and make the safe path the default.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-provider-and-llm-compatibility-work">7) Provider and LLM Compatibility Work<a href="https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26#7-provider-and-llm-compatibility-work" class="hash-link" aria-label="Direct link to 7) Provider and LLM Compatibility Work" title="Direct link to 7) Provider and LLM Compatibility Work" translate="no">​</a></h2>
+<p>Provider integration work focused on compatibility and guardrails:</p>
+<ul>
+<li class="">OpenAI-compatible response handling fixes</li>
+<li class="">body override support by provider/model surfaced and documented</li>
+<li class="">setup validation edge cases for OpenAI-compatible base URLs fixed</li>
+</ul>
+<p>This lowers breakage risk when providers evolve API behavior.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="version-cadence">Version Cadence<a href="https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26#version-cadence" class="hash-link" aria-label="Direct link to Version Cadence" title="Direct link to Version Cadence" translate="no">​</a></h2>
+<p>The project continued fast release cadence in this period, with version bumps up through the <code>0.0.11x</code> line, reflecting ongoing incremental hardening and feature delivery.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-to-watch-next">What To Watch Next<a href="https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26#what-to-watch-next" class="hash-link" aria-label="Direct link to What To Watch Next" title="Direct link to What To Watch Next" translate="no">​</a></h2>
+<p>Based on this week’s direction, likely near-term priorities:</p>
+<ol>
+<li class="">Continue reducing channel-specific edge-case divergence</li>
+<li class="">Strengthen multi-account UX in setup/web/docs and migration safety</li>
+<li class="">Expand plugin maturity from framework to production patterns</li>
+<li class="">Keep reliability instrumentation and docs in lockstep with runtime behavior</li>
+</ol>]]></content:encoded>
+            <category>Release</category>
+            <category>Runtime</category>
+            <category>Channels</category>
+            <category>Web</category>
+            <category>Reliability</category>
+        </item>
         <item>
             <title><![CDATA[MicroClaw Feb 19: What Changed in the Past Week]]></title>
             <link>https://microclaw.ai/blog/microclaw-february-2026-updates</link>
