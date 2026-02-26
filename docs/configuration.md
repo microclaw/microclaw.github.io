@@ -33,7 +33,7 @@ At runtime, at least one channel must be enabled:
 | `channels.telegram.accounts.<id>.model` | unset | Optional per-bot model override for this Telegram account |
 | `channels.telegram.accounts.<id>.allowed_groups` | `[]` | Optional Telegram group allowlist scoped to that account |
 | `channels.telegram.allowed_user_ids` | `[]` | Optional Telegram private-chat sender allowlist at channel scope |
-| `channels.telegram.accounts.<id>.allowed_user_ids` | `[]` | Optional Telegram private-chat sender allowlist scoped to that account (overrides channel scope) |
+| `channels.telegram.accounts.<id>.allowed_user_ids` | `[]` | Optional Telegram private-chat sender allowlist scoped to that account (merged with channel scope) |
 | `channels.discord.default_account` | unset | Default Discord account ID in multi-account mode. If unset, uses `default` when present, otherwise first account key (sorted) |
 | `channels.discord.accounts.<id>.bot_token` | unset | Discord bot token for a specific account |
 | `channels.discord.accounts.<id>.allowed_channels` | `[]` | Optional Discord channel allowlist scoped to that account |
