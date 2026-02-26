@@ -64,6 +64,7 @@ At runtime, at least one channel must be enabled:
 | `data_dir` | `~/.microclaw` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
 | `working_dir` | `~/.microclaw/working_dir` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
 | `working_dir_isolation` | `chat` | Working directory isolation mode for `bash/read_file/write_file/edit_file/glob/grep`: `shared` uses `working_dir/shared`, `chat` isolates each chat under `working_dir/chat/<channel>/<chat_id>` |
+| `high_risk_tool_user_confirmation_required` | `true` | Require explicit user confirmation before high-risk tool execution (for example `bash`) |
 | `sandbox.mode` | `off` | Bash execution mode: `off` runs on host; `all` routes bash tool calls to Docker containers |
 | `sandbox.backend` | `auto` | Sandbox backend (`auto`/`docker`) |
 | `sandbox.image` | `ubuntu:25.10` | Base image used for sandbox containers |
