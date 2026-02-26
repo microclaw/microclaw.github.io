@@ -35,6 +35,7 @@ channels:
     domain: "feishu"              # "feishu" | "lark" | custom URL
     # Optional
     # allowed_chats: []
+    # topic_mode: true            # threaded replies; only for feishu/lark domains
     # webhook_path: "/feishu/events"
     # verification_token: ""
 ```
@@ -54,11 +55,13 @@ channels:
         app_id: "cli_xxx"
         app_secret: "xxx"
         domain: "feishu"
+        topic_mode: true          # optional; reply in thread for this bot
       intl:
         enabled: true
         app_id: "cli_yyy"
         app_secret: "yyy"
         domain: "lark"
+        topic_mode: true          # optional; reply in thread for this bot
         # Optional per-account chat filter
         # allowed_chats: ["oc_xxx"]
 ```
@@ -66,6 +69,8 @@ channels:
 Notes:
 
 - For international tenants, set `domain: "lark"`.
+- `topic_mode` is bot/account-level (`accounts.<id>.topic_mode`), not channel-level.
+- `topic_mode` is only supported when account `domain` is `feishu` or `lark`.
 - Webhook mode needs public ingress; websocket mode does not.
 
 ## Verify

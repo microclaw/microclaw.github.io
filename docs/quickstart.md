@@ -108,7 +108,7 @@ bot_username: "my_bot"
 #       main: { bot_token: "xoxb-main...", app_token: "xapp-main..." }
 #   feishu:
 #     accounts:
-#       main: { app_id: "cli_xxx", app_secret: "xxx" }
+#       main: { app_id: "cli_xxx", app_secret: "xxx", topic_mode: true } # topic_mode only for feishu/lark domains
 # Optional channel overrides:
 # channels:
 #   telegram:

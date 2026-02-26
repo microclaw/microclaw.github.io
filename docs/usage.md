@@ -543,6 +543,7 @@ microclaw help        # Show help and all configuration options
 | `channels.slack.accounts.<id>.app_token` | Yes (multi-account mode) | - | Slack app token (Socket Mode) per account |
 | `channels.feishu.accounts.<id>.app_id` | Yes (multi-account mode) | - | Feishu/Lark app ID per account |
 | `channels.feishu.accounts.<id>.app_secret` | Yes (multi-account mode) | - | Feishu/Lark app secret per account |
+| `channels.feishu.accounts.<id>.topic_mode` | No | `false` | Optional per-bot threaded reply mode; only supported when account domain is `feishu` or `lark` |
 | `api_key` | Yes* | - | LLM API key (`ollama` can leave this empty; `openai-codex` supports OAuth or `api_key`) |
 | `bot_username` | Yes* | - | Global default bot username |
 | `channels.telegram.default_account` | No | unset | Default Telegram account ID in multi-account mode |

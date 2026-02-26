@@ -49,6 +49,7 @@ At runtime, at least one channel must be enabled:
 | `channels.feishu.accounts.<id>.domain` | `feishu` | Domain for that account (`feishu`, `lark`, or custom URL) |
 | `channels.feishu.accounts.<id>.allowed_chats` | `[]` | Optional Feishu chat allowlist scoped to that account |
 | `channels.feishu.accounts.<id>.model` | unset | Optional per-bot model override for this Feishu/Lark account |
+| `channels.feishu.accounts.<id>.topic_mode` | `false` | Optional per-bot threaded reply mode; only supported for account domain `feishu` or `lark` |
 | `bot_username` | `""` | Global default bot username (used by all channels unless overridden) |
 | `discord_bot_token` | unset | Discord bot token (required only if Discord is enabled) |
 | `web_enabled` | `true` | Enable local Web UI channel |
