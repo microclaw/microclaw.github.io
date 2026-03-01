@@ -41,6 +41,17 @@ Available scopes:
 - `POST /api/sessions/fork`
 - `GET /api/sessions/tree`
 
+## Config APIs
+
+- `GET /api/config`
+- `POST /api/config`
+- `GET /api/config/self_check`
+
+`GET /api/config` returns:
+- redacted `config` payload
+- `soul_files`: discovered `*.md` filenames from `./souls` and `<data_dir>/souls` (used by Web Settings per-bot `soul_path` picker)
+- `requires_restart`
+
 ## Metrics APIs
 
 - `GET /api/metrics`
@@ -73,6 +84,4 @@ Exporter behavior:
 
 ## Config Self-check
 
-- `GET /api/config/self_check`
-
-Returns startup risk warnings and `risk_level` (`none` / `medium` / `high`) to quickly spot unsafe settings.
+`GET /api/config/self_check` returns startup risk warnings and `risk_level` (`none` / `medium` / `high`) to quickly spot unsafe settings.

@@ -59,6 +59,7 @@ microclaw setup
 It validates required fields, tests chat/LLM connectivity, and writes `microclaw.config.yaml` with backup in `microclaw.config.backups/` (latest 50 kept).
 By default, channel credentials are written in multi-account shape (`channels.<channel>.default_account` + `channels.<channel>.accounts.main`).
 For multi-bot operations, setup and Web Settings both support editing full `channels.<channel>.accounts` JSON.
+Per-bot `soul_path` can be configured in both setup and Web Settings by selecting a file from discovered `souls/*.md` or entering a custom filename/path.
 It also includes provider/model list pickers (`Enter` open list, `↑/↓` move, `Enter` confirm, `Esc` close).
 
 Built-in provider presets:

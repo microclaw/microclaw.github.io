@@ -235,7 +235,8 @@ MicroClaw has persistent memory stored in `AGENTS.md` files, plus structured mem
 AGENTS.md scopes:
 
 - **Global memory**: Shared across all chats (`~/.microclaw/runtime/groups/AGENTS.md`)
-- **Chat memory**: Specific to one chat (`~/.microclaw/runtime/groups/{chat_id}/AGENTS.md`)
+- **Bot memory**: Shared by one bot/account within a channel (`~/.microclaw/runtime/groups/{channel}/AGENTS.md`)
+- **Chat memory**: Specific to one chat, namespaced by channel (`~/.microclaw/runtime/groups/{channel}/{chat_id}/AGENTS.md`)
 
 Memory is automatically injected into the system prompt on every request.
 Structured memory is also injected with a token budget and relevance ranking.
@@ -333,11 +334,17 @@ MicroClaw supports a `SOUL.md` file that defines the bot's personality, voice, v
 
 MicroClaw checks for a soul file in this order (first match wins):
 
-1. `soul_path` in config (explicit path)
-2. `<data_dir>/SOUL.md`
-3. `./SOUL.md` (project root)
+1. `channels.<caller>.accounts.<id>.soul_path` (when request is routed through a specific channel account)
+2. `channels.<caller>.soul_path` (channel-level fallback)
+3. `soul_path` in config (global explicit path)
+4. `<data_dir>/SOUL.md`
+5. `./SOUL.md` (project root)
 
 A default `SOUL.md` ships with the repo.
+
+Notes:
+- For bare channel callers (for example `telegram`), MicroClaw first checks that channel's `default_account` (if configured) for account-level `soul_path`.
+- Per-chat soul override still has highest priority and fully overrides all global/channel/account soul settings.
 
 ### Per-chat personality
 

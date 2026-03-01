@@ -31,6 +31,7 @@ At runtime, at least one channel must be enabled:
 | `channels.telegram.accounts.<id>.bot_token` | unset | Telegram bot token for a specific account (recommended multi-account mode) |
 | `channels.telegram.accounts.<id>.bot_username` | unset | Telegram username for a specific account (without `@`) |
 | `channels.telegram.accounts.<id>.model` | unset | Optional per-bot model override for this Telegram account |
+| `channels.telegram.accounts.<id>.soul_path` | unset | Optional per-bot SOUL file path for this Telegram account |
 | `channels.telegram.accounts.<id>.allowed_groups` | `[]` | Optional Telegram group allowlist scoped to that account |
 | `channels.telegram.allowed_user_ids` | `[]` | Optional Telegram private-chat sender allowlist at channel scope |
 | `channels.telegram.accounts.<id>.allowed_user_ids` | `[]` | Optional Telegram private-chat sender allowlist scoped to that account (merged with channel scope) |
@@ -39,18 +40,21 @@ At runtime, at least one channel must be enabled:
 | `channels.discord.accounts.<id>.allowed_channels` | `[]` | Optional Discord channel allowlist scoped to that account |
 | `channels.discord.accounts.<id>.no_mention` | `false` | If true, that Discord account replies in guild channels without mention |
 | `channels.discord.accounts.<id>.model` | unset | Optional per-bot model override for this Discord account |
+| `channels.discord.accounts.<id>.soul_path` | unset | Optional per-bot SOUL file path for this Discord account |
 | `allow_group_slash_without_mention` | `false` | If true, group/server/channel slash commands can run without @mention (default remains mention-gated in groups/channels) |
 | `channels.slack.default_account` | unset | Default Slack account ID in multi-account mode |
 | `channels.slack.accounts.<id>.bot_token` | unset | Slack bot token for a specific account |
 | `channels.slack.accounts.<id>.app_token` | unset | Slack app token (Socket Mode) for a specific account |
 | `channels.slack.accounts.<id>.allowed_channels` | `[]` | Optional Slack channel allowlist scoped to that account |
 | `channels.slack.accounts.<id>.model` | unset | Optional per-bot model override for this Slack account |
+| `channels.slack.accounts.<id>.soul_path` | unset | Optional per-bot SOUL file path for this Slack account |
 | `channels.feishu.default_account` | unset | Default Feishu/Lark account ID in multi-account mode |
 | `channels.feishu.accounts.<id>.app_id` | unset | Feishu/Lark app ID for a specific account |
 | `channels.feishu.accounts.<id>.app_secret` | unset | Feishu/Lark app secret for a specific account |
 | `channels.feishu.accounts.<id>.domain` | `feishu` | Domain for that account (`feishu`, `lark`, or custom URL) |
 | `channels.feishu.accounts.<id>.allowed_chats` | `[]` | Optional Feishu chat allowlist scoped to that account |
 | `channels.feishu.accounts.<id>.model` | unset | Optional per-bot model override for this Feishu/Lark account |
+| `channels.feishu.accounts.<id>.soul_path` | unset | Optional per-bot SOUL file path for this Feishu/Lark account |
 | `channels.feishu.accounts.<id>.topic_mode` | `false` | Optional per-bot threaded reply mode; only supported for account domain `feishu` or `lark` |
 | `bot_username` | `""` | Global default bot username (used by all channels unless overridden) |
 | `discord_bot_token` | unset | Discord bot token (required only if Discord is enabled) |
@@ -91,6 +95,7 @@ At runtime, at least one channel must be enabled:
 | `embedding_base_url` | unset | Optional custom embedding API base URL |
 | `embedding_model` | provider default | Embedding model name |
 | `embedding_dim` | provider default | Embedding vector dimension used by sqlite-vec index |
+| `channels.<name>.soul_path` | unset | Optional channel-level SOUL file path fallback |
 | `soul_path` | unset | Path to a `SOUL.md` file that defines bot personality, voice, and values. If unset, checks `data_dir/SOUL.md` then `./SOUL.md` |
 
 Path compatibility:
@@ -319,7 +324,8 @@ Features:
 - local + online validation
 - safe `microclaw.config.yaml` write with backup in `microclaw.config.backups/` (latest 50 kept)
 - supports multi-account JSON editing (`channels.<name>.accounts`) for Telegram/Discord/dynamic channels
-- Web Settings panel supports the same multi-account JSON editing path (recommended for multi-bot ops)
+- supports per-bot `soul_path` picker (Telegram + dynamic channels): choose from discovered `souls/*.md` or manual filename/path input
+- Web Settings panel supports the same per-bot `soul_path` picker and account editing path
 
 Preset providers:
 - `openai`

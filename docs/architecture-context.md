@@ -11,7 +11,7 @@ Context quality determines agent quality. MicroClaw uses layered context managem
 - **Live turn context:** latest user input + immediate tool outputs.
 - **Session history:** persisted conversation blocks (including tool_use/tool_result).
 - **Compacted summary context:** when session grows beyond threshold.
-- **File memory:** `AGENTS.md` global + per-chat memory (written by `write_memory` tool).
+- **File memory:** `AGENTS.md` global + bot + per-chat memory (written by `write_memory` tool).
 - **Structured memories:** rows extracted from the `memories` table by the background Reflector.
 
 ## Lifecycle

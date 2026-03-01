@@ -184,7 +184,7 @@ Read persistent AGENTS.md memory file.
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `scope` | string | Yes | `"global"` or `"chat"` |
+| `scope` | string | Yes | `"global"`, `"bot"`, or `"chat"` |
 | `chat_id` | integer | For chat scope | Chat ID for chat-scoped memory |
 
 ---
@@ -195,9 +195,9 @@ Write to AGENTS.md memory file.
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
-| `scope` | string | Yes | `"global"` or `"chat"` |
+| `scope` | string | Yes | `"global"`, `"bot"`, or `"chat"` |
 | `chat_id` | integer | For chat scope | Chat ID for chat-scoped memory |
-| `content` | string | Yes | Content to write (replaces existing) |
+| `content` | string | Yes | Content to write (`global`/`bot` replace full file; `chat` updates latest sender section when available) |
 
 ---
 

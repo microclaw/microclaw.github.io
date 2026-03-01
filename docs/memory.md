@@ -13,14 +13,18 @@ Manually written key-value style notes in `AGENTS.md` files. The LLM writes thes
 ```
 ~/.microclaw/runtime/groups/
     AGENTS.md                 # Global memory (shared across all chats)
-    {chat_id}/
-        AGENTS.md             # Per-chat memory
+    {channel}/
+        AGENTS.md             # Bot/account memory for this channel
+        {chat_id}/
+            AGENTS.md         # Per-chat memory (namespaced by channel)
 ```
 
 - LLM can read and write memory using `read_memory` and `write_memory`
-- Memory is wrapped in `<global_memory>` and `<chat_memory>` tags
+- `scope` supports `global`, `bot`, and `chat`
+- Memory is wrapped in `<global_memory>`, `<bot_memory>`, and `<chat_memory>` tags
 - The memory files live under `DATA_DIR/runtime` (default `~/.microclaw/runtime`)
 - `write_memory` to `scope: "global"` requires the caller chat to be in `control_chat_ids`
+- `write_memory` to `scope: "chat"` updates the latest sender's `## Person: <name>` section when sender identity is available
 - `write_memory` also persists a structured memory row into SQLite (`memories` table)
 - Explicit commands like `remember ...` / `记住...` also use a deterministic fast path into structured memory
 

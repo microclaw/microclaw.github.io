@@ -23,7 +23,7 @@ Yes. Configure `control_chat_ids` in `microclaw.config.yaml`:
 
 ## How does memory work?
 
-Memory is stored in `AGENTS.md` files under `~/.microclaw/runtime/groups/` by default (or under your configured `data_dir`) and injected into the system prompt for every request. There is a global memory file and a per-chat memory file.
+Memory is stored in `AGENTS.md` files under `~/.microclaw/runtime/groups/` by default (or under your configured `data_dir`) and injected into the system prompt for every request. There are three scopes: global (`groups/AGENTS.md`), bot/account (`groups/{channel}/AGENTS.md`), and chat (`groups/{channel}/{chat_id}/AGENTS.md`).
 
 ## How do scheduled tasks work?
 
