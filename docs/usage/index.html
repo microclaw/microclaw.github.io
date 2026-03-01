@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.11c85334.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.af37c160.js" defer="defer"></script>
 <script src="/assets/js/main.874e86cd.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -119,7 +119,8 @@ Slash commands follow the same default gate in groups/channels: mention is requi
 <p>AGENTS.md scopes:</p>
 <ul>
 <li class=""><strong>Global memory</strong>: Shared across all chats (<code>~/.microclaw/runtime/groups/AGENTS.md</code>)</li>
-<li class=""><strong>Chat memory</strong>: Specific to one chat (<code>~/.microclaw/runtime/groups/{chat_id}/AGENTS.md</code>)</li>
+<li class=""><strong>Bot memory</strong>: Shared by one bot/account within a channel (<code>~/.microclaw/runtime/groups/{channel}/AGENTS.md</code>)</li>
+<li class=""><strong>Chat memory</strong>: Specific to one chat, namespaced by channel (<code>~/.microclaw/runtime/groups/{channel}/{chat_id}/AGENTS.md</code>)</li>
 </ul>
 <p>Memory is automatically injected into the system prompt on every request.
 Structured memory is also injected with a token budget and relevance ranking.</p>
@@ -164,11 +165,18 @@ Structured memory is also injected with a token budget and relevance ranking.</p
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="how-it-loads">How it loads<a href="#how-it-loads" class="hash-link" aria-label="Direct link to How it loads" title="Direct link to How it loads" translate="no">​</a></h3>
 <p>MicroClaw checks for a soul file in this order (first match wins):</p>
 <ol>
-<li class=""><code>soul_path</code> in config (explicit path)</li>
+<li class=""><code>channels.&lt;caller&gt;.accounts.&lt;id&gt;.soul_path</code> (when request is routed through a specific channel account)</li>
+<li class=""><code>channels.&lt;caller&gt;.soul_path</code> (channel-level fallback)</li>
+<li class=""><code>soul_path</code> in config (global explicit path)</li>
 <li class=""><code>&lt;data_dir&gt;/SOUL.md</code></li>
 <li class=""><code>./SOUL.md</code> (project root)</li>
 </ol>
 <p>A default <code>SOUL.md</code> ships with the repo.</p>
+<p>Notes:</p>
+<ul>
+<li class="">For bare channel callers (for example <code>telegram</code>), MicroClaw first checks that channel&#x27;s <code>default_account</code> (if configured) for account-level <code>soul_path</code>.</li>
+<li class="">Per-chat soul override still has highest priority and fully overrides all global/channel/account soul settings.</li>
+</ul>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="per-chat-personality">Per-chat personality<a href="#per-chat-personality" class="hash-link" aria-label="Direct link to Per-chat personality" title="Direct link to Per-chat personality" translate="no">​</a></h3>
 <p>Place a <code>SOUL.md</code> at <code>&lt;data_dir&gt;/runtime/groups/&lt;chat_id&gt;/SOUL.md</code> to give a specific chat a different personality. The per-chat file fully overrides the global soul for that chat.</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="example">Example<a href="#example" class="hash-link" aria-label="Direct link to Example" title="Direct link to Example" translate="no">​</a></h3>

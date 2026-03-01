@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.11c85334.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.af37c160.js" defer="defer"></script>
 <script src="/assets/js/main.874e86cd.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -84,11 +84,11 @@
 <hr>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="read_memory">read_memory<a href="#read_memory" class="hash-link" aria-label="Direct link to read_memory" title="Direct link to read_memory" translate="no">​</a></h3>
 <p>Read persistent AGENTS.md memory file.</p>
-<table><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody><tr><td><code>scope</code></td><td>string</td><td>Yes</td><td><code>&quot;global&quot;</code> or <code>&quot;chat&quot;</code></td></tr><tr><td><code>chat_id</code></td><td>integer</td><td>For chat scope</td><td>Chat ID for chat-scoped memory</td></tr></tbody></table>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody><tr><td><code>scope</code></td><td>string</td><td>Yes</td><td><code>&quot;global&quot;</code>, <code>&quot;bot&quot;</code>, or <code>&quot;chat&quot;</code></td></tr><tr><td><code>chat_id</code></td><td>integer</td><td>For chat scope</td><td>Chat ID for chat-scoped memory</td></tr></tbody></table>
 <hr>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="write_memory">write_memory<a href="#write_memory" class="hash-link" aria-label="Direct link to write_memory" title="Direct link to write_memory" translate="no">​</a></h3>
 <p>Write to AGENTS.md memory file.</p>
-<table><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody><tr><td><code>scope</code></td><td>string</td><td>Yes</td><td><code>&quot;global&quot;</code> or <code>&quot;chat&quot;</code></td></tr><tr><td><code>chat_id</code></td><td>integer</td><td>For chat scope</td><td>Chat ID for chat-scoped memory</td></tr><tr><td><code>content</code></td><td>string</td><td>Yes</td><td>Content to write (replaces existing)</td></tr></tbody></table>
+<table><thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody><tr><td><code>scope</code></td><td>string</td><td>Yes</td><td><code>&quot;global&quot;</code>, <code>&quot;bot&quot;</code>, or <code>&quot;chat&quot;</code></td></tr><tr><td><code>chat_id</code></td><td>integer</td><td>For chat scope</td><td>Chat ID for chat-scoped memory</td></tr><tr><td><code>content</code></td><td>string</td><td>Yes</td><td>Content to write (<code>global</code>/<code>bot</code> replace full file; <code>chat</code> updates latest sender section when available)</td></tr></tbody></table>
 <hr>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="structured_memory_search">structured_memory_search<a href="#structured_memory_search" class="hash-link" aria-label="Direct link to structured_memory_search" title="Direct link to structured_memory_search" translate="no">​</a></h3>
 <p>Search structured memories persisted in SQLite.</p>

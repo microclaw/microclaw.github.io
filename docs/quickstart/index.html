@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.11c85334.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.af37c160.js" defer="defer"></script>
 <script src="/assets/js/main.874e86cd.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -60,6 +60,7 @@
 <p>It validates required fields, tests chat/LLM connectivity, and writes <code>microclaw.config.yaml</code> with backup in <code>microclaw.config.backups/</code> (latest 50 kept).
 By default, channel credentials are written in multi-account shape (<code>channels.&lt;channel&gt;.default_account</code> + <code>channels.&lt;channel&gt;.accounts.main</code>).
 For multi-bot operations, setup and Web Settings both support editing full <code>channels.&lt;channel&gt;.accounts</code> JSON.
+Per-bot <code>soul_path</code> can be configured in both setup and Web Settings by selecting a file from discovered <code>souls/*.md</code> or entering a custom filename/path.
 It also includes provider/model list pickers (<code>Enter</code> open list, <code>↑/↓</code> move, <code>Enter</code> confirm, <code>Esc</code> close).</p>
 <p>Built-in provider presets:</p>
 <ul>
