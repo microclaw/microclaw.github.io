@@ -69,14 +69,14 @@ At runtime, at least one channel must be enabled:
 | `working_dir` | `~/.microclaw/working_dir` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
 | `working_dir_isolation` | `chat` | Working directory isolation mode for `bash/read_file/write_file/edit_file/glob/grep`: `shared` uses `working_dir/shared`, `chat` isolates each chat under `working_dir/chat/<channel>/<chat_id>` |
 | `high_risk_tool_user_confirmation_required` | `true` | Require explicit user confirmation before high-risk tool execution (for example `bash`) |
-| `sandbox.mode` | `off` | Bash execution mode: `off` runs on host; `all` routes bash tool calls to Docker containers |
-| `sandbox.backend` | `auto` | Sandbox backend (`auto`/`docker`) |
+| `sandbox.mode` | `off` | Bash execution mode: `off` runs on host; `all` routes bash tool calls to sandbox containers |
+| `sandbox.backend` | `auto` | Sandbox backend (`auto`/`docker`/`podman`) |
 | `sandbox.image` | `ubuntu:25.10` | Base image used for sandbox containers |
 | `sandbox.container_prefix` | `microclaw-sandbox` | Prefix for sandbox container names |
-| `sandbox.security_profile` | `hardened` | Sandbox privilege profile: `hardened` (`--cap-drop ALL --security-opt no-new-privileges`), `standard` (Docker default caps), `privileged` (`--privileged`) |
+| `sandbox.security_profile` | `hardened` | Sandbox privilege profile: `hardened` (`--cap-drop ALL --security-opt no-new-privileges`), `standard` (default container caps), `privileged` (`--privileged`) |
 | `sandbox.cap_add` | `[]` | Optional extra Linux capabilities added with `--cap-add` (applies to `hardened` and `standard`) |
 | `sandbox.no_network` | `true` | If true, sandbox containers run with `--network=none` |
-| `sandbox.require_runtime` | `false` | If true and Docker is unavailable while `sandbox.mode=all`, command fails fast instead of host fallback |
+| `sandbox.require_runtime` | `true` | If true and configured container runtime is unavailable while `sandbox.mode=all`, command fails fast instead of host fallback |
 | `sandbox.mount_allowlist_path` | unset | Optional external mount allowlist file (one allowed root path per line) |
 | `max_tokens` | `8192` | Max tokens per LLM response |
 | `max_tool_iterations` | `100` | Max tool-use loop iterations per message |
@@ -173,20 +173,20 @@ Notes:
 - `llm_provider` is still global today.
 - If two bots share the same model string, they share the same `by_model` override block.
 
-## Docker sandbox
+## Container sandbox
 
 To run `bash` tool calls in containers, set:
 
 ```yaml
 sandbox:
   mode: "all"
-  backend: "auto"
+  backend: "auto" # auto|docker|podman
   security_profile: "hardened" # hardened|standard|privileged
   # cap_add: ["SETUID", "SETGID", "CHOWN"]
   image: "ubuntu:25.10"
   container_prefix: "microclaw-sandbox"
   no_network: true
-  require_runtime: false
+  require_runtime: true
 ```
 
 Behavior:
@@ -196,7 +196,11 @@ Behavior:
   - `standard`: Docker default capabilities (useful when sandbox commands need `apt/chown/su`)
   - `privileged`: full container privilege (`--privileged`), debugging only
 - `sandbox.cap_add` appends `--cap-add` entries for `hardened` and `standard`.
-- `sandbox.mode: "all"` + Docker unavailable:
+- Runtime backend selection:
+  - `backend: "auto"`: Docker only (backward-compatible default behavior)
+  - `backend: "docker"`: Docker only
+  - `backend: "podman"`: Podman only
+- `sandbox.mode: "all"` + configured runtime unavailable:
   - `require_runtime: false`: fallback to host with warning.
   - `require_runtime: true`: fail fast.
 

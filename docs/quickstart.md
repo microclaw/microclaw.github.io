@@ -125,7 +125,7 @@ bot_username: "my_bot"
 web_enabled: true
 ```
 
-### Optional: run `bash` tool in Docker sandbox
+### Optional: run `bash` tool in container sandbox
 
 Default behavior is host execution (`sandbox.mode: "off"`).  
 To enable sandbox quickly:
@@ -135,21 +135,26 @@ microclaw setup --enable-sandbox
 microclaw doctor sandbox
 ```
 
-Or set it manually to route `bash` tool calls into Docker containers:
+Or set it manually to route `bash` tool calls into sandbox containers:
 
 ```yaml
 sandbox:
   mode: "all"
-  backend: "auto"
+  backend: "auto" # auto|docker|podman
   security_profile: "hardened" # optional; hardened|standard|privileged (default hardened)
   # cap_add: ["SETUID", "SETGID", "CHOWN"]
   image: "ubuntu:25.10"
   container_prefix: "microclaw-sandbox"
   no_network: true
-  require_runtime: false
+  require_runtime: true
   # optional external allowlist file (one allowed root per line)
   # mount_allowlist_path: "~/.microclaw/sandbox-mount-allowlist.txt"
 ```
+
+Runtime backend behavior:
+- `backend: "auto"` uses Docker only (keeps existing behavior).
+- `backend: "docker"` requires Docker runtime.
+- `backend: "podman"` requires Podman runtime.
 
 Quick verification:
 
@@ -158,10 +163,17 @@ docker info
 docker run --rm ubuntu:25.10 echo ok
 ```
 
+For Podman backend verification:
+
+```sh
+podman info
+podman run --rm ubuntu:25.10 echo ok
+```
+
 Optional hardening:
 - `~/.microclaw/sandbox-mount-allowlist.txt`: sandbox mount allowlist.
 - `~/.microclaw/sandbox-path-allowlist.txt`: file tool path allowlist.
-- `sandbox.security_profile: "hardened"` is the default restrictive mode; use `"standard"` if sandboxed commands need default Docker capabilities.
+- `sandbox.security_profile: "hardened"` is the default restrictive mode; use `"standard"` if sandboxed commands need default container capabilities.
 
 Then start MicroClaw and ask it to run:
 - `cat /etc/os-release`
