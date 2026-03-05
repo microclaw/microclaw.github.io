@@ -13,7 +13,7 @@ Supported transports:
 - `stdio`
 - `streamable_http`
 
-Protocol version is negotiated during initialize (default currently `2025-11-05`, configurable per server/global).
+Protocol version is negotiated during initialize (default currently `2024-11-05`, configurable per server/global).
 
 Config sources are merged from:
 

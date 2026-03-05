@@ -49,7 +49,7 @@ Minimal MCP config example (base file or fragment):
 
 ```json
 {
-  "defaultProtocolVersion": "2025-11-05",
+  "defaultProtocolVersion": "2024-11-05",
   "mcpServers": {
     "memory": {
       "transport": "streamable_http",

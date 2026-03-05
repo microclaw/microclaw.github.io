@@ -138,7 +138,7 @@ MicroClaw loads MCP config from:
 
 ```json
 {
-  "defaultProtocolVersion": "2025-11-05",
+  "defaultProtocolVersion": "2024-11-05",
   "mcpServers": {
     "filesystem": {
       "transport": "stdio",
