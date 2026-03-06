@@ -4,15 +4,19 @@ title: PR & Release Checklist
 sidebar_position: 13
 ---
 
+Last reviewed: 2026-03-05
+
 Use this checklist before merge and release.
 
 ## PR Readiness
 
-- Scope is clear and bounded.
-- Migration changes reviewed for compatibility.
-- API changes documented.
-- Security-sensitive paths reviewed.
-- Docs synced between `docs/` and `website/docs/`.
+- [ ] Scope is clear and limited to intended feature set.
+- [ ] PR description includes motivation, behavior changes, and rollback notes.
+- [ ] Linked issue/PR references are present (`Fixes #...` or related PR IDs).
+- [ ] Migration impact reviewed (`schema_migrations`, compatibility paths).
+- [ ] API contract changes documented (new/changed endpoints, request/response fields).
+- [ ] Security-sensitive paths reviewed (auth scope, CSRF, audit events).
+- [ ] Docs updated in both `docs/` and `website/docs/` when user-facing behavior changes.
 
 ## Validation Commands
 
@@ -27,15 +31,15 @@ node scripts/generate_docs_artifacts.mjs --check
 
 ## Release Gate
 
-- Upgrade test from previous DB schema passed.
-- Auth/API-key/session-cookie flows verified.
-- Session fork + tree endpoints verified.
-- Hooks lifecycle verified.
-- Metrics + history + OTLP path verified.
-- `/api/config/self_check` reviewed and high-risk warnings resolved.
+- [ ] Upgrade test from previous DB schema with real sample data.
+- [ ] Auth flows verified (session login/logout, API key scopes).
+- [ ] Session fork flows verified (`/api/sessions/fork`, `/api/sessions/tree`).
+- [ ] Hook runtime sanity verified (`hooks list/info/enable/disable`).
+- [ ] Metrics pipeline verified (`/api/metrics`, `/api/metrics/history`, OTLP export if enabled).
+- [ ] Config self-check reviewed (`/api/config/self_check`) with no unaccepted `high` warnings.
 
 ## Rollback Prep
 
-- Backup SQLite DB.
-- Keep previous binary/image for rollback.
-- Record release SHA and config diff.
+- [ ] Snapshot/backup current SQLite DB.
+- [ ] Keep previous binary/image available for rollback.
+- [ ] Record release commit SHA and config diff.
