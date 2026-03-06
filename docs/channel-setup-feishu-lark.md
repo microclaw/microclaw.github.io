@@ -72,6 +72,10 @@ Notes:
 - `topic_mode` is bot/account-level (`accounts.<id>.topic_mode`), not channel-level.
 - `topic_mode` is only supported when account `domain` is `feishu` or `lark`.
 - Webhook mode needs public ingress; websocket mode does not.
+- Emoji reaction reply is supported:
+  - If the model final response is a single emoji/emoji token (for example `👍`, `:thumbsdown:`, `TearsofJoy`), MicroClaw sends Feishu reaction on the original message instead of plain text.
+  - Supports direct `emoji_type` values and common aliases/emoji characters (including Chinese aliases like `点赞`).
+  - If reaction mapping or API call fails, it automatically falls back to normal text reply.
 
 ## Verify
 
