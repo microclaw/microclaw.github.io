@@ -64,6 +64,7 @@ It also includes provider/model list pickers (`Enter` open list, `↑/↓` move,
 
 Built-in provider presets:
 - `openai`, `openai-codex`, `openrouter`, `anthropic`, `ollama`, `google`, `alibaba`
+- `qwen-code`
 - `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`
 - `zhipu`, `minimax`, `cohere`, `tencent`
 - `xai`, `huggingface`, `together`
@@ -82,6 +83,7 @@ api_key: "sk-ant-..."
 model: "claude-sonnet-4-5-20250929"
 data_dir: "~/.microclaw"
 working_dir: "~/.microclaw/working_dir"
+override_timezone: "Asia/Shanghai" # optional; default uses system timezone when unset
 working_dir_isolation: "chat" # optional; defaults to "chat"
 max_document_size_mb: 100
 

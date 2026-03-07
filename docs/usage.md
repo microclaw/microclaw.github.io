@@ -558,6 +558,7 @@ microclaw help        # Show help and all configuration options
 | `model` | No | provider-specific (`claude-sonnet-4-5-20250929` for `anthropic`) | LLM model ID |
 | `data_dir` | No | `~/.microclaw` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
 | `working_dir` | No | `~/.microclaw/working_dir` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
+| `override_timezone` | No | unset | Optional IANA timezone override. By default MicroClaw uses detected system timezone; when set, this value takes precedence. |
 | `max_tokens` | No | `8192` | Max tokens per response |
 | `max_tool_iterations` | No | `100` | Max tool loop iterations |
 | `max_document_size_mb` | No | `100` | Max inbound Telegram document size (MB); larger files are rejected |

@@ -67,6 +67,7 @@ At runtime, at least one channel must be enabled:
 | `openai_compat_body_overrides_by_model` | `{}` | Model-specific OpenAI-compatible request-body overrides (keyed by exact model name) |
 | `data_dir` | `~/.microclaw` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
 | `working_dir` | `~/.microclaw/working_dir` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |
+| `override_timezone` | unset | Optional IANA timezone override (for example `Asia/Shanghai`). Default behavior uses detected system timezone; override is applied only when this field is set. |
 | `working_dir_isolation` | `chat` | Working directory isolation mode for `bash/read_file/write_file/edit_file/glob/grep`: `shared` uses `working_dir/shared`, `chat` isolates each chat under `working_dir/chat/<channel>/<chat_id>` |
 | `high_risk_tool_user_confirmation_required` | `true` | Require explicit user confirmation before high-risk tool execution (for example `bash`) |
 | `sandbox.mode` | `off` | Bash execution mode: `off` runs on host; `all` routes bash tool calls to sandbox containers |
@@ -256,7 +257,7 @@ If set, it overrides global `bot_username` for that channel.
 
 ## Supported `llm_provider` values
 
-`openai`, `openai-codex`, `openrouter`, `anthropic`, `ollama`, `google`, `alibaba`, `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`, `zhipu`, `minimax`, `cohere`, `tencent`, `xai`, `huggingface`, `together`, `custom`.
+`openai`, `openai-codex`, `openrouter`, `anthropic`, `ollama`, `google`, `alibaba`, `qwen-code`, `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`, `zhipu`, `minimax`, `cohere`, `tencent`, `xai`, `huggingface`, `together`, `custom`.
 
 `ollama` is supported as a local OpenAI-compatible provider. Recommended defaults:
 - `llm_base_url`: `http://127.0.0.1:11434/v1`
