@@ -73,9 +73,23 @@ Notes:
 - `topic_mode` is only supported when account `domain` is `feishu` or `lark`.
 - Webhook mode needs public ingress; websocket mode does not.
 - Emoji reaction reply is supported:
-  - If the model final response is a single emoji/emoji token (for example `👍`, `:thumbsdown:`, `TearsofJoy`), MicroClaw sends Feishu reaction on the original message instead of plain text.
+  - If the model final response is a single emoji/emoji token (for example `👍`, `:thumbsdown:`, `TearsofJoy`), MicroClaw sends Feishu reaction on the original message.
   - Supports direct `emoji_type` values and common aliases/emoji characters (including Chinese aliases like `点赞`).
-  - If reaction mapping or API call fails, it automatically falls back to normal text reply.
+  - For finer control, model output can use:
+    - `reaction-only: <emoji-or-token>` for reaction only.
+    - `reaction: <emoji-or-token>` + newline + reply text for reaction + text.
+    - `[reaction: <emoji-or-token>] <reply text>` as inline form.
+  - If reaction send fails:
+    - implicit single-token reaction output falls back to plain text.
+    - explicit `reaction-only:` keeps silent text-wise (no forced text reply).
+
+### Emoji Type List & Meaning Guide
+
+- Full supported `emoji_type` set is maintained in code: `src/channels/feishu.rs` (`FEISHU_EMOJI_TYPES`).
+- Current built-in list size: **254** emoji types.
+- The bot can choose any supported `emoji_type` directly (for example `THUMBSUP`, `PARTY`, `ROCKET`).
+- No fixed meaning mapping is enforced.
+- To reduce unsupported selections, prompt guidance constrains model selection to a supported whitelist (for example: `THUMBSUP`, `THUMBSDOWN`, `CLAP`, `THANKS`, `HEART`, `BROKENHEART`, `Fire`, `PARTY`, `SMILE`, `TearsofJoy`, `SOB`, `RAGE`, `FISTBUMP`, `ROCKET`, `100`, `LetMeSee`, `OK`, `LOVE`, `HAPPY`, `WINK`, `YEAH`, `STRONG`, `TOP`, `NO1`).
 
 ## Verify
 
