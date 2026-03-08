@@ -19,9 +19,16 @@ This roadmap reflects current priorities. Items may shift as the project evolves
 - Optional streaming responses
 - Better group mention detection and quoting
 - Optional web UI console
+- Sub-agent orchestration hardening (task contracts, timeout/cancel controls, and clearer result shaping)
 
 ## Long term
 
 - Multimodal input (images, documents)
 - Pluggable tool marketplace
 - Multi-agent orchestration
+
+## Sub-agent track
+
+- Now: keep the current `sub_agent` tool stable and constrained (no recursive side effects, explicit boundaries)
+- Next: improve parent/child task handoff with stricter input/output contracts and better recovery on malformed tool calls
+- Later: expand from single delegated worker into broader multi-agent orchestration workflows
