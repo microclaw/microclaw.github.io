@@ -555,6 +555,8 @@ microclaw help        # Show help and all configuration options
 | `bot_username` | Yes* | - | Global default bot username |
 | `channels.telegram.default_account` | No | unset | Default Telegram account ID in multi-account mode |
 | `channels.telegram.accounts.<id>.bot_username` | No | unset | Per-account Telegram username (without `@`) |
+| `channels.telegram.topic_routing.enabled` | No | `false` | Route Telegram forum topics as isolated chats (`external_chat_id=<chat_id>:<thread_id>`) |
+| `channels.telegram.accounts.<id>.topic_routing.enabled` | No | inherit channel-level | Optional per-account override for Telegram topic routing |
 | `model` | No | provider-specific (`claude-sonnet-4-5-20250929` for `anthropic`) | LLM model ID |
 | `data_dir` | No | `~/.microclaw` | Data root (`runtime` data in `data_dir/runtime`, skills in `data_dir/skills`) |
 | `working_dir` | No | `~/.microclaw/working_dir` | Default working directory for `bash/read_file/write_file/edit_file/glob/grep`; relative paths resolve from here |

@@ -32,6 +32,8 @@ At runtime, at least one channel must be enabled:
 | `channels.telegram.accounts.<id>.bot_username` | unset | Telegram username for a specific account (without `@`) |
 | `channels.telegram.accounts.<id>.model` | unset | Optional per-bot model override for this Telegram account |
 | `channels.telegram.accounts.<id>.soul_path` | unset | Optional per-bot SOUL file path for this Telegram account |
+| `channels.telegram.topic_routing.enabled` | `false` | If true, Telegram forum topics are routed as separate chats via `external_chat_id=<chat_id>:<thread_id>` |
+| `channels.telegram.accounts.<id>.topic_routing.enabled` | inherit channel-level | Optional per-account override for Telegram topic routing |
 | `channels.telegram.accounts.<id>.allowed_groups` | `[]` | Optional Telegram group allowlist scoped to that account |
 | `channels.telegram.allowed_user_ids` | `[]` | Optional Telegram private-chat sender allowlist at channel scope |
 | `channels.telegram.accounts.<id>.allowed_user_ids` | `[]` | Optional Telegram private-chat sender allowlist scoped to that account (merged with channel scope) |

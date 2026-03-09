@@ -94,6 +94,9 @@ bot_username: "my_bot"
 # channels:
 #   telegram:
 #     default_account: "main"
+#     # optional: route Telegram topics as isolated chats ("<chat_id>:<thread_id>")
+#     # topic_routing:
+#     #   enabled: true
 #     accounts:
 #       main:
 #         bot_token: "123456:ABC-DEF1234..."
@@ -101,6 +104,9 @@ bot_username: "my_bot"
 #       support:
 #         bot_token: "987654:XYZ-DEF9999..."
 #         bot_username: "support_bot"
+#         # optional per-account override
+#         # topic_routing:
+#         #   enabled: false
 # Telegram group chat note for multi-bot:
 #   In BotFather for each bot, enable Allow Groups and disable Group Privacy.
 # Recommended Discord/Slack/Feishu multi-account mode:

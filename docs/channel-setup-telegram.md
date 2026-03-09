@@ -35,6 +35,9 @@ channels:
   telegram:
     enabled: true
     default_account: "main"
+    # Optional: treat each Telegram topic/thread as an isolated chat
+    topic_routing:
+      enabled: true
     accounts:
       main:
         enabled: true
@@ -44,6 +47,9 @@ channels:
         enabled: true
         bot_token: "987654:XYZ-DEF9999..."
         bot_username: "my_microclaw_support_bot"
+        # Optional per-account override (falls back to channels.telegram.topic_routing.enabled)
+        # topic_routing:
+        #   enabled: false
         # Optional per-account group allowlist
         # allowed_groups: [-1001234567890]
         # Optional per-account DM sender allowlist (Telegram user IDs)
@@ -54,6 +60,7 @@ Notes:
 
 - Each account runs as an independent Telegram bot in the same MicroClaw process.
 - Mention the specific bot username that should answer in group chats.
+- When topic routing is enabled, topic messages are persisted with `external_chat_id=<chat_id>:<thread_id>` so each topic keeps an independent session.
 - For group chats with multi-token multi-bot, configure each bot in BotFather:
   - `Bot Settings -> Allow Groups`: enabled
   - `Bot Settings -> Group Privacy`: disabled (`/setprivacy` -> `Disable`)
