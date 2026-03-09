@@ -4,10 +4,67 @@
         <title>MicroClaw Blog</title>
         <link>https://microclaw.ai/blog</link>
         <description>MicroClaw Blog</description>
-        <lastBuildDate>Thu, 26 Feb 2026 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 09 Mar 2026 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[New: HTTP Hook Trigger for Headless Automation]]></title>
+            <link>https://microclaw.ai/blog/http-hook-trigger-for-automation</link>
+            <guid>https://microclaw.ai/blog/http-hook-trigger-for-automation</guid>
+            <pubDate>Mon, 09 Mar 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[MicroClaw now includes a dedicated HTTP hook trigger surface for external automation.]]></description>
+            <content:encoded><![CDATA[<p>MicroClaw now includes a dedicated HTTP hook trigger surface for external automation.</p>
+<p>This closes a common integration gap: webhook systems and scripts can trigger agent runs directly, without relying on chat-native ingress or static scheduler-only flows.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-shipped">What shipped<a href="https://microclaw.ai/blog/http-hook-trigger-for-automation#what-shipped" class="hash-link" aria-label="Direct link to What shipped" title="Direct link to What shipped" translate="no">​</a></h2>
+<p>MicroClaw now exposes:</p>
+<ul>
+<li class=""><code>POST /hooks/agent</code> (alias: <code>/api/hooks/agent</code>)</li>
+<li class=""><code>POST /hooks/wake</code> (alias: <code>/api/hooks/wake</code>)</li>
+</ul>
+<p><code>/hooks/agent</code> accepts an OpenClaw-style payload shape (<code>message</code>, optional <code>name</code>, optional <code>sessionKey</code>) and starts an async run.</p>
+<p><code>/hooks/wake</code> supports two modes:</p>
+<ul>
+<li class=""><code>now</code> (default): run immediately</li>
+<li class=""><code>next-heartbeat</code>: queue a system-event message only</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="security-model">Security model<a href="https://microclaw.ai/blog/http-hook-trigger-for-automation#security-model" class="hash-link" aria-label="Direct link to Security model" title="Direct link to Security model" translate="no">​</a></h2>
+<p>These endpoints are protected by a dedicated hook token:</p>
+<div class="language-yaml codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-yaml codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token key atrule" style="color:#00a4db">channels</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token key atrule" style="color:#00a4db">web</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">hooks_token</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">"replace-with-secret"</span><br></span></code></pre></div></div>
+<p>Auth headers:</p>
+<ul>
+<li class=""><code>Authorization: Bearer &lt;token&gt;</code></li>
+<li class=""><code>x-openclaw-token: &lt;token&gt;</code></li>
+<li class=""><code>x-microclaw-hook-token: &lt;token&gt;</code></li>
+</ul>
+<p>This keeps webhook ingress auth separated from operator API key scopes.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="session-key-safety-defaults">Session-key safety defaults<a href="https://microclaw.ai/blog/http-hook-trigger-for-automation#session-key-safety-defaults" class="hash-link" aria-label="Direct link to Session-key safety defaults" title="Direct link to Session-key safety defaults" translate="no">​</a></h2>
+<p>To reduce risky external routing, request <code>sessionKey</code> override is off by default:</p>
+<div class="language-yaml codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-yaml codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token key atrule" style="color:#00a4db">channels</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token key atrule" style="color:#00a4db">web</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">hooks_default_session_key</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">"hook:ingress"</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">hooks_allow_request_session_key</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token boolean important" style="color:#36acaa">false</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">hooks_allowed_session_key_prefixes</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token punctuation" style="color:#393A34">[</span><span class="token string" style="color:#e3116c">"hook:"</span><span class="token punctuation" style="color:#393A34">]</span><br></span></code></pre></div></div>
+<p>If you enable request overrides, prefix allowlists let you constrain where external traffic can route.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-this-matters">Why this matters<a href="https://microclaw.ai/blog/http-hook-trigger-for-automation#why-this-matters" class="hash-link" aria-label="Direct link to Why this matters" title="Direct link to Why this matters" translate="no">​</a></h2>
+<p>Before this, MicroClaw already had Web send endpoints, but webhook-style trigger semantics were less explicit for automation clients.</p>
+<p>Now the runtime has a first-class ingress path for:</p>
+<ul>
+<li class="">CI/CD checks and summary bots</li>
+<li class="">inbound SaaS events (monitoring, incident tools, ticketing)</li>
+<li class="">script-based orchestration and fan-out workflows</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="quick-example">Quick example<a href="https://microclaw.ai/blog/http-hook-trigger-for-automation#quick-example" class="hash-link" aria-label="Direct link to Quick example" title="Direct link to Quick example" translate="no">​</a></h2>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">curl -sS http://127.0.0.1:10961/hooks/agent \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  -H "Authorization: Bearer $MICROCLAW_HOOKS_TOKEN" \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  -H "Content-Type: application/json" \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  -d '{"message":"Summarize inbox","name":"Email"}'</span><br></span></code></pre></div></div>
+<p>Then consume run events via:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">curl -N "http://127.0.0.1:10961/api/stream?run_id=&lt;RUN_ID&gt;" \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  -H "Authorization: Bearer $MICROCLAW_OPERATOR_API_KEY"</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="docs">Docs<a href="https://microclaw.ai/blog/http-hook-trigger-for-automation#docs" class="hash-link" aria-label="Direct link to Docs" title="Direct link to Docs" translate="no">​</a></h2>
+<p>Full reference and troubleshooting:</p>
+<ul>
+<li class=""><a class="" href="https://microclaw.ai/docs/http-hook-trigger">HTTP Hook Trigger</a></li>
+<li class=""><a class="" href="https://microclaw.ai/docs/web-operator-api">Web Operator API</a></li>
+</ul>]]></content:encoded>
+            <category>Release</category>
+            <category>Web</category>
+            <category>Runtime</category>
+            <category>Channels</category>
+        </item>
         <item>
             <title><![CDATA[MicroClaw Weekly Update: Feb 20 - Feb 26, 2026]]></title>
             <link>https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26</link>
