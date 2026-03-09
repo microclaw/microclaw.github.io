@@ -69,6 +69,138 @@
         <category label="Channels" term="Channels"/>
     </entry>
     <entry>
+        <title type="html"><![CDATA[Subagents in MicroClaw: Background Work Without Blocking Chat]]></title>
+        <id>https://microclaw.ai/blog/subagents</id>
+        <link href="https://microclaw.ai/blog/subagents"/>
+        <updated>2026-03-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[The old way to delegate work inside an agent was to nest another mini-agent loop inside one tool call.]]></summary>
+        <content type="html"><![CDATA[<p>The old way to delegate work inside an agent was to nest another mini-agent loop inside one tool call.</p>
+<p>MicroClaw is moving past that shape with session-native subagents: asynchronous runs with IDs, lifecycle state, limits, and follow-up controls.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-changed">What changed<a href="https://microclaw.ai/blog/subagents#what-changed" class="hash-link" aria-label="Direct link to What changed" title="Direct link to What changed" translate="no">​</a></h2>
+<p>Instead of treating delegation like an opaque internal trick, MicroClaw exposes a real subagent runtime:</p>
+<ul>
+<li class=""><code>sessions_spawn</code> starts a run and returns immediately</li>
+<li class=""><code>subagents_list</code> and <code>subagents_info</code> show state</li>
+<li class=""><code>subagents_kill</code> cancels active work</li>
+<li class=""><code>subagents_focus</code>, <code>subagents_focused</code>, and <code>subagents_send</code> turn one run into an ongoing work lane</li>
+<li class=""><code>subagents_log</code> exposes timeline events</li>
+<li class=""><code>subagents_retry_announces</code> flushes pending completion notices for control chats</li>
+</ul>
+<p>That makes subagents something operators can reason about, not just something hidden inside one model turn.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-asynchronous-runs-matter">Why asynchronous runs matter<a href="https://microclaw.ai/blog/subagents#why-asynchronous-runs-matter" class="hash-link" aria-label="Direct link to Why asynchronous runs matter" title="Direct link to Why asynchronous runs matter" translate="no">​</a></h2>
+<p>In a chat interface, blocking the parent conversation is expensive.</p>
+<p>If a delegated task needs several tool iterations, large repo scans, or slower model passes, the main chat should stay responsive. Session-native subagents do exactly that:</p>
+<ol>
+<li class="">parent agent spawns background work</li>
+<li class="">run enters <code>accepted -&gt; queued -&gt; running</code></li>
+<li class="">parent chat can continue handling other messages</li>
+<li class="">completion lands as <code>completed</code>, <code>failed</code>, <code>timed_out</code>, or <code>cancelled</code></li>
+</ol>
+<p>This is a better operational model for real tasks than hiding all delegation inside a single synchronous tool call.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="safety-boundaries">Safety boundaries<a href="https://microclaw.ai/blog/subagents#safety-boundaries" class="hash-link" aria-label="Direct link to Safety boundaries" title="Direct link to Safety boundaries" translate="no">​</a></h2>
+<p>Subagents are not full-power clones of the main agent.</p>
+<p>MicroClaw applies several guardrails:</p>
+<ul>
+<li class="">restricted child registry through <code>ToolRegistry::new_sub_agent</code></li>
+<li class="">per-chat active-run limits</li>
+<li class="">per-parent child-run limits</li>
+<li class="">configurable timeout with <code>subagents.run_timeout_secs</code></li>
+<li class="">bounded nesting with <code>subagents.max_spawn_depth</code></li>
+</ul>
+<p>By default, max spawn depth is conservative. You can open it up deliberately when you want orchestration instead of accidental recursion.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="practical-workflow">Practical workflow<a href="https://microclaw.ai/blog/subagents#practical-workflow" class="hash-link" aria-label="Direct link to Practical workflow" title="Direct link to Practical workflow" translate="no">​</a></h2>
+<p>A typical pattern looks like this:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">1. Spawn a worker with sessions_spawn</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">2. Keep chatting in the parent session</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">3. Inspect progress with subagents_list or subagents_info</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">4. Focus the chat on one run if follow-up work should stay attached</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">5. Send continuation work with subagents_send</span><br></span></code></pre></div></div>
+<p>That focus/send model matters because it turns subagents from one-off helpers into durable task lanes inside a normal chat surface.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="where-this-helps">Where this helps<a href="https://microclaw.ai/blog/subagents#where-this-helps" class="hash-link" aria-label="Direct link to Where this helps" title="Direct link to Where this helps" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="repo-work">Repo work<a href="https://microclaw.ai/blog/subagents#repo-work" class="hash-link" aria-label="Direct link to Repo work" title="Direct link to Repo work" translate="no">​</a></h3>
+<p>Spawn a background code scan, let it collect findings, then ask follow-up questions against the focused run.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="ops-and-incidents">Ops and incidents<a href="https://microclaw.ai/blog/subagents#ops-and-incidents" class="hash-link" aria-label="Direct link to Ops and incidents" title="Direct link to Ops and incidents" translate="no">​</a></h3>
+<p>Keep the main room responsive while one worker investigates logs, another summarizes alerts, and another drafts a status update.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="structured-orchestration">Structured orchestration<a href="https://microclaw.ai/blog/subagents#structured-orchestration" class="hash-link" aria-label="Direct link to Structured orchestration" title="Direct link to Structured orchestration" translate="no">​</a></h3>
+<p>For bounded fan-out work, MicroClaw also includes <code>subagents_orchestrate</code>, which builds on the same runtime instead of inventing a separate execution path.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="the-architectural-point">The architectural point<a href="https://microclaw.ai/blog/subagents#the-architectural-point" class="hash-link" aria-label="Direct link to The architectural point" title="Direct link to The architectural point" translate="no">​</a></h2>
+<p>This is not just "multi-agent" branding.</p>
+<p>The meaningful change is that delegation now has durable state in the runtime and database: run IDs, status transitions, budgets, cancellation, result text, and event logs. That gives MicroClaw a cleaner foundation for observability, retries, and future orchestration patterns.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="read-next">Read next<a href="https://microclaw.ai/blog/subagents#read-next" class="hash-link" aria-label="Direct link to Read next" title="Direct link to Read next" translate="no">​</a></h2>
+<ul>
+<li class=""><a class="" href="https://microclaw.ai/docs/tools">Tools reference</a></li>
+<li class=""><a class="" href="https://microclaw.ai/docs/architecture-context">Context lifecycle</a></li>
+<li class=""><a class="" href="https://microclaw.ai/docs/roadmap">Roadmap</a></li>
+</ul>]]></content>
+        <author>
+            <name>Everett</name>
+            <uri>https://github.com/microclaw</uri>
+        </author>
+        <category label="Agentic AI" term="Agentic AI"/>
+        <category label="Runtime" term="Runtime"/>
+        <category label="Architecture" term="Architecture"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Telegram Topic Mode: One Group, Clean Session Boundaries]]></title>
+        <id>https://microclaw.ai/blog/telegram-topic-mode</id>
+        <link href="https://microclaw.ai/blog/telegram-topic-mode"/>
+        <updated>2026-03-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Telegram forum groups are useful until every thread shares one agent memory buffer.]]></summary>
+        <content type="html"><![CDATA[<p>Telegram forum groups are useful until every thread shares one agent memory buffer.</p>
+<p>MicroClaw's Telegram topic mode fixes that by routing each forum topic as its own chat session, while still replying inside the original Telegram thread.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-topic-mode-does">What topic mode does<a href="https://microclaw.ai/blog/telegram-topic-mode#what-topic-mode-does" class="hash-link" aria-label="Direct link to What topic mode does" title="Direct link to What topic mode does" translate="no">​</a></h2>
+<p>When <code>channels.telegram.topic_routing.enabled</code> is on, MicroClaw stores a topic message with:</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">external_chat_id=&lt;chat_id&gt;:&lt;thread_id&gt;</span><br></span></code></pre></div></div>
+<p>That small routing change matters because it gives each topic:</p>
+<ul>
+<li class="">its own session history</li>
+<li class="">its own memory and resumable context</li>
+<li class="">its own focused sub-agent binding when subagents are in use</li>
+</ul>
+<p>Without topic routing, a busy support forum or operator room can blur multiple workstreams into one long conversation.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-this-is-the-right-default-for-forum-style-groups">Why this is the right default for forum-style groups<a href="https://microclaw.ai/blog/telegram-topic-mode#why-this-is-the-right-default-for-forum-style-groups" class="hash-link" aria-label="Direct link to Why this is the right default for forum-style groups" title="Direct link to Why this is the right default for forum-style groups" translate="no">​</a></h2>
+<p>Telegram topics are already a user-facing isolation model. The runtime should match that model.</p>
+<p>With topic mode enabled, you can treat one Telegram supergroup like a bundle of small task rooms:</p>
+<ul>
+<li class="">one topic for release ops</li>
+<li class="">one topic for customer incidents</li>
+<li class="">one topic for code review follow-ups</li>
+<li class="">one topic for experiments or scratch work</li>
+</ul>
+<p>The bot keeps replies inside the same topic by preserving <code>message_thread_id</code> on outbound messages, so the user experience still feels native to Telegram.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="configuration">Configuration<a href="https://microclaw.ai/blog/telegram-topic-mode#configuration" class="hash-link" aria-label="Direct link to Configuration" title="Direct link to Configuration" translate="no">​</a></h2>
+<p>Channel-wide:</p>
+<div class="language-yaml codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-yaml codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token key atrule" style="color:#00a4db">channels</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token key atrule" style="color:#00a4db">telegram</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">enabled</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token boolean important" style="color:#36acaa">true</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">topic_routing</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token key atrule" style="color:#00a4db">enabled</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token boolean important" style="color:#36acaa">true</span><br></span></code></pre></div></div>
+<p>Per-account override in multi-bot mode:</p>
+<div class="language-yaml codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-yaml codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token key atrule" style="color:#00a4db">channels</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  </span><span class="token key atrule" style="color:#00a4db">telegram</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">default_account</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">"main"</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">topic_routing</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token key atrule" style="color:#00a4db">enabled</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token boolean important" style="color:#36acaa">false</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    </span><span class="token key atrule" style="color:#00a4db">accounts</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token key atrule" style="color:#00a4db">main</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token key atrule" style="color:#00a4db">enabled</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token boolean important" style="color:#36acaa">true</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token key atrule" style="color:#00a4db">bot_token</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">"123456:ABC..."</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token key atrule" style="color:#00a4db">bot_username</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">"main_bot"</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">      </span><span class="token key atrule" style="color:#00a4db">support</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token key atrule" style="color:#00a4db">enabled</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token boolean important" style="color:#36acaa">true</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token key atrule" style="color:#00a4db">bot_token</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">"987654:XYZ..."</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token key atrule" style="color:#00a4db">bot_username</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token string" style="color:#e3116c">"support_bot"</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">        </span><span class="token key atrule" style="color:#00a4db">topic_routing</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">          </span><span class="token key atrule" style="color:#00a4db">enabled</span><span class="token punctuation" style="color:#393A34">:</span><span class="token plain"> </span><span class="token boolean important" style="color:#36acaa">true</span><br></span></code></pre></div></div>
+<p>That lets one bot stay topic-aware while another keeps legacy group behavior.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="where-it-helps-immediately">Where it helps immediately<a href="https://microclaw.ai/blog/telegram-topic-mode#where-it-helps-immediately" class="hash-link" aria-label="Direct link to Where it helps immediately" title="Direct link to Where it helps immediately" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-support-and-triage-groups">1. Support and triage groups<a href="https://microclaw.ai/blog/telegram-topic-mode#1-support-and-triage-groups" class="hash-link" aria-label="Direct link to 1. Support and triage groups" title="Direct link to 1. Support and triage groups" translate="no">​</a></h3>
+<p>Each customer issue can live in its own topic instead of fighting for one shared context window.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-multi-bot-operations">2. Multi-bot operations<a href="https://microclaw.ai/blog/telegram-topic-mode#2-multi-bot-operations" class="hash-link" aria-label="Direct link to 2. Multi-bot operations" title="Direct link to 2. Multi-bot operations" translate="no">​</a></h3>
+<p>MicroClaw already supports multiple Telegram bot accounts in one runtime. Topic mode keeps each bot's thread-local work cleaner in shared operator groups.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-long-running-tasks">3. Long-running tasks<a href="https://microclaw.ai/blog/telegram-topic-mode#3-long-running-tasks" class="hash-link" aria-label="Direct link to 3. Long-running tasks" title="Direct link to 3. Long-running tasks" translate="no">​</a></h3>
+<p>A topic can become the stable home for a single ongoing effort, such as release prep or a debugging session, without contaminating unrelated chats.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="practical-behavior">Practical behavior<a href="https://microclaw.ai/blog/telegram-topic-mode#practical-behavior" class="hash-link" aria-label="Direct link to Practical behavior" title="Direct link to Practical behavior" translate="no">​</a></h2>
+<p>Once enabled:</p>
+<ul>
+<li class="">replies in different topics no longer share the same <code>external_chat_id</code></li>
+<li class="">session resume works per topic</li>
+<li class="">structured memory extraction sees topic conversations as separate chat streams</li>
+<li class="">follow-up work lands back in the same Telegram thread</li>
+</ul>
+<p>This is one of those changes that looks small in config but removes a lot of operational noise in practice.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="docs">Docs<a href="https://microclaw.ai/blog/telegram-topic-mode#docs" class="hash-link" aria-label="Direct link to Docs" title="Direct link to Docs" translate="no">​</a></h2>
+<ul>
+<li class=""><a class="" href="https://microclaw.ai/docs/channel-setup-telegram">Telegram setup</a></li>
+<li class=""><a class="" href="https://microclaw.ai/docs/configuration">Configuration reference</a></li>
+<li class=""><a class="" href="https://microclaw.ai/docs/quickstart">Quickstart</a></li>
+</ul>]]></content>
+        <author>
+            <name>Everett</name>
+            <uri>https://github.com/microclaw</uri>
+        </author>
+        <category label="Telegram" term="Telegram"/>
+        <category label="Channels" term="Channels"/>
+        <category label="Runtime" term="Runtime"/>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[MicroClaw Weekly Update: Feb 20 - Feb 26, 2026]]></title>
         <id>https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26</id>
         <link href="https://microclaw.ai/blog/microclaw-weekly-updates-2026-02-26"/>

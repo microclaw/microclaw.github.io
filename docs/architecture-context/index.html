@@ -18,8 +18,8 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.b9ad1341.js" defer="defer"></script>
-<script src="/assets/js/main.39287ba3.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.43ecbdd7.js" defer="defer"></script>
+<script src="/assets/js/main.16e30556.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -69,9 +69,10 @@
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="sub-agent-inheritance-and-isolation">Sub-agent inheritance and isolation<a href="#sub-agent-inheritance-and-isolation" class="hash-link" aria-label="Direct link to Sub-agent inheritance and isolation" title="Direct link to Sub-agent inheritance and isolation" translate="no">​</a></h2>
 <p>Current model:</p>
 <ul>
-<li class="">Sub-agent gets restricted tool registry.</li>
-<li class="">No recursive sub-agent calls.</li>
-<li class="">No side-effect scheduling/memory-write/send-message tools.</li>
+<li class="">Sub-agent runs use a restricted tool registry via <code>ToolRegistry::new_sub_agent</code>.</li>
+<li class="">Session-native async runs are created with <code>sessions_spawn</code> and managed with <code>subagents_*</code> tools.</li>
+<li class="">Spawn depth is bounded by <code>subagents.max_spawn_depth</code> and defaults to <code>1</code>, so nested delegation is opt-in and capped.</li>
+<li class="">Child runs do not receive the full side-effect surface from the main agent registry.</li>
 </ul>
 <p>Recommended next step:</p>
 <ul>
