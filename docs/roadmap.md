@@ -29,6 +29,6 @@ This roadmap reflects current priorities. Items may shift as the project evolves
 
 ## Sub-agent track
 
-- Now: ship `sessions_spawn` + `subagents_list/info/kill` as session-native asynchronous runs with status tracking and cancellation
-- Next: harden parent/child handoff contracts and improve delivery reliability for completion announcements
-- Later: add orchestrator patterns (nested depth, fan-out/fan-in), thread binding, and richer observability
+- Now: session-native subagent runtime is available with `sessions_spawn`, `subagents_list/info/kill`, focus/send workflow, logs, and announce retry controls
+- Next: harden parent/child handoff contracts and improve result shaping for orchestration-heavy flows
+- Later: deepen thread-bound routing across channels, expand fan-out/fan-in patterns, and add richer observability

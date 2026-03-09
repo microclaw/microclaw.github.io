@@ -56,9 +56,10 @@ When MCP memory backend is active, local sqlite-vec KNN ranking is not applied t
 
 Current model:
 
-- Sub-agent gets restricted tool registry.
-- No recursive sub-agent calls.
-- No side-effect scheduling/memory-write/send-message tools.
+- Sub-agent runs use a restricted tool registry via `ToolRegistry::new_sub_agent`.
+- Session-native async runs are created with `sessions_spawn` and managed with `subagents_*` tools.
+- Spawn depth is bounded by `subagents.max_spawn_depth` and defaults to `1`, so nested delegation is opt-in and capped.
+- Child runs do not receive the full side-effect surface from the main agent registry.
 
 Recommended next step:
 
