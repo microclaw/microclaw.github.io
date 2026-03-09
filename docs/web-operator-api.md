@@ -41,6 +41,17 @@ Available scopes:
 - `POST /api/sessions/fork`
 - `GET /api/sessions/tree`
 
+## HTTP Hook Trigger APIs
+
+- `POST /hooks/agent` (`/api/hooks/agent` alias)
+- `POST /hooks/wake` (`/api/hooks/wake` alias)
+
+These endpoints are designed for webhook/automation ingress and use a dedicated
+token (`channels.web.hooks_token`) rather than operator API key scopes.
+
+For request payloads, session key policy, and examples, see
+[HTTP Hook Trigger](/docs/http-hook-trigger).
+
 ## Config APIs
 
 - `GET /api/config`

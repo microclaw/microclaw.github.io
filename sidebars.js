@@ -42,7 +42,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Usage',
-      items: ['usage', 'commands', 'plugins', 'web-operator-api', 'skills', 'tools', 'memory', 'scheduler'],
+      items: ['usage', 'commands', 'plugins', 'web-operator-api', 'http-hook-trigger', 'skills', 'tools', 'memory', 'scheduler'],
     },
     {
       type: 'category',
