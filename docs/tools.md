@@ -4,7 +4,7 @@ title: Tools Reference
 sidebar_position: 6
 ---
 
-MicroClaw exposes 27 built-in tools to LLM through JSON Schema definitions (plus optional MCP-federated tools). LLM selects and calls tools automatically based on your request.
+MicroClaw exposes 41 built-in tools to LLM through JSON Schema definitions (plus optional MCP-federated tools). LLM selects and calls tools automatically based on your request.
 
 For anti-drift, this page is complemented by the generated source-of-truth at [Generated Tools](./generated-tools), produced from code by `scripts/generate_docs_artifacts.mjs`.
 
@@ -33,14 +33,23 @@ Skill workflows are provided by local `SKILL.md` files (for example `apple-notes
 | 17 | `cancel_scheduled_task` | Scheduler | Cancel a scheduled task |
 | 18 | `get_task_history` | Scheduler | View execution history for a task |
 | 19 | `export_chat` | chat | Export chat history to markdown |
-| 20 | `sub_agent` | Agent | Delegate a bounded sub-task to a restricted sub-agent |
-| 21 | `activate_skill` | Skills | Load specialized local skill instructions |
-| 22 | `sync_skills` | Skills | Sync external skills into local `~/.microclaw/skills` with normalized metadata |
-| 23 | `todo_read` | Planning | Read persistent todo list for a chat |
-| 24 | `todo_write` | Planning | Write/replace persistent todo list for a chat |
-| 25 | `structured_memory_search` | Memory | Search structured memories (keyword, optional archived include) |
-| 26 | `structured_memory_delete` | Memory | Archive a structured memory by ID (soft delete) |
-| 27 | `structured_memory_update` | Memory | Update structured memory content/category by ID |
+| 20 | `sessions_spawn` | Agent | Spawn an asynchronous sub-agent run and return immediately |
+| 21 | `subagents_list` | Agent | List sub-agent runs for the current chat |
+| 22 | `subagents_info` | Agent | Inspect one sub-agent run in detail |
+| 23 | `subagents_kill` | Agent | Cancel one run or all active runs in the current chat |
+| 24 | `subagents_focus` | Agent | Focus the chat on a specific sub-agent run |
+| 25 | `subagents_unfocus` | Agent | Clear focused sub-agent binding |
+| 26 | `subagents_focused` | Agent | Show current focused sub-agent run |
+| 27 | `subagents_send` | Agent | Send follow-up work to focused run as continuation |
+| 28 | `subagents_log` | Agent | Read timeline events for one sub-agent run |
+| 29 | `subagents_retry_announces` | Agent | Retry pending completion announces (control chats) |
+| 30 | `activate_skill` | Skills | Load specialized local skill instructions |
+| 31 | `sync_skills` | Skills | Sync external skills into local `~/.microclaw/skills` with normalized metadata |
+| 32 | `todo_read` | Planning | Read persistent todo list for a chat |
+| 33 | `todo_write` | Planning | Write/replace persistent todo list for a chat |
+| 34 | `structured_memory_search` | Memory | Search structured memories (keyword, optional archived include) |
+| 35 | `structured_memory_delete` | Memory | Archive a structured memory by ID (soft delete) |
+| 36 | `structured_memory_update` | Memory | Update structured memory content/category by ID |
 
 ---
 

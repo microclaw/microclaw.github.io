@@ -29,6 +29,6 @@ This roadmap reflects current priorities. Items may shift as the project evolves
 
 ## Sub-agent track
 
-- Now: keep the current `sub_agent` tool stable and constrained (no recursive side effects, explicit boundaries)
-- Next: improve parent/child task handoff with stricter input/output contracts and better recovery on malformed tool calls
-- Later: expand from single delegated worker into broader multi-agent orchestration workflows
+- Now: ship `sessions_spawn` + `subagents_list/info/kill` as session-native asynchronous runs with status tracking and cancellation
+- Next: harden parent/child handoff contracts and improve delivery reliability for completion announcements
+- Later: add orchestrator patterns (nested depth, fan-out/fan-in), thread binding, and richer observability
