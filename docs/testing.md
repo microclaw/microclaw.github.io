@@ -12,6 +12,15 @@ MicroClaw has 200+ unit tests covering core modules and permission paths. Run th
 cargo test
 ```
 
+Targeted checks for the recently merged features:
+
+```sh
+cargo test acp::tests
+cargo test tools::subagents::tests
+cargo test memory_service
+cargo test web::tests::test_send_stream_then_stream_done
+```
+
 ### Test coverage by module
 
 | Module | Tests | What's covered |
@@ -254,6 +263,71 @@ You: Search the web for "Rust error handling best practices", fetch the first re
 ```
 
 **Expected**: Bot chains web_search -> web_fetch -> write_memory -> responds with the summary.
+
+---
+
+### Test 18: ACP stdio mode
+
+1. Run `microclaw acp`
+2. Connect with an ACP client
+3. Send one prompt, then a follow-up prompt in the same session
+4. Trigger a long-running request, then send `/stop`
+
+**Expected**: The ACP session responds normally, preserves context across turns, and `/stop` cancels the active run.
+
+---
+
+### Test 19: Streaming Web API
+
+Start an async run:
+
+```sh
+curl -sS http://127.0.0.1:10961/api/send_stream \
+  -H "Authorization: Bearer $MICROCLAW_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"session_key":"ops-bot","sender_name":"automation","message":"summarize the current repo"}'
+```
+
+Then connect to SSE:
+
+```sh
+curl -N "http://127.0.0.1:10961/api/stream?run_id=<RUN_ID>" \
+  -H "Authorization: Bearer $MICROCLAW_API_KEY"
+```
+
+**Expected**: You see `status`, optional `tool_*`, optional `delta`, and final `done` events.
+
+---
+
+### Test 20: Session-native subagents
+
+Ask the bot to delegate a multi-step task, then inspect and continue it:
+
+```
+You: Spawn a subagent to inspect the repository structure and report back
+You: List my subagent runs
+You: Show details for the latest subagent run
+```
+
+**Expected**: The run appears with a durable ID, progress can be inspected, and the run can be continued or cancelled.
+
+If you hit `budget_exceeded`, raise:
+
+```yaml
+subagents:
+  max_tokens_per_run: 240000
+  run_timeout_secs: 1800
+```
+
+---
+
+### Test 21: Structured memory flow
+
+1. Send `Remember that the staging Redis endpoint is redis://127.0.0.1:6380`
+2. Ask `What is the staging Redis endpoint?`
+3. Open the Web UI usage or memory observability panels
+
+**Expected**: The answer is recalled from memory, and memory observability surfaces show recent memory activity.
 
 ---
 

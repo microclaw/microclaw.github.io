@@ -18,6 +18,18 @@ When `web_enabled: true`, MicroClaw serves a local Web UI (default `http://127.0
 
 For operator endpoints (auth/session/metrics/self-check), see [Web Operator API](./web-operator-api).
 
+## ACP Stdio Mode
+
+If you want to use MicroClaw as a local ACP backend instead of a chat adapter, run:
+
+```sh
+microclaw acp
+```
+
+This is useful for editor integrations or local tools that already speak ACP over stdio.
+
+For setup and validation details, see [ACP Stdio Mode](./acp).
+
 ---
 
 ## Basics
@@ -240,6 +252,27 @@ AGENTS.md scopes:
 
 Memory is automatically injected into the system prompt on every request.
 Structured memory is also injected with a token budget and relevance ranking.
+
+## Session-Native Subagents
+
+MicroClaw supports asynchronous sub-agent runs with durable IDs and lifecycle state.
+
+Typical operator flow:
+
+1. ask the agent to spawn delegated work
+2. inspect progress with `subagents_list` or `subagents_info`
+3. continue a focused run with `subagents_send`
+4. cancel stale work with `subagents_kill`
+
+If long-running subagent tasks fail with `budget_exceeded`, increase:
+
+```yaml
+subagents:
+  max_tokens_per_run: 240000
+  run_timeout_secs: 1800
+```
+
+Use the generated tools reference or [Tools Reference](./tools) for the exact tool names.
 
 ### Write memory
 

@@ -36,6 +36,7 @@ const sidebars = {
           ],
         },
         'configuration',
+        'acp',
         'permissions',
       ],
     },

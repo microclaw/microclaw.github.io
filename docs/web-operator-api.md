@@ -52,6 +52,43 @@ token (`channels.web.hooks_token`) rather than operator API key scopes.
 For request payloads, session key policy, and examples, see
 [HTTP Hook Trigger](/docs/http-hook-trigger).
 
+## Streaming Chat APIs
+
+- `POST /api/send_stream` (`/api/chat_stream` alias)
+- `GET /api/stream?run_id=<id>`
+
+`POST /api/send_stream` starts an async run and returns a `run_id`. Consume progress, tool events, deltas, and final output with SSE from `GET /api/stream`.
+
+Request shape:
+
+```json
+{
+  "session_key": "ops-bot",
+  "sender_name": "automation",
+  "message": "Summarize the latest incidents"
+}
+```
+
+Accepted response shape:
+
+```json
+{
+  "ok": true,
+  "run_id": "6f4c2b1d-...",
+  "session_key": "ops-bot",
+  "chat_id": 123
+}
+```
+
+Typical SSE event types:
+
+- `status`
+- `tool_start`
+- `tool_result`
+- `delta`
+- `done`
+- `error`
+
 ## Config APIs
 
 - `GET /api/config`

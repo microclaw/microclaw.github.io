@@ -93,6 +93,15 @@ At runtime, at least one channel must be enabled:
 | `reflector_enabled` | `true` | Enable the background memory reflector (see [Memory System](./memory)) |
 | `reflector_interval_mins` | `15` | How often the reflector runs (minutes) |
 | `memory_token_budget` | `1500` | Estimated token budget for injecting structured memories into prompt context |
+| `subagents.max_concurrent` | `4` | Maximum number of active sub-agent runs across the runtime |
+| `subagents.max_active_per_chat` | `5` | Maximum number of active sub-agent runs allowed per chat |
+| `subagents.run_timeout_secs` | `900` | Timeout for one sub-agent run |
+| `subagents.max_spawn_depth` | `1` | Maximum recursive sub-agent depth |
+| `subagents.max_children_per_run` | `5` | Maximum child runs created from one parent run |
+| `subagents.max_tokens_per_run` | `120000` | Per-run token budget ceiling used by `sessions_spawn` and `subagents_orchestrate` |
+| `subagents.orchestrate_max_workers` | `5` | Worker cap for `subagents_orchestrate` fan-out |
+| `subagents.announce_to_chat` | `true` | Post sub-agent completion notices back into the parent chat |
+| `subagents.thread_bound_routing_enabled` | `true` | Route thread replies to the currently focused sub-agent when supported |
 | `embedding_provider` | unset | Runtime embedding provider (`openai` or `ollama`) for semantic memory; leave unset to disable |
 | `embedding_api_key` | unset | API key for embedding provider (if required) |
 | `embedding_base_url` | unset | Optional custom embedding API base URL |

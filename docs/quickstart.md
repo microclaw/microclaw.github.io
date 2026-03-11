@@ -228,6 +228,12 @@ If `web_enabled: true` (default), local Web UI is available at:
 http://127.0.0.1:10961
 ```
 
+If you want to expose MicroClaw to another local tool over stdio instead of a chat channel, you can run:
+
+```sh
+microclaw acp
+```
+
 ## 6. Optional: run as persistent gateway service
 
 ```sh
