@@ -13,6 +13,7 @@ Supported channels: Telegram, Discord, Slack, Feishu/Lark, IRC.
 | Command | Description |
 |---|---|
 | `/reset` | Clear current chat context (session + chat history) and remove scheduled tasks for that chat. |
+| `/reset memory` | Clear current chat memory (chat AGENTS.md + structured memories) without clearing conversation or tasks. |
 | `/stop` | Abort the active run in the current chat. Does not clear session or chat history. |
 | `/skills` | List all currently available skills discovered by runtime. |
 | `/reload-skills` | Reload skills from disk and return the reloaded count. |

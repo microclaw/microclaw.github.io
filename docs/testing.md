@@ -315,13 +315,40 @@ If you hit `budget_exceeded`, raise:
 
 ```yaml
 subagents:
-  max_tokens_per_run: 240000
+  max_tokens_per_run: 400000
   run_timeout_secs: 1800
 ```
 
 ---
 
-### Test 21: Structured memory flow
+### Test 21: Mission Control WebSocket bridge
+
+1. Create or reuse an operator API key with `operator.read` + `operator.write`
+2. Connect to `ws://127.0.0.1:10961/ws`
+3. Wait for `connect.challenge`
+4. Send:
+
+```json
+{"type":"req","id":"connect-1","method":"connect","params":{"minProtocol":3,"maxProtocol":3,"auth":{"token":"<API_KEY>"}}}
+```
+
+5. Then send:
+
+```json
+{"type":"req","id":"send-1","method":"chat.send","params":{"sessionKey":"ops-bot","message":"summarize the current repo","idempotencyKey":"idem-1"}}
+```
+
+6. Optional: query transcript with:
+
+```json
+{"type":"req","id":"history-1","method":"chat.history","params":{"sessionKey":"ops-bot","limit":20}}
+```
+
+**Expected**: The socket receives a `res` frame for `connect`, a `res` frame for `chat.send`, then `event: chat` payloads with `delta` and `final`.
+
+---
+
+### Test 22: Structured memory flow
 
 1. Send `Remember that the staging Redis endpoint is redis://127.0.0.1:6380`
 2. Ask `What is the staging Redis endpoint?`

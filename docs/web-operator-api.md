@@ -56,6 +56,7 @@ For request payloads, session key policy, and examples, see
 
 - `POST /api/send_stream` (`/api/chat_stream` alias)
 - `GET /api/stream?run_id=<id>`
+- `GET /ws` (Mission Control-compatible WebSocket bridge)
 
 `POST /api/send_stream` starts an async run and returns a `run_id`. Consume progress, tool events, deltas, and final output with SSE from `GET /api/stream`.
 
@@ -88,6 +89,69 @@ Typical SSE event types:
 - `delta`
 - `done`
 - `error`
+
+## Mission Control WebSocket Bridge
+
+MicroClaw now exposes a thin OpenClaw-style WebSocket bridge at `GET /ws`.
+It is intended for Mission Control-style operators that expect:
+
+- a `connect.challenge` event on socket open
+- a `connect` request frame
+- `chat.send` request/response flow
+- live `chat` events for `delta`, `final`, and `error`
+- `chat.history` reads for session transcripts
+
+Current bridge scope is intentionally narrow: it covers chat dispatch and live updates,
+not the full OpenClaw control plane.
+
+Example connect frame:
+
+```json
+{
+  "type": "req",
+  "id": "connect-1",
+  "method": "connect",
+  "params": {
+    "minProtocol": 3,
+    "maxProtocol": 3,
+    "auth": { "token": "mc_..." }
+  }
+}
+```
+
+Example `chat.send`:
+
+```json
+{
+  "type": "req",
+  "id": "send-1",
+  "method": "chat.send",
+  "params": {
+    "sessionKey": "ops-bot",
+    "message": "Summarize the latest incidents",
+    "idempotencyKey": "idem-1"
+  }
+}
+```
+
+Example `chat` event:
+
+```json
+{
+  "type": "event",
+  "event": "chat",
+  "payload": {
+    "runId": "6f4c2b1d-...",
+    "sessionKey": "ops-bot",
+    "seq": 1,
+    "state": "final",
+    "message": {
+      "role": "assistant",
+      "content": [{ "type": "text", "text": "..." }]
+    }
+  }
+}
+```
 
 ## Config APIs
 

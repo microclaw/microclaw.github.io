@@ -98,7 +98,7 @@ At runtime, at least one channel must be enabled:
 | `subagents.run_timeout_secs` | `900` | Timeout for one sub-agent run |
 | `subagents.max_spawn_depth` | `1` | Maximum recursive sub-agent depth |
 | `subagents.max_children_per_run` | `5` | Maximum child runs created from one parent run |
-| `subagents.max_tokens_per_run` | `120000` | Per-run token budget ceiling used by `sessions_spawn` and `subagents_orchestrate` |
+| `subagents.max_tokens_per_run` | `400000` | Per-run token budget ceiling used by `sessions_spawn` and `subagents_orchestrate` |
 | `subagents.orchestrate_max_workers` | `5` | Worker cap for `subagents_orchestrate` fan-out |
 | `subagents.announce_to_chat` | `true` | Post sub-agent completion notices back into the parent chat |
 | `subagents.thread_bound_routing_enabled` | `true` | Route thread replies to the currently focused sub-agent when supported |
