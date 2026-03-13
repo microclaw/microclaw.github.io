@@ -66,7 +66,7 @@ Operational behavior:
 - Slash commands are handled out-of-band and do not enter agent conversation history.
 - Unknown slash commands return `Unknown command.`.
 - `/stop` aborts only the current in-flight run; use `/reset` if you need to clear context.
-- `/provider` and `/model` update the current channel override and persist it to `microclaw.config.yaml`.
+- `/provider` and `/model` update the current bot/account override and persist it to `microclaw.config.yaml`.
 
 ## Plugins
 
