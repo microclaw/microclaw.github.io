@@ -53,4 +53,5 @@ Web password notes:
 
 1. Prepare `microclaw.config.yaml`.
 2. Configure LLM keys (`llm_provider`, `api_key`, `model`).
-3. Restart MicroClaw after channel config changes.
+3. If channel/bot-specific LLM routing is needed, define reusable `provider_presets` profiles and point `channels.<name>.provider_preset` or `channels.<name>.accounts.<id>.provider_preset` at them.
+4. Restart MicroClaw after channel config changes.

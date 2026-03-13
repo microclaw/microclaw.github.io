@@ -62,8 +62,9 @@ For multi-bot operations, setup and Web Settings both support editing full `chan
 Per-bot `soul_path` can be configured in both setup and Web Settings by selecting a file from discovered `souls/*.md` or entering a custom filename/path.
 It also includes provider/model list pickers (`Enter` open list, `↑/↓` move, `Enter` confirm, `Esc` close).
 
-Built-in provider presets:
+Built-in provider profiles:
 - `openai`, `openai-codex`, `openrouter`, `anthropic`, `ollama`, `google`, `alibaba`
+- `aliyun-bailian`, `nvidia`
 - `qwen-code`
 - `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`
 - `zhipu`, `minimax`, `cohere`, `tencent`
@@ -72,8 +73,12 @@ Built-in provider presets:
 
 For `ollama`, `llm_base_url` defaults to `http://127.0.0.1:11434/v1`, `api_key` is optional, and the config flow attempts to detect local models.
 For `openai-codex`, you can run `codex login` first (OAuth from `~/.codex/auth.json` or `$CODEX_HOME/auth.json`), or use `api_key` with an OpenAI-compatible proxy endpoint.
+For `aliyun-bailian`, the setup flow fills `https://coding.dashscope.aliyuncs.com/v1` by default.
+For `nvidia`, the setup flow fills `https://integrate.api.nvidia.com/v1` by default and links to `https://build.nvidia.com/models`.
 
 These are also the valid values for `llm_provider` in `microclaw.config.yaml`.
+
+You can optionally define reusable `provider_presets` profiles, then point `channels.<name>.provider_preset` or `channels.<name>.accounts.<id>.provider_preset` at them. The global `llm_provider` + `api_key` + `model` still acts as the `main` profile.
 
 Manual `microclaw.config.yaml` configuration is also supported:
 

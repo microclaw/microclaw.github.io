@@ -28,9 +28,10 @@ At runtime, at least one channel must be enabled:
 |---|---|---|
 | `telegram_bot_token` | `""` | Telegram bot token from @BotFather (required only if Telegram is enabled) |
 | `channels.telegram.default_account` | unset | Default Telegram account ID in multi-account mode. If unset, uses `default` when present, otherwise first account key (sorted) |
+| `channels.telegram.provider_preset` | unset | Optional Telegram channel-level provider profile override |
 | `channels.telegram.accounts.<id>.bot_token` | unset | Telegram bot token for a specific account (recommended multi-account mode) |
 | `channels.telegram.accounts.<id>.bot_username` | unset | Telegram username for a specific account (without `@`) |
-| `channels.telegram.accounts.<id>.model` | unset | Optional per-bot model override for this Telegram account |
+| `channels.telegram.accounts.<id>.provider_preset` | unset | Optional per-bot provider profile override for this Telegram account |
 | `channels.telegram.accounts.<id>.soul_path` | unset | Optional per-bot SOUL file path for this Telegram account |
 | `channels.telegram.topic_routing.enabled` | `false` | If true, Telegram forum topics are routed as separate chats via `external_chat_id=<chat_id>:<thread_id>` |
 | `channels.telegram.accounts.<id>.topic_routing.enabled` | inherit channel-level | Optional per-account override for Telegram topic routing |
@@ -38,10 +39,11 @@ At runtime, at least one channel must be enabled:
 | `channels.telegram.allowed_user_ids` | `[]` | Optional Telegram private-chat sender allowlist at channel scope |
 | `channels.telegram.accounts.<id>.allowed_user_ids` | `[]` | Optional Telegram private-chat sender allowlist scoped to that account (merged with channel scope) |
 | `channels.discord.default_account` | unset | Default Discord account ID in multi-account mode. If unset, uses `default` when present, otherwise first account key (sorted) |
+| `channels.discord.provider_preset` | unset | Optional Discord channel-level provider profile override |
 | `channels.discord.accounts.<id>.bot_token` | unset | Discord bot token for a specific account |
 | `channels.discord.accounts.<id>.allowed_channels` | `[]` | Optional Discord channel allowlist scoped to that account |
 | `channels.discord.accounts.<id>.no_mention` | `false` | If true, that Discord account replies in guild channels without mention |
-| `channels.discord.accounts.<id>.model` | unset | Optional per-bot model override for this Discord account |
+| `channels.discord.accounts.<id>.provider_preset` | unset | Optional per-bot provider profile override for this Discord account |
 | `channels.discord.accounts.<id>.soul_path` | unset | Optional per-bot SOUL file path for this Discord account |
 | `allow_group_slash_without_mention` | `false` | If true, group/server/channel slash commands can run without @mention (default remains mention-gated in groups/channels) |
 | `channels.slack.default_account` | unset | Default Slack account ID in multi-account mode |
@@ -55,14 +57,15 @@ At runtime, at least one channel must be enabled:
 | `channels.feishu.accounts.<id>.app_secret` | unset | Feishu/Lark app secret for a specific account |
 | `channels.feishu.accounts.<id>.domain` | `feishu` | Domain for that account (`feishu`, `lark`, or custom URL) |
 | `channels.feishu.accounts.<id>.allowed_chats` | `[]` | Optional Feishu chat allowlist scoped to that account |
-| `channels.feishu.accounts.<id>.model` | unset | Optional per-bot model override for this Feishu/Lark account |
+| `channels.feishu.accounts.<id>.provider_preset` | unset | Optional per-bot provider profile override for this Feishu/Lark account |
 | `channels.feishu.accounts.<id>.soul_path` | unset | Optional per-bot SOUL file path for this Feishu/Lark account |
 | `channels.feishu.accounts.<id>.topic_mode` | `false` | Optional per-bot threaded reply mode; only supported for account domain `feishu` or `lark` |
 | `bot_username` | `""` | Global default bot username (used by all channels unless overridden) |
 | `discord_bot_token` | unset | Discord bot token (required only if Discord is enabled) |
 | `web_enabled` | `true` | Enable local Web UI channel |
-| `llm_provider` | `anthropic` | Provider preset ID (or custom ID). `anthropic` uses native Anthropic API, others use OpenAI-compatible API |
+| `llm_provider` | `anthropic` | Global main LLM provider profile. Built-ins include `anthropic`, `openai`, `google`, `aliyun-bailian`, `nvidia`, `openrouter`, `ollama`, and `custom` |
 | `model` | provider-specific | Model name |
+| `provider_presets.<id>` | `{}` | Optional reusable provider profiles for channel/bot overrides. Each profile can define provider, api key, base URL, user-agent, model, and show-thinking |
 | `llm_base_url` | provider preset default | Optional custom base URL |
 | `openai_compat_body_overrides` | `{}` | Global request-body overrides for OpenAI-compatible providers (`openai`, `openrouter`, `deepseek`, `ollama`, etc.) |
 | `openai_compat_body_overrides_by_provider` | `{}` | Provider-specific OpenAI-compatible request-body overrides (keyed by provider name, case-insensitive) |
@@ -148,27 +151,39 @@ Behavior details:
 - model keys are trim-normalized and matched by exact model string
 - runtime-controlled fields such as stream mode and tool payload can still be set by MicroClaw depending on request path
 
-### With per-bot model overrides
+### With provider profiles
 
-When `channels.<name>.accounts.<id>.model` is set, MicroClaw uses that bot/account model for requests on that channel account.
-`openai_compat_body_overrides_by_model` then matches against that effective model.
+The global `llm_provider` + `api_key` + `model` act as the `main` profile.
+If you need a channel or bot to use a different provider, key, base URL, or model, define a reusable `provider_presets.<id>` profile and point `channels.<name>.provider_preset` or `channels.<name>.accounts.<id>.provider_preset` at it.
+`openai_compat_body_overrides_by_model` still matches against the effective model chosen by that profile.
 
 ```yaml
-llm_provider: "openrouter"
-model: "openai/gpt-4o-mini" # global default fallback
+llm_provider: "anthropic"
+api_key: "sk-ant-..."
+model: "claude-sonnet-4-5-20250929" # global main profile
+
+provider_presets:
+  ops-openrouter:
+    provider: "openrouter"
+    api_key: "sk-or-..."
+    default_model: "openai/gpt-4o-mini"
+  deepseek-ops:
+    provider: "deepseek"
+    api_key: "sk-ds-..."
+    default_model: "deepseek/deepseek-chat"
 
 channels:
   telegram:
+    provider_preset: "ops-openrouter"
     default_account: "main"
     accounts:
       main:
         enabled: true
         bot_token: "xxx"
-        model: "openai/gpt-4o-mini"
       ops:
         enabled: true
         bot_token: "yyy"
-        model: "deepseek/deepseek-chat"
+        provider_preset: "deepseek-ops"
 
 openai_compat_body_overrides:
   temperature: 0.2
@@ -182,7 +197,8 @@ openai_compat_body_overrides_by_model:
 ```
 
 Notes:
-- `llm_provider` is still global today.
+- `llm_provider` + global `api_key` + `model` act as the `main` profile.
+- Optional `provider_presets` let channels/bots choose a named provider profile with `provider_preset`.
 - If two bots share the same model string, they share the same `by_model` override block.
 
 ## Container sandbox
@@ -268,12 +284,21 @@ If set, it overrides global `bot_username` for that channel.
 
 ## Supported `llm_provider` values
 
-`openai`, `openai-codex`, `openrouter`, `anthropic`, `ollama`, `google`, `alibaba`, `qwen-code`, `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`, `zhipu`, `minimax`, `cohere`, `tencent`, `xai`, `huggingface`, `together`, `custom`.
+`openai`, `openai-codex`, `openrouter`, `anthropic`, `ollama`, `google`, `alibaba`, `aliyun-bailian`, `nvidia`, `qwen-code`, `deepseek`, `moonshot`, `mistral`, `azure`, `bedrock`, `zhipu`, `minimax`, `cohere`, `tencent`, `xai`, `huggingface`, `together`, `custom`.
 
 `ollama` is supported as a local OpenAI-compatible provider. Recommended defaults:
 - `llm_base_url`: `http://127.0.0.1:11434/v1`
 - `api_key`: optional
 - `model`: one of your local pulled models (for example `llama3.2`)
+
+`aliyun-bailian` is an OpenAI-compatible preset with recommended defaults:
+- `llm_base_url`: `https://coding.dashscope.aliyuncs.com/v1`
+- `model`: `qwen3.5-plus`
+
+`nvidia` is an OpenAI-compatible preset with recommended defaults:
+- `llm_base_url`: `https://integrate.api.nvidia.com/v1`
+- `model`: `meta/llama-3.3-70b-instruct`
+- browse models: `https://build.nvidia.com/models`
 
 `openai-codex` supports two auth modes:
 - run `codex login` before `microclaw start`
