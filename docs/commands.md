@@ -12,6 +12,7 @@ Supported channels: Telegram, Discord, Slack, Feishu/Lark, IRC.
 
 | Command | Description |
 |---|---|
+| `/clear` | Clear current chat context (session + chat history) but keep scheduled tasks for that chat. |
 | `/reset` | Clear current chat context (session + chat history) and remove scheduled tasks for that chat. |
 | `/reset memory` | Clear current chat memory (chat AGENTS.md + structured memories) without clearing conversation or tasks. |
 | `/stop` | Abort the active run in the current chat. Does not clear session or chat history. |
@@ -20,7 +21,10 @@ Supported channels: Telegram, Discord, Slack, Feishu/Lark, IRC.
 | `/archive` | Archive current in-memory session as a markdown conversation file. |
 | `/usage` | Show usage and memory observability summary for current chat. |
 | `/status` | Show current provider/model (effective for this bot account) and current-chat status summary. |
-| `/model` | Show current provider/model (effective for this bot account). |
+| `/providers` | List configured provider profiles and indicate the active one. |
+| `/provider` | Show current provider/model. `/provider <profile>` switches the current channel to that provider profile and persists it to config. `/provider reset` clears the override. |
+| `/models` | List configured models for the active provider. `/models api` fetches the live provider model list when supported. |
+| `/model` | Show current provider/model. `/model <name>` switches the current channel model override and persists it to config. `/model reset` clears the override. |
 
 ## Notes
 
@@ -34,4 +38,4 @@ Supported channels: Telegram, Discord, Slack, Feishu/Lark, IRC.
 - In group/server/channel chats, slash commands are mention-gated by default.
 - To disable mention-gating for group slash commands, set `allow_group_slash_without_mention: true`.
 - `/archive` is manual; automatic archive may also happen before context compaction.
-- `/model <name>` is currently informational and reports that runtime model switching is not yet supported.
+- `/provider` and `/model` changes are persisted into `microclaw.config.yaml`, so they survive restart.
