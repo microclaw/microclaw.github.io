@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.09163e7b.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.03011204.js" defer="defer"></script>
 <script src="/assets/js/main.90c140bd.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -37,7 +37,7 @@
 <p>These tests require a running bot with valid credentials.</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="prerequisites">Prerequisites<a href="#prerequisites" class="hash-link" aria-label="Direct link to Prerequisites" title="Direct link to Prerequisites" translate="no">​</a></h3>
 <ol>
-<li class="">A working <code>microclaw.config.yaml</code> file with at least one channel configured (legacy token fields or multi-account <code>channels.&lt;name&gt;.accounts</code>), matching bot username overrides when needed (<code>bot_username</code>, <code>channels.&lt;name&gt;.bot_username</code>, or <code>channels.&lt;name&gt;.accounts.&lt;id&gt;.bot_username</code>), and LLM auth (<code>api_key</code> for most providers, or OAuth via <code>codex login</code> for <code>openai-codex</code>)</li>
+<li class="">A working <code>microclaw.config.yaml</code> file with at least one channel configured under <code>channels.&lt;name&gt;.accounts</code>, matching bot username overrides when needed (<code>bot_username</code>, <code>channels.&lt;name&gt;.bot_username</code>, or <code>channels.&lt;name&gt;.accounts.&lt;id&gt;.bot_username</code>), and LLM auth (<code>api_key</code> for most providers, or OAuth via <code>codex login</code> for <code>openai-codex</code>)</li>
 <li class="">Bot is running: <code>cargo run -- start</code></li>
 <li class="">A chat account with a private chat open to the bot</li>
 <li class="">(For group tests) A chat group with the bot added as a member</li>
