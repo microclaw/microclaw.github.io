@@ -19,18 +19,7 @@ title: Channel Setup - Discord
 6. Open generated URL and invite bot to your target server.
 7. Enable **Message Content Intent** under **Bot -> Privileged Gateway Intents**.
 
-## Single-token Single-bot
-
-```yaml
-discord_bot_token: "YOUR_DISCORD_BOT_TOKEN"
-
-# Optional global channel allowlist
-# discord_allowed_channels:
-#   - 123456789012345678
-#   - 987654321098765432
-```
-
-## Multi-token Multi-bot
+## Account-based Setup
 
 ```yaml
 channels:

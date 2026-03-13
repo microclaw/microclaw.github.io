@@ -15,10 +15,10 @@ For anti-drift defaults, use [Generated Config Defaults](./generated-config-defa
 | `api_key` | LLM API key (`ollama` can be empty; `openai-codex` supports OAuth or `api_key`) |
 
 At runtime, at least one channel must be enabled:
-- Telegram (legacy: `telegram_bot_token`; recommended: `channels.telegram.accounts.<id>.bot_token`)
-- Discord (legacy: `discord_bot_token`; recommended: `channels.discord.accounts.<id>.bot_token`)
-- Slack (legacy: `channels.slack.bot_token` + `channels.slack.app_token`; recommended: per-account tokens under `channels.slack.accounts.<id>`)
-- Feishu/Lark (legacy: `channels.feishu.app_id` + `channels.feishu.app_secret`; recommended: per-account credentials under `channels.feishu.accounts.<id>`)
+- Telegram (`channels.telegram.accounts.<id>.bot_token`)
+- Discord (`channels.discord.accounts.<id>.bot_token`)
+- Slack (per-account tokens under `channels.slack.accounts.<id>`)
+- Feishu/Lark (per-account credentials under `channels.feishu.accounts.<id>`)
 - IRC (`channels.irc.server` + `channels.irc.nick` + `channels.irc.channels`)
 - Web UI (`web_enabled: true`)
 
@@ -26,7 +26,6 @@ At runtime, at least one channel must be enabled:
 
 | Key | Default | Description |
 |---|---|---|
-| `telegram_bot_token` | `""` | Telegram bot token from @BotFather (required only if Telegram is enabled) |
 | `channels.telegram.default_account` | unset | Default Telegram account ID in multi-account mode. If unset, uses `default` when present, otherwise first account key (sorted) |
 | `channels.telegram.provider_preset` | unset | Optional Telegram channel-level provider profile override |
 | `channels.telegram.accounts.<id>.bot_token` | unset | Telegram bot token for a specific account (recommended multi-account mode) |
@@ -61,11 +60,10 @@ At runtime, at least one channel must be enabled:
 | `channels.feishu.accounts.<id>.soul_path` | unset | Optional per-bot SOUL file path for this Feishu/Lark account |
 | `channels.feishu.accounts.<id>.topic_mode` | `false` | Optional per-bot threaded reply mode; only supported for account domain `feishu` or `lark` |
 | `bot_username` | `""` | Global default bot username (used by all channels unless overridden) |
-| `discord_bot_token` | unset | Discord bot token (required only if Discord is enabled) |
 | `web_enabled` | `true` | Enable local Web UI channel |
 | `llm_provider` | `anthropic` | Global main LLM provider profile. Built-ins include `anthropic`, `openai`, `google`, `aliyun-bailian`, `nvidia`, `openrouter`, `ollama`, and `custom` |
 | `model` | provider-specific | Model name |
-| `provider_presets.<id>` | `{}` | Optional reusable provider profiles for channel/bot overrides. Each profile can define provider, api key, base URL, user-agent, model, and show-thinking |
+| `provider_presets.<id>` | `{}` | Optional reusable provider profiles for channel/bot overrides. Each profile can define `provider`, `api_key`, `llm_base_url`, `llm_user_agent`, `default_model`, and `show_thinking` |
 | `llm_base_url` | provider preset default | Optional custom base URL |
 | `openai_compat_body_overrides` | `{}` | Global request-body overrides for OpenAI-compatible providers (`openai`, `openrouter`, `deepseek`, `ollama`, etc.) |
 | `openai_compat_body_overrides_by_provider` | `{}` | Provider-specific OpenAI-compatible request-body overrides (keyed by provider name, case-insensitive) |
@@ -166,7 +164,10 @@ provider_presets:
   ops-openrouter:
     provider: "openrouter"
     api_key: "sk-or-..."
+    llm_base_url: "https://openrouter.ai/api/v1" # optional; defaults from provider matrix
+    llm_user_agent: "microclaw-ops/1.0" # optional
     default_model: "openai/gpt-4o-mini"
+    show_thinking: false
   deepseek-ops:
     provider: "deepseek"
     api_key: "sk-ds-..."
@@ -198,7 +199,7 @@ openai_compat_body_overrides_by_model:
 
 Notes:
 - `llm_provider` + global `api_key` + `model` act as the `main` profile.
-- Optional `provider_presets` let channels/bots choose a named provider profile with `provider_preset`.
+- `provider_presets` are the supported reusable LLM profile surface for channels/bots.
 - If two bots share the same model string, they share the same `by_model` override block.
 
 ## Container sandbox
@@ -251,17 +252,13 @@ Each file supports one absolute path per line (`#` comments allowed).
 If set, it overrides global `bot_username` for that channel.
 
 - Telegram enabled:
-  - Legacy single-account: `telegram_bot_token` + username (`bot_username` or `channels.telegram.bot_username`)
-  - Multi-account: at least one enabled `channels.telegram.accounts.<id>.bot_token`
+  - At least one enabled `channels.telegram.accounts.<id>.bot_token`
 - Discord enabled:
-  - Legacy single-account: `discord_bot_token`
-  - Multi-account: at least one enabled `channels.discord.accounts.<id>.bot_token`
+  - At least one enabled `channels.discord.accounts.<id>.bot_token`
 - Slack enabled:
-  - Legacy single-account: `channels.slack.bot_token` and `channels.slack.app_token`
-  - Multi-account: at least one enabled account with both `channels.slack.accounts.<id>.bot_token` and `channels.slack.accounts.<id>.app_token`
+  - At least one enabled `channels.slack.accounts.<id>` with both `bot_token` and `app_token`
 - Feishu/Lark enabled:
-  - Legacy single-account: `channels.feishu.app_id` and `channels.feishu.app_secret`
-  - Multi-account: at least one enabled account with `channels.feishu.accounts.<id>.app_id` and `channels.feishu.accounts.<id>.app_secret`
+  - At least one enabled account with `channels.feishu.accounts.<id>.app_id` and `channels.feishu.accounts.<id>.app_secret`
 - IRC enabled: `channels.irc.server`, `channels.irc.nick`, and `channels.irc.channels` are required. Optional: `port`, `password`, `mention_required`, `tls`, `tls_server_name`, `tls_danger_accept_invalid_certs`.
 - Web-only mode is valid: keep `web_enabled: true` (default) and leave other channel tokens empty.
 

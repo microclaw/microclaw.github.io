@@ -21,28 +21,9 @@ title: Channel Setup - Feishu / Lark
 5. Add receive-message event subscriptions.
 6. Publish and approve app per org policy.
 
-## Single-token Single-bot
+## Account-based Setup
 
-Feishu/Lark uses `app_id` + `app_secret` credentials.
-
-```yaml
-channels:
-  feishu:
-    enabled: true
-    app_id: "cli_xxx"
-    app_secret: "xxx"
-    connection_mode: "websocket"  # or "webhook"
-    domain: "feishu"              # "feishu" | "lark" | custom URL
-    # Optional
-    # allowed_chats: []
-    # topic_mode: true            # threaded replies; only for feishu/lark domains
-    # webhook_path: "/feishu/events"
-    # verification_token: ""
-```
-
-## Multi-token Multi-bot
-
-Use multiple app credentials as accounts:
+Use one or more app credentials as accounts:
 
 ```yaml
 channels:

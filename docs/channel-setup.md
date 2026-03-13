@@ -11,8 +11,8 @@ This section provides detailed setup guides per channel.
 Each channel guide includes:
 
 - token/credential provisioning
-- single-token single-bot setup
-- multi-token multi-bot setup
+- account-based bot setup
+- multi-bot setup
 - verification checklist
 - official external links
 

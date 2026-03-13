@@ -16,19 +16,7 @@ title: Channel Setup - Telegram
 3. Copy the HTTP API token (`123456:ABC...`).
 4. Optional for group behavior: run `/setprivacy` and tune as needed.
 
-## Single-token Single-bot
-
-```yaml
-telegram_bot_token: "123456:ABC-DEF1234..."
-bot_username: "my_microclaw_bot"
-```
-
-Notes:
-
-- `bot_username` must not include `@`.
-- In groups, mention `@my_microclaw_bot` unless your privacy/group settings allow broader visibility.
-
-## Multi-token Multi-bot
+## Account-based Setup
 
 ```yaml
 channels:
@@ -59,6 +47,7 @@ channels:
 Notes:
 
 - Each account runs as an independent Telegram bot in the same MicroClaw process.
+- `bot_username` must not include `@`.
 - Mention the specific bot username that should answer in group chats.
 - When topic routing is enabled, topic messages are persisted with `external_chat_id=<chat_id>:<thread_id>` so each topic keeps an independent session.
 - For group chats with multi-token multi-bot, configure each bot in BotFather:

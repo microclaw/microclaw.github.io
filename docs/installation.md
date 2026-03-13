@@ -162,20 +162,30 @@ working_dir: "~/.microclaw/working_dir"
 max_document_size_mb: 100
 
 # Enable at least one channel:
-telegram_bot_token: "..."
-bot_username: "..."
-# Optional channel overrides:
+channels:
+  telegram:
+    default_account: "main"
+    accounts:
+      main:
+        bot_token: "..."
+        bot_username: "..."
+# Optional reusable provider profiles:
+# provider_presets:
+#   ops-openrouter:
+#     provider: "openrouter"
+#     api_key: "sk-or-..."
+#     default_model: "openai/gpt-4o-mini"
+# Optional additional channels:
 # channels:
-#   telegram:
-#     bot_username: "..."
-# discord_bot_token: "..."
-# channels:
+#   discord:
+#     accounts:
+#       main: { bot_token: "..." }
 #   slack:
-#     bot_token: "..."
-#     app_token: "..."
+#     accounts:
+#       main: { bot_token: "...", app_token: "..." }
 #   feishu:
-#     app_id: "..."
-#     app_secret: "..."
+#     accounts:
+#       main: { app_id: "...", app_secret: "..." }
 #   irc:
 #     server: "irc.example.com"
 #     nick: "microclaw"

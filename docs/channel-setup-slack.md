@@ -30,19 +30,7 @@ title: Channel Setup - Slack
    - `message.mpim`
    - `app_mention`
 
-## Single-token Single-bot
-
-```yaml
-channels:
-  slack:
-    enabled: true
-    bot_token: "xoxb-..."
-    app_token: "xapp-..."
-    # Optional global channel filter
-    # allowed_channels: ["C123ABC456"]
-```
-
-## Multi-token Multi-bot
+## Account-based Setup
 
 ```yaml
 channels:

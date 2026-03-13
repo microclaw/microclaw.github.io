@@ -10,10 +10,10 @@ Get MicroClaw running in a few minutes.
 
 - Rust 1.70+ (2021 edition)
 - at least one channel entry point:
-  - Telegram bot token (legacy single-account) or Telegram `channels.telegram.accounts` (recommended multi-account), or
-  - Discord bot token (legacy) or Discord `channels.discord.accounts`, or
-  - Slack app token + bot token (legacy Socket Mode) or Slack `channels.slack.accounts`, or
-  - Feishu/Lark app credentials (legacy) or Feishu `channels.feishu.accounts`, or
+  - Telegram `channels.telegram.accounts`, or
+  - Discord `channels.discord.accounts`, or
+  - Slack `channels.slack.accounts`, or
+  - Feishu/Lark `channels.feishu.accounts`, or
   - IRC server + nick + channel list, or
   - local Web UI mode (`web_enabled: true`)
 - LLM API key (Anthropic/OpenAI/OpenRouter/DeepSeek/etc.)
@@ -78,7 +78,7 @@ For `nvidia`, the setup flow fills `https://integrate.api.nvidia.com/v1` by defa
 
 These are also the valid values for `llm_provider` in `microclaw.config.yaml`.
 
-You can optionally define reusable `provider_presets` profiles, then point `channels.<name>.provider_preset` or `channels.<name>.accounts.<id>.provider_preset` at them. The global `llm_provider` + `api_key` + `model` still acts as the `main` profile.
+You can define reusable `provider_presets` profiles, then point `channels.<name>.provider_preset` or `channels.<name>.accounts.<id>.provider_preset` at them. The global `llm_provider` + `api_key` + `model` still acts as the `main` profile.
 
 Manual `microclaw.config.yaml` configuration is also supported:
 
@@ -93,28 +93,29 @@ working_dir_isolation: "chat" # optional; defaults to "chat"
 max_document_size_mb: 100
 
 # Pick one or more channels:
-telegram_bot_token: "123456:ABC-DEF1234..."
-bot_username: "my_bot"
-# Recommended Telegram multi-account mode:
-# channels:
-#   telegram:
-#     default_account: "main"
-#     # optional: route Telegram topics as isolated chats ("<chat_id>:<thread_id>")
-#     # topic_routing:
-#     #   enabled: true
-#     accounts:
-#       main:
-#         bot_token: "123456:ABC-DEF1234..."
-#         bot_username: "my_bot"
-#       support:
-#         bot_token: "987654:XYZ-DEF9999..."
-#         bot_username: "support_bot"
-#         # optional per-account override
-#         # topic_routing:
-#         #   enabled: false
+channels:
+  telegram:
+    default_account: "main"
+    # optional channel-level provider profile override
+    # provider_preset: "ops-openrouter"
+    # optional: route Telegram topics as isolated chats ("<chat_id>:<thread_id>")
+    # topic_routing:
+    #   enabled: true
+    accounts:
+      main:
+        bot_token: "123456:ABC-DEF1234..."
+        bot_username: "my_bot"
+      support:
+        bot_token: "987654:XYZ-DEF9999..."
+        bot_username: "support_bot"
+        # optional per-account provider profile override
+        # provider_preset: "deepseek-ops"
+        # optional per-account topic routing override
+        # topic_routing:
+        #   enabled: false
 # Telegram group chat note for multi-bot:
 #   In BotFather for each bot, enable Allow Groups and disable Group Privacy.
-# Recommended Discord/Slack/Feishu multi-account mode:
+# Other channels:
 # channels:
 #   discord:
 #     accounts:
@@ -125,11 +126,16 @@ bot_username: "my_bot"
 #   feishu:
 #     accounts:
 #       main: { app_id: "cli_xxx", app_secret: "xxx", topic_mode: true } # topic_mode only for feishu/lark domains
-# Optional channel overrides:
-# channels:
-#   telegram:
-#     bot_username: "my_bot"
-# discord_bot_token: "..."
+# Optional reusable provider profiles:
+# provider_presets:
+#   ops-openrouter:
+#     provider: "openrouter"
+#     api_key: "sk-or-..."
+#     default_model: "openai/gpt-4o-mini"
+#   deepseek-ops:
+#     provider: "deepseek"
+#     api_key: "sk-ds-..."
+#     default_model: "deepseek-chat"
 # channels:
 #   irc:
 #     server: "irc.example.com"

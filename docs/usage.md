@@ -576,13 +576,12 @@ microclaw help        # Show help and all configuration options
 
 | Key | Required | Default | Description |
 |---|---|---|---|
-| `telegram_bot_token` | Yes (legacy mode) | - | Telegram bot token from @BotFather for single-account mode |
-| `channels.telegram.accounts.<id>.bot_token` | Yes (multi-account mode) | - | Telegram bot token per account (recommended for multi-token multi-bot) |
-| `channels.discord.accounts.<id>.bot_token` | Yes (multi-account mode) | - | Discord bot token per account |
-| `channels.slack.accounts.<id>.bot_token` | Yes (multi-account mode) | - | Slack bot token per account |
-| `channels.slack.accounts.<id>.app_token` | Yes (multi-account mode) | - | Slack app token (Socket Mode) per account |
-| `channels.feishu.accounts.<id>.app_id` | Yes (multi-account mode) | - | Feishu/Lark app ID per account |
-| `channels.feishu.accounts.<id>.app_secret` | Yes (multi-account mode) | - | Feishu/Lark app secret per account |
+| `channels.telegram.accounts.<id>.bot_token` | Yes (when Telegram enabled) | - | Telegram bot token per account |
+| `channels.discord.accounts.<id>.bot_token` | Yes (when Discord enabled) | - | Discord bot token per account |
+| `channels.slack.accounts.<id>.bot_token` | Yes (when Slack enabled) | - | Slack bot token per account |
+| `channels.slack.accounts.<id>.app_token` | Yes (when Slack enabled) | - | Slack app token (Socket Mode) per account |
+| `channels.feishu.accounts.<id>.app_id` | Yes (when Feishu/Lark enabled) | - | Feishu/Lark app ID per account |
+| `channels.feishu.accounts.<id>.app_secret` | Yes (when Feishu/Lark enabled) | - | Feishu/Lark app secret per account |
 | `channels.feishu.accounts.<id>.topic_mode` | No | `false` | Optional per-bot threaded reply mode; only supported when account domain is `feishu` or `lark` |
 | `api_key` | Yes* | - | LLM API key (`ollama` can leave this empty; `openai-codex` supports OAuth or `api_key`) |
 | `bot_username` | Yes* | - | Global default bot username |
