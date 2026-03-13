@@ -6,7 +6,7 @@ sidebar_position: 14
 
 ## Is MicroClaw production-ready?
 
-MicroClaw is under active development. It is stable enough for personal and small-team use, but you should review the security model and run it on a locked-down host.
+Yes. Review the security model and run it on a locked-down host for production deployments.
 
 ## Does it support images, voice, or files?
 
