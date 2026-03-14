@@ -2,11 +2,157 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://microclaw.ai/blog</id>
     <title>MicroClaw Blog</title>
-    <updated>2026-03-09T00:00:00.000Z</updated>
+    <updated>2026-03-14T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://microclaw.ai/blog"/>
     <subtitle>MicroClaw Blog</subtitle>
     <icon>https://microclaw.ai/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Maturity Hardening: Security Audit and Self-Checks]]></title>
+        <id>https://microclaw.ai/blog/maturity-hardening</id>
+        <link href="https://microclaw.ai/blog/maturity-hardening"/>
+        <updated>2026-03-14T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[MicroClaw's maturity hardening update adds security audit gates, operator self-checks, clearer release policy, and stronger release verification.]]></summary>
+        <content type="html"><![CDATA[<p>The latest maturity hardening pass in MicroClaw is not a flashy new model integration or another channel adapter. It is the kind of release work that makes the next ten releases safer: dependency audit gates, operator-visible risk checks, explicit support policy, and stricter release verification.</p>
+<p>For an agent runtime, that matters. If your bot can execute tools, store memory, expose Web APIs, and run background work, "it compiles" is not enough. You also need repeatable checks around security posture, release shape, and operator safety defaults.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-shipped">What shipped<a href="https://microclaw.ai/blog/maturity-hardening#what-shipped" class="hash-link" aria-label="Direct link to What shipped" title="Direct link to What shipped" translate="no">​</a></h2>
+<p>This maturity hardening update landed in three layers:</p>
+<ul>
+<li class="">CI now includes a dedicated <code>Security Audit</code> job</li>
+<li class="">Web config self-checks now surface more operational risk signals</li>
+<li class="">repository policy docs now define security, support, and release expectations explicitly</li>
+</ul>
+<p>None of that changes the core product story. It changes how confidently the project can move.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="security-audit-is-now-a-real-gate">Security Audit is now a real gate<a href="https://microclaw.ai/blog/maturity-hardening#security-audit-is-now-a-real-gate" class="hash-link" aria-label="Direct link to Security Audit is now a real gate" title="Direct link to Security Audit is now a real gate" translate="no">​</a></h2>
+<p>The biggest mechanical change is straightforward: MicroClaw now runs dependency auditing as part of required CI, not as an optional follow-up.</p>
+<p>The main CI workflow now includes:</p>
+<ul>
+<li class=""><code>cargo audit</code></li>
+<li class=""><code>cargo deny check advisories bans licenses</code></li>
+</ul>
+<p>That matters for two reasons.</p>
+<p>First, it catches security and maintenance drift before merge. During this hardening work, the audit surfaced an unmaintained transitive crate in the terminal UI dependency path. Fixing that forced the dependency graph to match the stated security baseline instead of silently relying on luck.</p>
+<p>Second, it moves security review closer to normal engineering flow. A failing advisory check is now a normal PR failure, not an after-the-fact cleanup task.</p>
+<p>This also flows into releases. The release-asset workflow now waits for required CI jobs including:</p>
+<ul>
+<li class=""><code>Web And Docs Build</code></li>
+<li class=""><code>Security Audit</code></li>
+<li class=""><code>Rust (ubuntu-latest)</code></li>
+<li class=""><code>Rust (macos-latest)</code></li>
+<li class=""><code>Stability Smoke</code></li>
+</ul>
+<p>That gives release automation a better contract: if the preconditions are not green, release packaging does not pretend otherwise.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="docs-builds-are-part-of-the-path-now">Docs builds are part of the path now<a href="https://microclaw.ai/blog/maturity-hardening#docs-builds-are-part-of-the-path-now" class="hash-link" aria-label="Direct link to Docs builds are part of the path now" title="Direct link to Docs builds are part of the path now" translate="no">​</a></h2>
+<p>Another practical change: the website docs build is now checked alongside the embedded Web UI build when the <code>website/</code> workspace is present.</p>
+<p>That sounds small, but it closes a common repo gap. Projects often keep runtime code and docs in the same repo, then accidentally validate only one of them in CI. The result is predictable:</p>
+<ul>
+<li class="">source docs drift from website docs</li>
+<li class="">links rot quietly</li>
+<li class="">release notes mention pages that were never actually built</li>
+</ul>
+<p>MicroClaw now treats the docs site as part of the release surface rather than a side artifact.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="operator-self-check-is-more-useful-now">Operator self-check is more useful now<a href="https://microclaw.ai/blog/maturity-hardening#operator-self-check-is-more-useful-now" class="hash-link" aria-label="Direct link to Operator self-check is more useful now" title="Direct link to Operator self-check is more useful now" translate="no">​</a></h2>
+<p>The most user-facing part of this hardening work is <code>GET /api/config/self_check</code>.</p>
+<p>MicroClaw already had a local Web surface for operators. What changed here is the quality of the warnings it returns. Instead of acting like a shallow config echo, the self-check now flags conditions that actually correlate with risky runtime posture.</p>
+<p>Examples include:</p>
+<ul>
+<li class="">operator password not configured</li>
+<li class="">Web host not bound to loopback</li>
+<li class="">sandbox disabled, or sandbox runtime unavailable</li>
+<li class="">high-risk tool confirmation disabled</li>
+<li class="">OTLP enabled without the expected endpoint configuration</li>
+<li class="">non-strict or disabled web-fetch validation</li>
+<li class="">scheduler failure-rate and reflector-idle conditions</li>
+</ul>
+<p>This is the right kind of product hardening: not a giant policy engine, just an honest summary of whether the current config is safe enough to run the way you think it is.</p>
+<p>If you are operating MicroClaw through the Web interface or an internal dashboard, this endpoint is now a much better first-stop health signal.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="governance-is-now-written-down-not-implied">Governance is now written down, not implied<a href="https://microclaw.ai/blog/maturity-hardening#governance-is-now-written-down-not-implied" class="hash-link" aria-label="Direct link to Governance is now written down, not implied" title="Direct link to Governance is now written down, not implied" translate="no">​</a></h2>
+<p>This update also adds a set of explicit repository-level operating documents:</p>
+<ul>
+<li class=""><code>CHANGELOG.md</code></li>
+<li class=""><code>SECURITY.md</code></li>
+<li class=""><code>SUPPORT.md</code></li>
+<li class=""><code>docs/releases/release-policy.md</code></li>
+</ul>
+<p>That may look like project-maintainer paperwork, but it has a real engineering effect.</p>
+<p>Without those documents, teams end up guessing:</p>
+<ul>
+<li class="">Which version lines are actually supported?</li>
+<li class="">How should a security issue be reported?</li>
+<li class="">What checks are required before a tagged release?</li>
+<li class="">What counts as rollback-ready?</li>
+</ul>
+<p>With those documents in place, there is less room for "tribal knowledge" to quietly decide release quality.</p>
+<p>For a runtime that spans chat channels, Web APIs, tool execution, scheduling, and memory, explicit support and disclosure policy is not overhead. It is part of the product.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="release-packaging-is-stricter-too">Release packaging is stricter too<a href="https://microclaw.ai/blog/maturity-hardening#release-packaging-is-stricter-too" class="hash-link" aria-label="Direct link to Release packaging is stricter too" title="Direct link to Release packaging is stricter too" translate="no">​</a></h2>
+<p>The release workflow now does more than just "build something on one runner and upload it."</p>
+<p>It now verifies CI status for the tag commit, builds release archives across the supported target set, and generates checksums for published assets.</p>
+<p>The current target matrix includes:</p>
+<ul>
+<li class="">Linux x86_64</li>
+<li class="">macOS x86_64</li>
+<li class="">macOS arm64</li>
+<li class="">Windows x86_64</li>
+</ul>
+<p>That improves two things at once:</p>
+<ul>
+<li class="">release confidence for maintainers</li>
+<li class="">install trust for operators who want explicit artifact checksums</li>
+</ul>
+<p>Again, this is not a shiny feature. It is a sign that the project is treating delivery as part of the runtime, not something outside it.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="how-to-use-the-new-checks-in-practice">How to use the new checks in practice<a href="https://microclaw.ai/blog/maturity-hardening#how-to-use-the-new-checks-in-practice" class="hash-link" aria-label="Direct link to How to use the new checks in practice" title="Direct link to How to use the new checks in practice" translate="no">​</a></h2>
+<p>If you contribute to MicroClaw or run it seriously, there are three practical habits worth adopting.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-run-dependency-checks-locally-before-pushing-security-sensitive-changes">1. Run dependency checks locally before pushing security-sensitive changes<a href="https://microclaw.ai/blog/maturity-hardening#1-run-dependency-checks-locally-before-pushing-security-sensitive-changes" class="hash-link" aria-label="Direct link to 1. Run dependency checks locally before pushing security-sensitive changes" title="Direct link to 1. Run dependency checks locally before pushing security-sensitive changes" translate="no">​</a></h3>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cargo audit</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cargo deny check advisories bans licenses</span><br></span></code></pre></div></div>
+<p>That is especially relevant when touching:</p>
+<ul>
+<li class="">auth</li>
+<li class="">Web APIs</li>
+<li class="">tool execution</li>
+<li class="">sandbox/runtime selection</li>
+<li class="">release workflows</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-review-config-risk-through-the-operator-api">2. Review config risk through the operator API<a href="https://microclaw.ai/blog/maturity-hardening#2-review-config-risk-through-the-operator-api" class="hash-link" aria-label="Direct link to 2. Review config risk through the operator API" title="Direct link to 2. Review config risk through the operator API" translate="no">​</a></h3>
+<p>If you already have an operator API key, you can query the self-check directly:</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">curl -sS http://127.0.0.1:10961/api/config/self_check \</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">  -H "Authorization: Bearer $MICROCLAW_OPERATOR_API_KEY"</span><br></span></code></pre></div></div>
+<p>That gives you a faster read on unsafe defaults than manually scanning a long config file.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-treat-docs-and-release-policy-as-part-of-the-change">3. Treat docs and release policy as part of the change<a href="https://microclaw.ai/blog/maturity-hardening#3-treat-docs-and-release-policy-as-part-of-the-change" class="hash-link" aria-label="Direct link to 3. Treat docs and release policy as part of the change" title="Direct link to 3. Treat docs and release policy as part of the change" translate="no">​</a></h3>
+<p>If a PR changes security expectations, support posture, or release gates, it should update:</p>
+<ul>
+<li class="">runtime code</li>
+<li class="">repository docs</li>
+<li class="">website docs</li>
+</ul>
+<p>MicroClaw now has a clearer path for that, and the release checklist reflects it.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="why-this-kind-of-work-matters">Why this kind of work matters<a href="https://microclaw.ai/blog/maturity-hardening#why-this-kind-of-work-matters" class="hash-link" aria-label="Direct link to Why this kind of work matters" title="Direct link to Why this kind of work matters" translate="no">​</a></h2>
+<p>Agent runtimes accumulate risk in boring places.</p>
+<p>Not just in model prompts or tool calls, but in:</p>
+<ul>
+<li class="">stale transitive dependencies</li>
+<li class="">soft CI expectations</li>
+<li class="">missing rollback criteria</li>
+<li class="">undocumented support policy</li>
+<li class="">operators not realizing a runtime is exposed with risky defaults</li>
+</ul>
+<p>The point of maturity hardening is not to eliminate all risk. The point is to make the risk visible, enforce a minimum bar automatically, and stop shipping avoidable surprises.</p>
+<p>That is what this update does.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="read-next">Read next<a href="https://microclaw.ai/blog/maturity-hardening#read-next" class="hash-link" aria-label="Direct link to Read next" title="Direct link to Read next" translate="no">​</a></h2>
+<ul>
+<li class=""><a class="" href="https://microclaw.ai/docs/web-operator-api">Web Operator API</a></li>
+<li class=""><a class="" href="https://microclaw.ai/docs/security-policy">Security Policy</a></li>
+<li class=""><a class="" href="https://microclaw.ai/docs/support-policy">Support Policy</a></li>
+<li class=""><a class="" href="https://microclaw.ai/docs/release-policy">Release Policy</a></li>
+<li class=""><a class="" href="https://microclaw.ai/docs/release-checklist">PR &amp; Release Checklist</a></li>
+</ul>]]></content>
+        <author>
+            <name>Everett</name>
+            <uri>https://github.com/microclaw</uri>
+        </author>
+        <category label="Release" term="Release"/>
+        <category label="Reliability" term="Reliability"/>
+        <category label="Web" term="Web"/>
+        <category label="Runtime" term="Runtime"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[New: HTTP Hook Trigger for Headless Automation]]></title>
         <id>https://microclaw.ai/blog/http-hook-trigger-for-automation</id>
