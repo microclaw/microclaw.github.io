@@ -207,6 +207,14 @@ const config = {
                 to: '/docs/license',
               },
               {
+                label: 'Security',
+                to: '/docs/security-policy',
+              },
+              {
+                label: 'Support',
+                to: '/docs/support-policy',
+              },
+              {
                 label: 'X (Author)',
                 href: 'https://x.com/everettjf',
               },
