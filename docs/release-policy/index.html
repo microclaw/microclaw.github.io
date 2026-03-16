@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.881f540d.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.33477b3d.js" defer="defer"></script>
 <script src="/assets/js/main.54c9cc24.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -32,6 +32,7 @@
 <li class="">green required CI jobs</li>
 <li class="">generated release notes</li>
 <li class="">packaged binaries for supported platforms</li>
+<li class="">official container images for Linux (<code>linux/amd64</code>, <code>linux/arm64</code>)</li>
 <li class="">upgrade notes when migrations or config changes are involved</li>
 <li class="">rollback instructions recorded in the PR or release checklist</li>
 </ul>
@@ -55,6 +56,7 @@
 <li class=""><code>node scripts/generate_docs_artifacts.mjs --check</code></li>
 <li class="">security dependency audit</li>
 <li class="">release asset packaging smoke</li>
+<li class="">container image build/publish smoke</li>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="rollback-standard">Rollback Standard<a href="#rollback-standard" class="hash-link" aria-label="Direct link to Rollback Standard" title="Direct link to Rollback Standard" translate="no">​</a></h2>
 <p>Every release should preserve:</p>
