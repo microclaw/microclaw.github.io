@@ -74,6 +74,7 @@ const sidebars = {
         'support-policy',
         'release-policy',
         'faq',
+        'runbook',
         'roadmap',
         'release-checklist',
         'about',

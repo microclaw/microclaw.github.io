@@ -56,7 +56,7 @@ For request payloads, session key policy, and examples, see
 
 - `POST /api/send_stream` (`/api/chat_stream` alias)
 - `GET /api/stream?run_id=<id>`
-- `GET /ws` (Mission Control-compatible WebSocket bridge)
+- `GET /` with WebSocket upgrade (Mission Control-compatible bridge)
 
 `POST /api/send_stream` starts an async run and returns a `run_id`. Consume progress, tool events, deltas, and final output with SSE from `GET /api/stream`.
 
@@ -92,7 +92,9 @@ Typical SSE event types:
 
 ## Mission Control WebSocket Bridge
 
-MicroClaw now exposes a thin OpenClaw-style WebSocket bridge at `GET /ws`.
+MicroClaw exposes an OpenClaw-style WebSocket bridge at `GET /`.
+Use the root path for WebSocket upgrade requests; the bridge is not mounted at `/ws`.
+
 It is intended for Mission Control-style operators that expect:
 
 - a `connect.challenge` event on socket open
@@ -100,9 +102,27 @@ It is intended for Mission Control-style operators that expect:
 - `chat.send` request/response flow
 - live `chat` events for `delta`, `final`, and `error`
 - `chat.history` reads for session transcripts
+- session lifecycle controls (`session_delete`, `sessions_send`, `sessions_kill`, `sessions_spawn`)
+- per-session settings writes (`session_setThinking`, `session_setVerbose`, `session_setReasoning`, `session_setLabel`)
 
-Current bridge scope is intentionally narrow: it covers chat dispatch and live updates,
-not the full OpenClaw control plane.
+Current hello payload advertises these methods:
+
+- `health`
+- `status`
+- `chat.send`
+- `chat.history`
+- `session_delete`
+- `sessions_send`
+- `sessions_kill`
+- `sessions_spawn`
+- `session_setThinking`
+- `session_setVerbose`
+- `session_setReasoning`
+- `session_setLabel`
+- `agents.list`
+- `models.list`
+- `config.get`
+- `node.list`
 
 Example connect frame:
 
@@ -152,6 +172,63 @@ Example `chat` event:
   }
 }
 ```
+
+Example `sessions_spawn`:
+
+```json
+{
+  "type": "req",
+  "id": "spawn-1",
+  "method": "sessions_spawn",
+  "params": {
+    "task": "Summarize active incidents",
+    "label": "Incidents"
+  }
+}
+```
+
+Example `session_setLabel`:
+
+```json
+{
+  "type": "req",
+  "id": "label-1",
+  "method": "session_setLabel",
+  "params": {
+    "sessionKey": "ops-bot",
+    "label": "Ops"
+  }
+}
+```
+
+Behavior notes:
+
+- `sessions_send` returns a `runId` immediately and then emits `chat` events, including a terminal `state: "final"` event for normal messages.
+- `sessions_spawn` can persist an initial label before the async run starts.
+- `session_set*` updates only the provided field and returns the stored merged settings object.
+- Session labels are included in session listings.
+- `sessions_send` control payloads are acknowledged but not yet enforced as runtime controls.
+
+## Gateway CLI Helper
+
+MicroClaw ships a local bridge client for smoke tests and automation:
+
+```sh
+MICROCLAW_GATEWAY_TOKEN=mc_... microclaw gateway call health
+MICROCLAW_GATEWAY_TOKEN=mc_... microclaw gateway call status
+MICROCLAW_GATEWAY_TOKEN=mc_... microclaw gateway call session_setLabel \
+  --params '{"sessionKey":"ops-bot","label":"Ops"}'
+MICROCLAW_GATEWAY_TOKEN=mc_... microclaw gateway call sessions_send \
+  --params '{"sessionKey":"ops-bot","message":"status summary"}'
+```
+
+Connection resolution:
+
+- URL env vars: `MICROCLAW_GATEWAY_URL`, `OPENCLAW_GATEWAY_URL`, `GATEWAY_URL`
+- Host/port env vars: `MICROCLAW_GATEWAY_HOST`, `OPENCLAW_GATEWAY_HOST`, `GATEWAY_HOST`, `MICROCLAW_GATEWAY_PORT`, `OPENCLAW_GATEWAY_PORT`, `GATEWAY_PORT`
+- Token env vars: `MICROCLAW_GATEWAY_TOKEN`, `OPENCLAW_GATEWAY_TOKEN`, `GATEWAY_TOKEN`, `MICROCLAW_API_KEY`
+
+If no explicit URL is set, the CLI falls back to `ws://127.0.0.1:<web_port>/`.
 
 ## Config APIs
 

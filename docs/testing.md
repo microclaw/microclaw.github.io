@@ -324,7 +324,7 @@ subagents:
 ### Test 21: Mission Control WebSocket bridge
 
 1. Create or reuse an operator API key with `operator.read` + `operator.write`
-2. Connect to `ws://127.0.0.1:10961/ws`
+2. Connect to `ws://127.0.0.1:10961/`
 3. Wait for `connect.challenge`
 4. Send:
 
