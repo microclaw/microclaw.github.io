@@ -126,9 +126,30 @@ Release tags publish an official container image to:
 - `ghcr.io/microclaw/microclaw:<version>`
 - `docker.io/microclaw/microclaw:latest` when Docker Hub publishing credentials are configured for the repository
 
-Run it with your config and persistent data mounted from the host:
+For first-time pulls from GHCR, you may need:
 
 ```sh
+docker login ghcr.io
+```
+
+Use your GitHub username and a Personal Access Token with `read:packages`.
+
+Quickest way to try it:
+
+```sh
+docker pull ghcr.io/microclaw/microclaw:latest
+docker run --rm -it \
+  -p 127.0.0.1:10961:10961 \
+  ghcr.io/microclaw/microclaw:latest
+```
+
+Recommended for day-to-day use: mount config and persistent data from the host:
+
+```sh
+mkdir -p data tmp
+chmod a+r microclaw.config.yaml
+chmod -R a+rwX data tmp
+
 docker run --rm -it \
   -p 127.0.0.1:10961:10961 \
   -v "$(pwd)/microclaw.config.yaml:/app/microclaw.config.yaml:ro" \
@@ -137,12 +158,20 @@ docker run --rm -it \
   ghcr.io/microclaw/microclaw:latest
 ```
 
+Why mount them:
+
+- `microclaw.config.yaml`: keep configuration outside the container
+- `data/`: persist sessions, memory, skills, database, and runtime state
+- `tmp/`: provide a writable temp directory for container-side work
+
 The image entrypoint is `microclaw`, so operational commands can be passed directly:
 
 ```sh
 docker run --rm ghcr.io/microclaw/microclaw:latest doctor
 docker run --rm ghcr.io/microclaw/microclaw:latest version
 ```
+
+If startup fails with `Permission denied (os error 13)`, re-check the `chmod` commands above and confirm the mounted paths exist.
 
 ## Build from source
 
