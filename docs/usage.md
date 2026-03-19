@@ -265,6 +265,22 @@ Typical operator flow:
 3. continue a focused run with `subagents_send`
 4. cancel stale work with `subagents_kill`
 
+Runs can execute on the native MicroClaw runtime or on an ACP-backed external worker. For structured clients that call `sessions_spawn` directly, pass `runtime: "acp"` and optionally `runtime_target` to choose a named ACP worker.
+
+```json
+{
+  "task": "Review the repo and summarize risky files",
+  "runtime": "acp",
+  "runtime_target": "reviewer"
+}
+```
+
+Behavior notes:
+
+- if `runtime_target` is omitted, MicroClaw resolves the target from `subagents.acp.default_target`, the inline ACP worker, or the only enabled named target
+- `subagents_send` keeps the same runtime and target when you continue a focused ACP run
+- `subagents_log` includes ACP permission, plan, tool-call, file, and terminal events for external runs
+
 If long-running subagent tasks fail with `budget_exceeded`, increase:
 
 ```yaml

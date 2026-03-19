@@ -274,3 +274,11 @@ Exporter behavior:
 ## Config Self-check
 
 `GET /api/config/self_check` returns startup risk warnings and `risk_level` (`none` / `medium` / `high`) to quickly spot unsafe settings.
+
+Current checks include:
+
+- sandbox posture and runtime availability
+- high-risk tool confirmation posture
+- ACP subagent runtime issues such as bad `default_target`, missing worker commands, and enabled `auto_approve`
+- web fetch validation posture
+- web request-rate settings that drift above typical safe defaults

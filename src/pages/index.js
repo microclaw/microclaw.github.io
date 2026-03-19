@@ -96,12 +96,12 @@ const CAPABILITIES = [
     text: 'The model can chain tools over multiple steps until the task reaches end_turn.',
   },
   {
-    title: 'Memory With Quality Gates',
-    text: 'File memory + structured SQLite memory with reflector extraction and dedupe lifecycle.',
+    title: 'Native + ACP Subagents',
+    text: 'Run delegated work inside MicroClaw or route it to external ACP workers with durable run state.',
   },
   {
-    title: 'Scheduler + Background Tasks',
-    text: 'Cron and one-shot tasks run through the same runtime, not a separate automation stack.',
+    title: 'Memory With Quality Gates',
+    text: 'File memory + structured SQLite memory with reflector extraction and dedupe lifecycle.',
   },
   {
     title: 'MCP + Skills Federation',
@@ -109,7 +109,11 @@ const CAPABILITIES = [
   },
   {
     title: 'Operational Visibility',
-    text: 'Usage and memory observability endpoints help teams track quality and drift over time.',
+    text: 'Usage, memory observability, and config self-check endpoints help teams track quality and drift.',
+  },
+  {
+    title: 'Scheduler + Background Tasks',
+    text: 'Cron and one-shot tasks run through the same runtime, not a separate automation stack.',
   },
 ];
 
@@ -127,7 +131,7 @@ const ARCH_STEPS = [
   {
     number: '03',
     title: 'Reason + Tool Calls',
-    text: 'Provider layer streams responses and executes tool calls in a controlled loop.',
+    text: 'Provider layer streams responses, reasoning output, and tool calls in a controlled loop.',
   },
   {
     number: '04',
@@ -222,7 +226,8 @@ function HomepageHeader() {
             <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
             <p className={styles.heroSubtext}>
               MicroClaw is optimized for teams that need tool-using automation with durable memory,
-              resumable sessions, and channel adapters that do not fork business logic.
+              resumable sessions, native or ACP-backed subagents, and channel adapters that do not
+              fork business logic.
             </p>
 
             <div className={styles.heroActions}>
@@ -237,7 +242,7 @@ function HomepageHeader() {
             <div className={styles.heroMetaRow}>
               <span>Single Binary</span>
               <span>SQLite Persistence</span>
-              <span>MCP + Skills</span>
+              <span>ACP + MCP + Skills</span>
             </div>
           </div>
 
@@ -333,7 +338,7 @@ export default function Home() {
               </div>
               <div>
                 <span className={styles.proofLabel}>Execution</span>
-                <p>Tool loop, sub-agents, scheduling, and background tasks</p>
+                <p>Tool loop, native and ACP sub-agents, scheduling, and background tasks</p>
               </div>
               <div>
                 <span className={styles.proofLabel}>Extensibility</span>

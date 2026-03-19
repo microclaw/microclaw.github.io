@@ -67,6 +67,7 @@ At runtime, at least one channel must be enabled:
 | `llm_provider` | `anthropic` | Global main LLM provider profile. Built-ins include `anthropic`, `openai`, `google`, `aliyun-bailian`, `nvidia`, `openrouter`, `ollama`, and `custom` |
 | `model` | provider-specific | Model name |
 | `provider_presets.<id>` | `{}` | Optional reusable provider profiles for channel/bot overrides. Each profile can define `provider`, `api_key`, `llm_base_url`, `llm_user_agent`, `default_model`, and `show_thinking` |
+| `show_thinking` | `false` | Show model reasoning/thinking text in channel output when the selected provider/profile supports it |
 | `llm_base_url` | provider preset default | Optional custom base URL |
 | `openai_compat_body_overrides` | `{}` | Global request-body overrides for OpenAI-compatible providers (`openai`, `openrouter`, `deepseek`, `ollama`, etc.) |
 | `openai_compat_body_overrides_by_provider` | `{}` | Provider-specific OpenAI-compatible request-body overrides (keyed by provider name, case-insensitive) |
@@ -102,10 +103,18 @@ At runtime, at least one channel must be enabled:
 | `subagents.run_timeout_secs` | `900` | Timeout for one sub-agent run |
 | `subagents.max_spawn_depth` | `1` | Maximum recursive sub-agent depth |
 | `subagents.max_children_per_run` | `5` | Maximum child runs created from one parent run |
+| `subagents.announce_relay_interval_secs` | `15` | Polling interval for retrying pending completion notices back to parent chats |
 | `subagents.max_tokens_per_run` | `400000` | Per-run token budget ceiling used by `sessions_spawn` and `subagents_orchestrate` |
 | `subagents.orchestrate_max_workers` | `5` | Worker cap for `subagents_orchestrate` fan-out |
 | `subagents.announce_to_chat` | `true` | Post sub-agent completion notices back into the parent chat |
 | `subagents.thread_bound_routing_enabled` | `true` | Route thread replies to the currently focused sub-agent when supported |
+| `subagents.acp.enabled` | `false` | Enable ACP-backed external subagent execution for `sessions_spawn(runtime="acp")` |
+| `subagents.acp.command` | unset | Inline default ACP worker command used when no named target is selected |
+| `subagents.acp.args` | `[]` | Argument list for the inline default ACP worker command |
+| `subagents.acp.env` | `{}` | Extra environment variables for the inline default ACP worker |
+| `subagents.acp.auto_approve` | `true` | Whether the inline default ACP worker auto-approves ACP permission requests |
+| `subagents.acp.default_target` | unset | Optional default named ACP worker target used by plain `runtime="acp"` |
+| `subagents.acp.targets` | `{}` | Map of named ACP worker targets, each with `enabled`, `command`, `args`, `env`, and `auto_approve` |
 | `embedding_provider` | unset | Runtime embedding provider (`openai` or `ollama`) for semantic memory; leave unset to disable |
 | `embedding_api_key` | unset | API key for embedding provider (if required) |
 | `embedding_base_url` | unset | Optional custom embedding API base URL |
@@ -117,6 +126,41 @@ At runtime, at least one channel must be enabled:
 Path compatibility:
 - If users already configured `data_dir` / `skills_dir` / `working_dir`, those values keep working unchanged.
 - If not configured, defaults are `data_dir=~/.microclaw`, `skills_dir=<data_dir>/skills`, `working_dir=~/.microclaw/working_dir`.
+
+## ACP-backed subagent targets
+
+`subagents.acp` supports two patterns:
+
+- inline default worker: configure `enabled`, `command`, and `args`
+- named workers: configure `targets` and optionally `default_target`
+
+Example:
+
+```yaml
+subagents:
+  acp:
+    enabled: true
+    default_target: "reviewer"
+    targets:
+      reviewer:
+        enabled: true
+        command: codex
+        args: ["--model", "gpt-5.4"]
+      fast-fix:
+        enabled: true
+        command: codex
+        args: ["--model", "gpt-5.3-codex"]
+        auto_approve: false
+```
+
+Resolution order for `sessions_spawn(runtime="acp")`:
+
+1. explicit `runtime_target`
+2. `subagents.acp.default_target`
+3. inline `subagents.acp.command`
+4. the only enabled named target, if exactly one exists
+
+If multiple named targets are enabled and no default is set, MicroClaw returns a configuration error and asks for `runtime_target`.
 
 ## OpenAI-compatible body overrides
 
