@@ -3,7 +3,9 @@ set -euo pipefail
 
 
 cp ../install.sh ./static/install.sh || echo "failed copy install.sh"
+cp ../install.ps1 ./static/install.ps1 || echo "failed copy install.ps1"
 cp ../uninstall.sh ./static/uninstall.sh || echo "failed copy uninstall.sh"
+cp ../uninstall.ps1 ./static/uninstall.ps1 || echo "failed copy uninstall.ps1"
 
 echo "git push"
 git add . || echo "git add failed, continue"
@@ -35,4 +37,3 @@ USE_SSH=true npm run deploy
 
 
 echo "Live at https://microclaw.ai"
-
