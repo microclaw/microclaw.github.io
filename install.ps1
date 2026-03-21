@@ -1,11 +1,19 @@
 param(
   [string]$Repo = $(if ($env:MICROCLAW_REPO) { $env:MICROCLAW_REPO } else { 'microclaw/microclaw' }),
-  [string]$InstallDir = $(if ($env:MICROCLAW_INSTALL_DIR) { $env:MICROCLAW_INSTALL_DIR } else { Join-Path $env:USERPROFILE '.local\bin' })
+  [string]$InstallDir = $(if ($env:MICROCLAW_INSTALL_DIR) { $env:MICROCLAW_INSTALL_DIR } else { Join-Path $env:USERPROFILE '.local\bin' }),
+  [switch]$SkipRun,
+  [int]$WaitForPid = 0
 )
 
 $ErrorActionPreference = 'Stop'
 $BinName = 'microclaw.exe'
 $ApiUrl = "https://api.github.com/repos/$Repo/releases/latest"
+$skipRunFromEnv = $false
+if ($env:MICROCLAW_INSTALL_SKIP_RUN) {
+  $skipRunFromEnv = @('1', 'true', 'yes') -contains $env:MICROCLAW_INSTALL_SKIP_RUN.Trim().ToLowerInvariant()
+}
+$skipRunEffective = $SkipRun.IsPresent -or $skipRunFromEnv
+$hadExistingCommand = ($WaitForPid -gt 0) -or ($null -ne (Get-Command microclaw -ErrorAction SilentlyContinue))
 
 function Write-Info([string]$msg) {
   Write-Host $msg
@@ -69,6 +77,21 @@ function Ensure-UserPathContains([string]$dir) {
   return $true
 }
 
+function Wait-ForProcessExit([int]$pid) {
+  if ($pid -le 0) { return }
+
+  try {
+    $process = Get-Process -Id $pid -ErrorAction SilentlyContinue
+    if ($null -ne $process) {
+      $process.WaitForExit()
+    }
+  } catch {
+    Start-Sleep -Milliseconds 500
+  }
+
+  Start-Sleep -Seconds 1
+}
+
 $arch = Resolve-Arch
 Write-Info "Installing microclaw for windows/$arch..."
 
@@ -92,7 +115,15 @@ try {
   }
 
   $targetPath = Join-Path $InstallDir $BinName
-  Copy-Item -Path $bin.FullName -Destination $targetPath -Force
+  $stagedTargetPath = Join-Path $InstallDir ".$BinName.tmp.$PID"
+
+  Wait-ForProcessExit -pid $WaitForPid
+
+  Copy-Item -Path $bin.FullName -Destination $stagedTargetPath -Force
+  if (Test-Path $targetPath) {
+    Remove-Item -Path $targetPath -Force
+  }
+  Move-Item -Path $stagedTargetPath -Destination $targetPath -Force
 
   $pathUpdated = Ensure-UserPathContains $InstallDir
 
@@ -105,7 +136,11 @@ try {
   }
 
   Write-Info "microclaw"
-  if (Get-Command microclaw -ErrorAction SilentlyContinue) {
+  if ($skipRunEffective) {
+    Write-Info "Skipping auto-run (-SkipRun)."
+  } elseif ($hadExistingCommand) {
+    Write-Info "Skipping auto-run (upgrade detected)."
+  } elseif (Get-Command microclaw -ErrorAction SilentlyContinue) {
     Write-Info "Running: microclaw"
     try {
       & microclaw
