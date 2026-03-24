@@ -25,7 +25,7 @@ Skill workflows are provided by local `SKILL.md` files (for example `apple-notes
 | 9 | `write_memory` | Memory | Write persistent AGENTS.md memory |
 | 10 | `web_search` | Web | Search via DuckDuckGo (top 8 results) |
 | 11 | `web_fetch` | Web | Fetch a URL and return plain text (max 20KB) |
-| 12 | `send_message` | chat | Send text mid-conversation; supports file attachments for Telegram/Discord |
+| 12 | `send_message` | chat | Send text mid-conversation; supports file attachments for Telegram/Discord/Slack/Weixin |
 | 13 | `schedule_task` | Scheduler | Create a recurring or one-time task |
 | 14 | `list_scheduled_tasks` | Scheduler | List active/paused tasks for a chat |
 | 15 | `pause_scheduled_task` | Scheduler | Pause a scheduled task |
@@ -282,7 +282,7 @@ Send a chat message mid-conversation.
 **Validation**: You must provide `text` and/or `attachment_path`.
 
 **Notes**:
-- `attachment_path` supports Telegram / Discord targets
+- `attachment_path` supports Telegram / Discord / Slack / Weixin targets
 - Telegram sends as document attachment
 - Discord sends as file attachment in channel message
 - Web chat targets still append text to local Web conversation

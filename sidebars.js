@@ -32,6 +32,7 @@ const sidebars = {
             'channel-setup-discord',
             'channel-setup-slack',
             'channel-setup-feishu-lark',
+            'channel-setup-weixin',
             'channel-setup-irc',
           ],
         },

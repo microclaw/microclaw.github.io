@@ -250,7 +250,7 @@ web_enabled: true
 
 Use `microclaw help` (or `cargo run -- help`) for CLI usage.
 
-For full Telegram / Discord / Slack / Feishu / IRC onboarding (token provisioning, connection setup, verification), see [Channel Setup](./channel-setup).
+For full Telegram / Discord / Slack / Feishu / Weixin / IRC onboarding (token provisioning, connection setup, verification), see [Channel Setup](./channel-setup).
 
 The interactive setup wizard supports provider/model selection (including `ollama`) and uses sensible defaults with Enter-to-confirm prompts.
 

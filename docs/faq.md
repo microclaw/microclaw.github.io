@@ -11,7 +11,7 @@ Yes. Review the security model and run it on a locked-down host for production d
 ## Does it support images, voice, or files?
 
 Telegram supports text + images + document uploads. Voice messages are transcribed when `openai_api_key` is configured.  
-For tool-driven outbound attachments, `send_message` supports Telegram / Discord via `attachment_path` (+ optional `caption`).
+For tool-driven outbound attachments, `send_message` supports Telegram / Discord / Slack / Weixin via `attachment_path` (+ optional `caption`).
 
 ## Can I restrict who can run commands?
 

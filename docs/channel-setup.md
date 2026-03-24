@@ -13,6 +13,7 @@ Each channel guide includes:
 - token/credential provisioning
 - account-based bot setup
 - multi-bot setup
+- QR login where applicable
 - verification checklist
 - official external links
 
@@ -22,6 +23,7 @@ Each channel guide includes:
 - [Discord](./channel-setup-discord)
 - [Slack](./channel-setup-slack)
 - [Feishu / Lark](./channel-setup-feishu-lark)
+- [Weixin](./channel-setup-weixin)
 - [IRC](./channel-setup-irc)
 
 ## Web UI
