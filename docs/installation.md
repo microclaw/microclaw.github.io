@@ -16,6 +16,12 @@ sidebar_position: 3
 curl -fsSL https://microclaw.ai/install.sh | bash
 ```
 
+For the full variant (includes Matrix channel + MCP support):
+
+```sh
+curl -fsSL https://microclaw.ai/install.sh | bash -s -- --full
+```
+
 The installer only installs prebuilt GitHub release binaries.
 It does not fall back to Homebrew or Cargo automatically.
 
@@ -116,6 +122,12 @@ Quick symptom map:
 ```sh
 brew tap microclaw/tap
 brew install microclaw
+```
+
+For the full variant (includes Matrix channel + MCP support):
+
+```sh
+brew install microclaw-full
 ```
 
 ## Docker image
