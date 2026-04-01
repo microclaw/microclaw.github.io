@@ -375,16 +375,28 @@ If either switch is off, MicroClaw degrades gracefully to keyword retrieval + Ja
 
 ### Build examples
 
-Default safe build (no sqlite-vec):
+Default build (no Matrix, no MCP, no sqlite-vec):
 
 ```sh
 cargo build --release
+```
+
+Full build with all integrations (Matrix + MCP):
+
+```sh
+cargo build --release --features full
 ```
 
 Enable sqlite-vec explicitly:
 
 ```sh
 cargo build --release --features sqlite-vec
+```
+
+Combine features as needed:
+
+```sh
+cargo build --release --features "full,sqlite-vec"
 ```
 
 ### Runtime example

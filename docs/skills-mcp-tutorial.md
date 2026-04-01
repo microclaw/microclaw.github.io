@@ -9,6 +9,10 @@ This tutorial covers two extension paths:
 1. Add or customize **Skills** (`SKILL.md` workflow packs)
 2. Extend **MCP** servers (`mcp.json` + `mcp.d/*.json` tool federation)
 
+:::note
+MCP requires the `mcp` feature flag at build time. Use `--features mcp` or `--features full` when building from source. Prebuilt `microclaw-full` release artifacts include MCP.
+:::
+
 Use this page as the operational guide for production setups.
 
 ## Part 1: Add a New Skill

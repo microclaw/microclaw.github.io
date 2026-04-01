@@ -187,6 +187,14 @@ Copy the binary somewhere on your PATH:
 cp target/release/microclaw /usr/local/bin/
 ```
 
+The default build includes all channels except Matrix, and omits MCP support, to keep the binary smaller. To enable everything:
+
+```sh
+cargo build --release --features full
+```
+
+`full` enables `channel-matrix` and `mcp`. See [Configuration](./configuration) for feature details.
+
 ## Run from source (dev)
 
 Runtime boot behavior:

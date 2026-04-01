@@ -45,6 +45,8 @@ cargo build --release
 cp target/release/microclaw /usr/local/bin/
 ```
 
+For Matrix channel or MCP support, build with `--features full`.
+
 ## 3. Configure (recommended)
 
 Use the interactive setup wizard:
