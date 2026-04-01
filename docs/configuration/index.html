@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.9d7ad0b7.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.a31d80c7.js" defer="defer"></script>
 <script src="/assets/js/main.5185167d.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -197,9 +197,9 @@ Slash commands follow the same scope: <code>/provider</code> and <code>/model</c
 </ol>
 <p>If either switch is off, MicroClaw degrades gracefully to keyword retrieval + Jaccard dedup.</p>
 <h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="build-examples">Build examples<a href="#build-examples" class="hash-link" aria-label="Direct link to Build examples" title="Direct link to Build examples" translate="no">​</a></h3>
-<p>Default build (no Matrix, no MCP, no sqlite-vec):</p>
+<p>Default build (all channels except Matrix, MCP included, no sqlite-vec):</p>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cargo build --release</span><br></span></code></pre></div></div>
-<p>Full build with all integrations (Matrix + MCP):</p>
+<p>Full build (adds Matrix channel):</p>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cargo build --release --features full</span><br></span></code></pre></div></div>
 <p>Enable sqlite-vec explicitly:</p>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cargo build --release --features sqlite-vec</span><br></span></code></pre></div></div>

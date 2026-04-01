@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.9d7ad0b7.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.a31d80c7.js" defer="defer"></script>
 <script src="/assets/js/main.5185167d.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -33,11 +33,15 @@
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="one-line-installer-recommended">One-line installer (recommended)<a href="#one-line-installer-recommended" class="hash-link" aria-label="Direct link to One-line installer (recommended)" title="Direct link to One-line installer (recommended)" translate="no">​</a></h2>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">curl -fsSL https://microclaw.ai/install.sh | bash</span><br></span></code></pre></div></div>
+<p>For the full variant (adds Matrix channel support):</p>
+<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">curl -fsSL https://microclaw.ai/install.sh | bash -s -- --full</span><br></span></code></pre></div></div>
 <p>The installer only installs prebuilt GitHub release binaries.
 It does not fall back to Homebrew or Cargo automatically.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="windows-powershell">Windows (PowerShell)<a href="#windows-powershell" class="hash-link" aria-label="Direct link to Windows (PowerShell)" title="Direct link to Windows (PowerShell)" translate="no">​</a></h2>
 <p>Install using PowerShell:</p>
 <div class="language-powershell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-powershell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">iwr https://microclaw.ai/install.ps1 -UseBasicParsing | iex</span><br></span></code></pre></div></div>
+<p>For the full variant (adds Matrix channel):</p>
+<div class="language-powershell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-powershell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">&amp; ([scriptblock]::Create((iwr https://microclaw.ai/install.ps1 -UseBasicParsing).Content)) -Full</span><br></span></code></pre></div></div>
 <p>What this script does:</p>
 <ul>
 <li class="">Downloads the latest matching Windows release (<code>microclaw.exe</code>)</li>
@@ -112,6 +116,8 @@ It does not fall back to Homebrew or Cargo automatically.</p>
 </ul>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="homebrew-macos">Homebrew (macOS)<a href="#homebrew-macos" class="hash-link" aria-label="Direct link to Homebrew (macOS)" title="Direct link to Homebrew (macOS)" translate="no">​</a></h2>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">brew tap microclaw/tap</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">brew install microclaw</span><br></span></code></pre></div></div>
+<p>For the full variant (adds Matrix channel support):</p>
+<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">brew install microclaw-full</span><br></span></code></pre></div></div>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="docker-image">Docker image<a href="#docker-image" class="hash-link" aria-label="Direct link to Docker image" title="Direct link to Docker image" translate="no">​</a></h2>
 <p>Release tags publish an official container image to:</p>
 <ul>
@@ -139,9 +145,9 @@ It does not fall back to Homebrew or Cargo automatically.</p>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git clone https://github.com/microclaw/microclaw.git</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cd microclaw</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cargo build --release</span><br></span></code></pre></div></div>
 <p>Copy the binary somewhere on your PATH:</p>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cp target/release/microclaw /usr/local/bin/</span><br></span></code></pre></div></div>
-<p>The default build includes all channels except Matrix, and omits MCP support, to keep the binary smaller. To enable everything:</p>
+<p>The default build includes all channels except Matrix (MCP is included by default). To add Matrix support:</p>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cargo build --release --features full</span><br></span></code></pre></div></div>
-<p><code>full</code> enables <code>channel-matrix</code> and <code>mcp</code>. See <a class="" href="/docs/configuration">Configuration</a> for feature details.</p>
+<p><code>full</code> enables <code>channel-matrix</code>. See <a class="" href="/docs/configuration">Configuration</a> for feature details.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="run-from-source-dev">Run from source (dev)<a href="#run-from-source-dev" class="hash-link" aria-label="Direct link to Run from source (dev)" title="Direct link to Run from source (dev)" translate="no">​</a></h2>
 <p>Runtime boot behavior:</p>
 <ul>
