@@ -16,7 +16,7 @@ sidebar_position: 3
 curl -fsSL https://microclaw.ai/install.sh | bash
 ```
 
-For the full variant (includes Matrix channel + MCP support):
+For the full variant (adds Matrix channel support):
 
 ```sh
 curl -fsSL https://microclaw.ai/install.sh | bash -s -- --full
@@ -34,7 +34,7 @@ Install using PowerShell:
 iwr https://microclaw.ai/install.ps1 -UseBasicParsing | iex
 ```
 
-For the full variant (Matrix + MCP):
+For the full variant (adds Matrix channel):
 
 ```powershell
 & ([scriptblock]::Create((iwr https://microclaw.ai/install.ps1 -UseBasicParsing).Content)) -Full
@@ -130,7 +130,7 @@ brew tap microclaw/tap
 brew install microclaw
 ```
 
-For the full variant (includes Matrix channel + MCP support):
+For the full variant (adds Matrix channel support):
 
 ```sh
 brew install microclaw-full
@@ -205,13 +205,13 @@ Copy the binary somewhere on your PATH:
 cp target/release/microclaw /usr/local/bin/
 ```
 
-The default build includes all channels except Matrix, and omits MCP support, to keep the binary smaller. To enable everything:
+The default build includes all channels except Matrix (MCP is included by default). To add Matrix support:
 
 ```sh
 cargo build --release --features full
 ```
 
-`full` enables `channel-matrix` and `mcp`. See [Configuration](./configuration) for feature details.
+`full` enables `channel-matrix`. See [Configuration](./configuration) for feature details.
 
 ## Run from source (dev)
 

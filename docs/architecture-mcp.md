@@ -6,9 +6,6 @@ sidebar_position: 12
 
 MCP extends tool surface area without baking all integrations into MicroClaw itself.
 
-:::note Build requirement
-MCP support requires the `mcp` feature flag. Build with `--features mcp` or `--features full`. The default build omits MCP to reduce binary size.
-:::
 
 ## Transport model
 
