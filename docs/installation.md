@@ -34,6 +34,12 @@ Install using PowerShell:
 iwr https://microclaw.ai/install.ps1 -UseBasicParsing | iex
 ```
 
+For the full variant (Matrix + MCP):
+
+```powershell
+& ([scriptblock]::Create((iwr https://microclaw.ai/install.ps1 -UseBasicParsing).Content)) -Full
+```
+
 What this script does:
 
 - Downloads the latest matching Windows release (`microclaw.exe`)
