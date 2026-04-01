@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.378c5efe.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.9d7ad0b7.js" defer="defer"></script>
 <script src="/assets/js/main.5185167d.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -139,6 +139,9 @@ It does not fall back to Homebrew or Cargo automatically.</p>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">git clone https://github.com/microclaw/microclaw.git</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cd microclaw</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">cargo build --release</span><br></span></code></pre></div></div>
 <p>Copy the binary somewhere on your PATH:</p>
 <div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cp target/release/microclaw /usr/local/bin/</span><br></span></code></pre></div></div>
+<p>The default build includes all channels except Matrix, and omits MCP support, to keep the binary smaller. To enable everything:</p>
+<div class="language-sh codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-sh codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">cargo build --release --features full</span><br></span></code></pre></div></div>
+<p><code>full</code> enables <code>channel-matrix</code> and <code>mcp</code>. See <a class="" href="/docs/configuration">Configuration</a> for feature details.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="run-from-source-dev">Run from source (dev)<a href="#run-from-source-dev" class="hash-link" aria-label="Direct link to Run from source (dev)" title="Direct link to Run from source (dev)" translate="no">​</a></h2>
 <p>Runtime boot behavior:</p>
 <ul>
