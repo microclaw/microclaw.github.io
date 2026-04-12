@@ -4,7 +4,13 @@ title: Memory System
 sidebar_position: 7
 ---
 
-MicroClaw has two complementary memory systems that are both injected into the system prompt on every request.
+MicroClaw memory has three layers of persistence:
+
+- file memory in `AGENTS.md`
+- structured memory in SQLite/MCP (`memories` table)
+- temporal knowledge graph triples (`knowledge_graph` table)
+
+Prompt injection uses the file memory plus a layered subset of structured memory. The knowledge graph is queried on-demand through dedicated tools.
 
 ## File memory (AGENTS.md)
 
@@ -74,7 +80,7 @@ SQLite stores chats with two identities:
 
 This prevents cross-channel collisions when numeric IDs overlap. Existing databases are migrated automatically at startup. Structured memories also store `chat_channel` and `external_chat_id` for easier debugging.
 
-## Reflector (structured memories)
+## Reflector (structured memories + triples)
 
 A background process that automatically extracts and persists structured memories from conversations — independently of the main chat loop.
 
@@ -84,8 +90,8 @@ As sessions grow longer, the model tends to deprioritize voluntary `write_memory
 
 1. Every `reflector_interval_mins` minutes (default 15), the Reflector scans recently-active chats
 2. Per chat, it reads messages incrementally from a persisted cursor (`memory_reflector_state`) instead of rescanning full windows
-3. It calls the LLM directly and extracts durable facts with strict category validation (`PROFILE`, `KNOWLEDGE`, `EVENT`)
-4. Extracted memories are stored in SQLite (`memories`)
+3. It calls the LLM directly and extracts durable facts plus optional entity triples
+4. Extracted memories are stored in SQLite (`memories`), and triples go to `knowledge_graph`
 5. Dedup strategy:
    - with `sqlite-vec` feature + runtime embedding configured: semantic nearest-neighbor check (cosine distance)
    - otherwise: Jaccard overlap fallback
@@ -95,6 +101,10 @@ As sessions grow longer, the model tends to deprioritize voluntary `write_memory
    - rows track confidence + last-seen
    - stale low-confidence rows can be soft-archived
 
+8. Capacity control:
+   - if per-chat/global limits are exceeded, lowest-confidence and least-recently-seen rows are archived first
+   - knowledge-graph triples also have per-chat capacity control
+
 **Memory categories:**
 
 | Category | Description |
@@ -102,6 +112,17 @@ As sessions grow longer, the model tends to deprioritize voluntary `write_memory
 | `PROFILE` | User attributes and preferences |
 | `KNOWLEDGE` | Facts and areas of expertise |
 | `EVENT` | Significant things that happened |
+
+## Layered Structured-Memory Injection
+
+Structured memories are injected with a 4-layer policy:
+
+- L0 Identity: `PROFILE` memories first (always injected, fixed budget share)
+- L1 Essential: highest-confidence durable facts
+- L2 Relevance: query-matched memories filling the remaining budget
+- L3 Deep Search: not injected; fetched only when tool calls are needed
+
+This keeps identity and durable facts stable while preserving room for query-specific context.
 
 **Injected in system prompt as:**
 
@@ -117,7 +138,13 @@ As sessions grow longer, the model tends to deprioritize voluntary `write_memory
 ```yaml
 reflector_enabled: true         # enable/disable background reflector
 reflector_interval_mins: 15     # how often to run (minutes)
-memory_token_budget: 1500       # structured-memory injection budget
+memory_token_budget: 1500       # total budget for L0+L1+L2 structured memories
+memory_l0_identity_pct: 20      # L0 identity share of budget
+memory_l1_essential_pct: 30     # L1 essential share of budget
+memory_max_entries_per_chat: 200
+memory_max_global_entries: 500
+kg_max_triples_per_chat: 1000
+skill_review_min_tool_calls: 0  # >0 enables post-reflector autonomous skill review
 
 # optional semantic memory runtime config (requires --features sqlite-vec build)
 # embedding_provider: "openai"  # openai | ollama
@@ -130,6 +157,20 @@ memory_token_budget: 1500       # structured-memory injection budget
 Both can be changed via the setup wizard (`microclaw setup`) or the Web UI settings panel.
 
 When `memory_token_budget` is exceeded during prompt construction, MicroClaw stops adding memories and appends `(+N memories omitted)`.
+
+## Memory Security and Auditability
+
+- Memory writes pass a prompt-injection scanner (invisible unicode, instruction-override patterns, exfiltration-like payloads, and risky HTML/script payloads).
+- Structured-memory writes are audit-logged to:
+  - `<data_dir>/runtime/wal/memory_writes.jsonl`
+  - this helps diagnose memory poisoning and unexpected write spikes.
+
+## Knowledge Graph Tools
+
+- `knowledge_graph_query`: query by entity, timeline, or stats
+- `knowledge_graph_add`: add triples and optionally invalidate stale ones
+
+Use these when a request needs relationship or time-aware recall beyond the injected memory subset.
 
 ## Semantic memory behavior
 

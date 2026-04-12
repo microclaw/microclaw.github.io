@@ -97,7 +97,13 @@ At runtime, at least one channel must be enabled:
 | `compact_keep_recent` | `20` | Number of recent messages kept verbatim during compaction |
 | `reflector_enabled` | `true` | Enable the background memory reflector (see [Memory System](./memory)) |
 | `reflector_interval_mins` | `15` | How often the reflector runs (minutes) |
-| `memory_token_budget` | `1500` | Estimated token budget for injecting structured memories into prompt context |
+| `memory_token_budget` | `1500` | Estimated token budget for layered structured-memory injection (L0+L1+L2) |
+| `memory_l0_identity_pct` | `20` | Percentage of `memory_token_budget` reserved for L0 identity (`PROFILE`) memories |
+| `memory_l1_essential_pct` | `30` | Percentage of `memory_token_budget` reserved for L1 essential high-confidence memories |
+| `memory_max_entries_per_chat` | `200` | Max active structured memories per chat (`0` = unlimited) |
+| `memory_max_global_entries` | `500` | Max active global structured memories (`0` = unlimited) |
+| `kg_max_triples_per_chat` | `1000` | Max active knowledge-graph triples per chat (`0` = unlimited) |
+| `skill_review_min_tool_calls` | `0` | Enables post-reflector autonomous skill review when tool-call count threshold is met (`0` disables) |
 | `subagents.max_concurrent` | `4` | Maximum number of active sub-agent runs across the runtime |
 | `subagents.max_active_per_chat` | `5` | Maximum number of active sub-agent runs allowed per chat |
 | `subagents.run_timeout_secs` | `900` | Timeout for one sub-agent run |

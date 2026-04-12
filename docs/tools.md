@@ -4,13 +4,13 @@ title: Tools Reference
 sidebar_position: 6
 ---
 
-MicroClaw exposes 41 built-in tools to LLM through JSON Schema definitions (plus optional MCP-federated tools). LLM selects and calls tools automatically based on your request.
+MicroClaw exposes built-in tools to LLM through JSON Schema definitions (plus optional MCP-federated tools). LLM selects and calls tools automatically based on your request.
 
 For anti-drift, this page is complemented by the generated source-of-truth at [Generated Tools](./generated-tools), produced from code by `scripts/generate_docs_artifacts.mjs`.
 
 Skill workflows are provided by local `SKILL.md` files (for example `apple-notes`, `apple-reminders`, `apple-calendar`, `weather`) and loaded through `activate_skill`.
 
-## Tool List
+## Tool List (Curated)
 
 | # | Tool | Category | Description |
 |---|---|---|---|
