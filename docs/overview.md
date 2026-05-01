@@ -47,12 +47,18 @@ MicroClaw enters an agentic loop for every message. LLM can call tools, inspect 
 ## Core capabilities
 
 - Agentic tool use (bash, file I/O, glob, grep)
-- Web search, fetch, and browser automation
+- Web search, fetch, and browser automation (with default-on SSRF guard against private/loopback/cloud-metadata IPs)
+- Multimedia tools: image generation, vision, text-to-speech, speech-to-text
+- Cross-channel voice: inbound transcription on Telegram/Discord/Slack/Feishu, opt-in TTS round-trip
+- Cross-conversation recall via `session_search` (SQLite FTS5)
 - Scheduling with cron expressions
 - ACP stdio server mode plus ACP-backed external subagent workers
 - Mid-conversation messaging for progress updates
 - Persistent memory (global + per-chat)
-- Structured memory with reflector extraction, dedupe, and observability
+- Per-chat user model (USER.md) — curated narrative of who the user is, distinct from volatile memories
+- Structured memory with reflector extraction, dedupe, per-row TTL, recency decay, and observability
+- Skill lifecycle: end-of-turn review with patch-existing support, activation tracking, auto-archive
+- Tool result truncation + artifact stash with `fetch_artifact` for slicing oversized outputs
 - Personality customization via SOUL.md
 - Conversation archiving (automatic before compaction, manual via `/archive`)
 - Typing indicator that stays active during tool use
