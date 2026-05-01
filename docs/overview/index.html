@@ -18,8 +18,8 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.ff5eb108.js" defer="defer"></script>
-<script src="/assets/js/main.5185167d.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.10478ce4.js" defer="defer"></script>
+<script src="/assets/js/main.3790d32f.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -44,12 +44,18 @@
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-capabilities">Core capabilities<a href="#core-capabilities" class="hash-link" aria-label="Direct link to Core capabilities" title="Direct link to Core capabilities" translate="no">​</a></h2>
 <ul>
 <li class="">Agentic tool use (bash, file I/O, glob, grep)</li>
-<li class="">Web search, fetch, and browser automation</li>
+<li class="">Web search, fetch, and browser automation (with default-on SSRF guard against private/loopback/cloud-metadata IPs)</li>
+<li class="">Multimedia tools: image generation, vision, text-to-speech, speech-to-text</li>
+<li class="">Cross-channel voice: inbound transcription on Telegram/Discord/Slack/Feishu, opt-in TTS round-trip</li>
+<li class="">Cross-conversation recall via <code>session_search</code> (SQLite FTS5)</li>
 <li class="">Scheduling with cron expressions</li>
 <li class="">ACP stdio server mode plus ACP-backed external subagent workers</li>
 <li class="">Mid-conversation messaging for progress updates</li>
 <li class="">Persistent memory (global + per-chat)</li>
-<li class="">Structured memory with reflector extraction, dedupe, and observability</li>
+<li class="">Per-chat user model (USER.md) — curated narrative of who the user is, distinct from volatile memories</li>
+<li class="">Structured memory with reflector extraction, dedupe, per-row TTL, recency decay, and observability</li>
+<li class="">Skill lifecycle: end-of-turn review with patch-existing support, activation tracking, auto-archive</li>
+<li class="">Tool result truncation + artifact stash with <code>fetch_artifact</code> for slicing oversized outputs</li>
 <li class="">Personality customization via SOUL.md</li>
 <li class="">Conversation archiving (automatic before compaction, manual via <code>/archive</code>)</li>
 <li class="">Typing indicator that stays active during tool use</li>

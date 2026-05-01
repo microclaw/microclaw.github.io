@@ -4,10 +4,114 @@
         <title>MicroClaw Blog</title>
         <link>https://microclaw.ai/blog</link>
         <description>MicroClaw Blog</description>
-        <lastBuildDate>Sat, 14 Mar 2026 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 01 May 2026 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[Hermes Catch-up: User Model, Skill Lifecycle, Multimedia, and Defensive Defaults]]></title>
+            <link>https://microclaw.ai/blog/hermes-catchup</link>
+            <guid>https://microclaw.ai/blog/hermes-catchup</guid>
+            <pubDate>Fri, 01 May 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[MicroClaw's largest single-branch release adds a per-chat user model, end-to-end skill lifecycle, cross-channel voice, multimedia tools, cross-conversation search, and a defensive-by-default web fetch — inspired by hermes-agent v0.10.0.]]></description>
+            <content:encoded><![CDATA[<p>The Hermes Catch-up release is MicroClaw's largest single-branch update so far: 37 commits, 8400 lines, 53 files. The headline number is misleading, though — what matters is which layers of the agent runtime got filled in.</p>
+<p>The inspiration is <a href="https://github.com/nousresearch/hermes-agent" target="_blank" rel="noopener noreferrer" class="">hermes-agent</a> v0.10.0. Hermes runs on Python; several of its design decisions land more naturally on a Rust + SQLite stack: FTS5 ships with bundled SQLite, <code>cargo audit</code> / <code>cargo deny</code> lock dependency posture at compile time, and the artifact pattern (large tool result on disk, fetch slices by id) costs almost nothing in a single-binary deploy.</p>
+<p>So this isn't a port — it's a re-application of patterns hermes already validated, drawn against MicroClaw's engineering boundaries.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="per-chat-user-model-usermd">Per-chat user model (USER.md)<a href="https://microclaw.ai/blog/hermes-catchup#per-chat-user-model-usermd" class="hash-link" aria-label="Direct link to Per-chat user model (USER.md)" title="Direct link to Per-chat user model (USER.md)" translate="no">​</a></h2>
+<p>Memory in MicroClaw used to be one-dimensional: AGENTS.md plus structured rows, all retrieved on demand. But "who this user is" and "what this user is doing this week" should be different layers.</p>
+<p>This release splits them:</p>
+<ul>
+<li class=""><strong>per-chat USER.md</strong> — a curated narrative of the user in this chat, written to <code>runtime/groups/{chat_id}/USER.md</code>, injected into the system prompt under a dedicated <code>&lt;user_model&gt;</code> block.</li>
+<li class=""><strong>Reflector owns curation</strong> — the agent doesn't write USER.md directly. The reflector runs an LLM call each tick that folds new signal into the existing narrative, returning <code>null</code> when nothing warrants rewriting.</li>
+<li class=""><strong><code>/user</code> command</strong> — show the current narrative, or <code>/user clear</code> to reset.</li>
+</ul>
+<p>USER.md has a hard cap (default 1500 chars, hermes uses 1375) so the curator is forced to summarize rather than append.</p>
+<p>The split matters because user identity is high-reuse, low-update; specific memories are high-frequency and fragmentary. Mixing them either bloats the prompt or makes it hard to reliably recall the durable constraints. With the split, the user model lives at the top of the prompt; memories stay retrieval-on-demand.</p>
+<p>Memory itself also gained:</p>
+<ul>
+<li class=""><strong>Per-row TTL</strong> — set an expiration on a memory; it stops surfacing after that. "Meeting on Sunday" shouldn't keep coming back two months later.</li>
+<li class=""><strong>Recency decay</strong> (default half-life 30 days) — older memories get down-ranked at retrieval time so newer signal naturally surfaces.</li>
+</ul>
+<p>Both USER.md writes and memory writes go through a PII redact module first — emails, phone numbers, API key shapes, and card numbers are masked before persistence.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="skill-lifecycle">Skill lifecycle<a href="https://microclaw.ai/blog/hermes-catchup#skill-lifecycle" class="hash-link" aria-label="Direct link to Skill lifecycle" title="Direct link to Skill lifecycle" translate="no">​</a></h2>
+<p>Skills used to be: agent activates, SKILL.md gets loaded into the prompt. End of story. This release pushes it into a real lifecycle:</p>
+<ul>
+<li class=""><strong>agentskills.io spec compatibility</strong> — SKILL.md frontmatter aligns to the <a href="https://agentskills.io/" target="_blank" rel="noopener noreferrer" class="">agentskills.io</a> spec; legacy field names emit warnings.</li>
+<li class=""><strong>Review at end of turn</strong> — instead of waiting for the reflector tick, every turn triggers a review pass that decides whether the conversation produced a reusable skill.</li>
+<li class=""><strong>Patch existing skills, not just create</strong> — review can recognize that a solution overlaps with an existing skill and emit an edit instead of a duplicate.</li>
+<li class=""><strong>Success-signal filter</strong> — review only fires when the turn actually completed something, so we don't burn LLM calls on failed attempts.</li>
+<li class=""><strong>Structured tool trajectory</strong> — the review LLM reads a structured <code>(tool_name, input shape, success/fail)</code> trace, not the chat log. Signal density is much higher.</li>
+<li class=""><strong>Activation tracking + auto-archive</strong> — every activation is logged; skills idle for 30 days (default, configurable) auto-archive.</li>
+<li class=""><strong>Retrieval-gated catalog</strong> — the prompt-side catalog only includes the top-K best matches for the current query (default 3) instead of the full list.</li>
+<li class=""><strong>Autonomous review default on</strong> — previously opt-in.</li>
+</ul>
+<p>The end-to-end loop is: user asks → agent solves with tools → end-of-turn review checks if it's worth a new skill or a patch → catalog retrieval surfaces the right skill next time → unused skills age out. What used to be ad-hoc decisions scattered across the codebase is now a single pipeline.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="multimedia-hear-see-speak-draw">Multimedia: hear, see, speak, draw<a href="https://microclaw.ai/blog/hermes-catchup#multimedia-hear-see-speak-draw" class="hash-link" aria-label="Direct link to Multimedia: hear, see, speak, draw" title="Direct link to Multimedia: hear, see, speak, draw" translate="no">​</a></h2>
+<p>A complete multimedia tool suite:</p>
+<table><thead><tr><th>Tool</th><th>Purpose</th></tr></thead><tbody><tr><td><code>generate_image</code></td><td>Text-to-image via OpenAI-compat <code>/images</code></td></tr><tr><td><code>describe_image</code></td><td>Vision via vision-capable model</td></tr><tr><td><code>text_to_speech</code></td><td>TTS via OpenAI-compat <code>/audio/speech</code></td></tr><tr><td><code>transcribe_audio</code></td><td>STT via OpenAI-compat <code>/audio/transcriptions</code></td></tr></tbody></table>
+<p>More important: voice goes all the way to channel ingress and egress.</p>
+<ul>
+<li class=""><strong>Cross-channel inbound voice transcription</strong> — Telegram, Discord, Slack, and Feishu adapters all transcribe inbound voice and feed the text into the agent loop as a normal user message. Mobile users get parity with text users.</li>
+<li class=""><strong>Outbound TTS round-trip</strong> (opt-in) — when the inbound was voice, the agent's reply gets synthesized to audio and shipped back through the same channel (Telegram uses native <code>send_voice</code> bubbles; Discord/Slack attach the file).</li>
+</ul>
+<p>Round-trip is opt-in because each turn burns one extra TTS call.</p>
+<p>A new <code>media.allowed_read_dirs</code> allowlist gates every media tool's local-file reads — preventing flows where the agent gets coaxed into feeding <code>~/.ssh</code> to a vision model.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="cross-conversation-recall--structured-clarification">Cross-conversation recall + structured clarification<a href="https://microclaw.ai/blog/hermes-catchup#cross-conversation-recall--structured-clarification" class="hash-link" aria-label="Direct link to Cross-conversation recall + structured clarification" title="Direct link to Cross-conversation recall + structured clarification" translate="no">​</a></h2>
+<p>Two new tools, complementary:</p>
+<ul>
+<li class=""><strong><code>session_search</code></strong> — SQLite FTS5 full-text search over stored messages. The agent can find a project name or error string the user mentioned weeks ago. Schema migration adds the <code>messages_fts</code> virtual table plus INSERT/UPDATE/DELETE triggers, and backfills existing rows. Default scope is the caller's chat; cross-chat search requires explicit control.</li>
+<li class=""><strong><code>clarify</code></strong> — when a request is ambiguous, the agent asks a structured question: up to four predefined choices plus an automatic "Other". The question goes through the channel and the turn ends — the next user message is the answer. More controllable than free-form "do you mean A or B" because the channel can render it as buttons later.</li>
+</ul>
+<p><code>session_search</code> is exposed to subagents (read-only); <code>clarify</code> is main-agent only because it touches channel UI.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="defensive-by-default">Defensive-by-default<a href="https://microclaw.ai/blog/hermes-catchup#defensive-by-default" class="hash-link" aria-label="Direct link to Defensive-by-default" title="Direct link to Defensive-by-default" translate="no">​</a></h2>
+<p>Several defaults shifted toward safer-out-of-the-box. Operators upgrading should review these:</p>
+<ul>
+<li class=""><strong><code>web_fetch.block_private_ips: true</code></strong> — refuses loopback / RFC1918 / CGNAT / link-local / ULA / cloud-metadata (169.254.169.254). Intranet deploys must add hosts to <code>allowlist_hosts</code> or set this <code>false</code>.</li>
+<li class=""><strong>Redirect hook re-validates SSRF on every hop</strong> — the initial URL isn't enough; every 302/307 is re-checked, defeating "public domain redirects to internal address" attacks.</li>
+<li class=""><strong>robots.txt consultation</strong> — <code>web_fetch</code> consults the target site's robots.txt before fetching.</li>
+<li class=""><strong><code>bash_dangerous_patterns</code></strong> — seven default regexes guard against <code>sudo</code>, <code>rm -rf /</code>, pipe-to-shell installers, <code>mkfs</code>, forkbombs, raw <code>dd if=</code>, and recursive root chmod/chown.</li>
+<li class=""><strong>PII redact</strong> — emails, phones, API key shapes, and card numbers are masked before USER.md / memory writes.</li>
+<li class=""><strong>Bash command-content gate</strong> — high-risk commands now show their literal contents in the approval preview, not an abstract risk classifier.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="performance-and-cost-control">Performance and cost control<a href="https://microclaw.ai/blog/hermes-catchup#performance-and-cost-control" class="hash-link" aria-label="Direct link to Performance and cost control" title="Direct link to Performance and cost control" translate="no">​</a></h2>
+<ul>
+<li class=""><strong>Tool result cache</strong> (schema v22) — keyed on <code>SHA256(tool_name + normalized input)</code>, opt-in per tool (e.g. <code>osv_check</code>). LRU + TTL.</li>
+<li class=""><strong>Oversized result truncation + <code>fetch_artifact</code></strong> — when a tool returns more than 4000 chars (default), head and tail are kept inline and the full payload goes to <code>tool_result_artifacts</code> with a TTL. The agent calls <code>fetch_artifact</code> to slice into it. No more 100 MB grep results filling the context window.</li>
+<li class=""><strong>Per-tool duplicate-call circuit breaker</strong> — same tool with same input more than three times in a 10-step window is rejected. Breaks death loops.</li>
+<li class=""><strong>Autonomous session titles</strong> — a background LLM call titles each session after the first few user messages. Web UI history isn't a wall of "Untitled" anymore.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="other-new-tools">Other new tools<a href="https://microclaw.ai/blog/hermes-catchup#other-new-tools" class="hash-link" aria-label="Direct link to Other new tools" title="Direct link to Other new tools" translate="no">​</a></h2>
+<ul>
+<li class=""><strong><code>osv_check</code></strong> — queries <a href="https://osv.dev/" target="_blank" rel="noopener noreferrer" class="">osv.dev</a> for advisories across npm / PyPI / crates.io / RubyGems / Maven / NuGet / Packagist / Hex / Pub / Go. MAL-* malware advisories are flagged separately.</li>
+<li class=""><strong><code>insights</code></strong> — usage summary over a trailing window: top tools, skill activations, token cost distribution.</li>
+<li class=""><strong><code>fetch_artifact</code></strong> — pairs with the truncation feature above.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="operator-quality-of-life">Operator quality of life<a href="https://microclaw.ai/blog/hermes-catchup#operator-quality-of-life" class="hash-link" aria-label="Direct link to Operator quality of life" title="Direct link to Operator quality of life" translate="no">​</a></h2>
+<ul>
+<li class=""><strong><code>doctor</code> diagnostics expanded</strong> — now checks context cap, USER.md cap, and bash dangerous patterns config sanity, not just "the YAML parses".</li>
+<li class=""><strong>Project-level context files</strong> — drop any <code>.md</code> into <code>data_dir/runtime/groups/{channel}/{chat_id}/</code> and it gets concatenated into the system prompt (capped by <code>context_max_chars</code>, default 8000). A first-class home for "things this chat should always know".</li>
+<li class=""><strong>New provider preset: Xiaomi MiMo</strong> — five models (<code>mimo-v2.5-pro</code>, <code>mimo-v2.5</code>, <code>mimo-v2-pro</code>, <code>mimo-v2-flash</code>, <code>mimo-v2-omni</code>), OpenAI-compat protocol.</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="upgrade-notes">Upgrade notes<a href="https://microclaw.ai/blog/hermes-catchup#upgrade-notes" class="hash-link" aria-label="Direct link to Upgrade notes" title="Direct link to Upgrade notes" translate="no">​</a></h2>
+<p>A few things to check before merging into your deployment:</p>
+<ol>
+<li class=""><strong>DB schema advances irreversibly to v25</strong> (migrations 21–25 are forward-only). On first start, v21 backfills the FTS5 index — large message tables can take a few minutes. <strong>Back up <code>data_dir/</code>'s SQLite file before upgrade.</strong></li>
+<li class=""><strong>If you use <code>web_fetch</code> against intranet services</strong>, add hosts to <code>web_fetch_url_validation.allowlist_hosts</code> or set <code>block_private_ips: false</code>.</li>
+<li class=""><strong>If you have bash workflows that use <code>sudo</code> or <code>rm -rf</code></strong>, either change the workflow or set <code>bash_dangerous_patterns: []</code>.</li>
+<li class=""><strong>Autonomous skill review is on by default</strong> — each turn now incurs an extra LLM call at the end. To disable, set <code>autonomous_skill_review: false</code> or <code>reflector_enabled: false</code>.</li>
+</ol>
+<p>Existing <code>microclaw.config.yaml</code> files do not need changes — every new field has <code>#[serde(default)]</code> and the defaults match the descriptions above.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="how-to-think-about-this-release">How to think about this release<a href="https://microclaw.ai/blog/hermes-catchup#how-to-think-about-this-release" class="hash-link" aria-label="Direct link to How to think about this release" title="Direct link to How to think about this release" translate="no">​</a></h2>
+<p>It isn't "we added N tools". It's MicroClaw moving from "a runtime that can call tools" toward "a runtime with a user model, a skill lifecycle, cross-conversation memory, multimedia ingress, and explicit safety defaults."</p>
+<p>A lot of these look like quality-of-life polish (auto-titled sessions, voice ingress, the user model). On long-running bots, they accumulate into the reason an operator is willing to keep MicroClaw in production.</p>
+<p>Source: <a href="https://github.com/microclaw/microclaw" target="_blank" rel="noopener noreferrer" class="">microclaw/microclaw</a> · PR <a href="https://github.com/microclaw/microclaw/pull/335" target="_blank" rel="noopener noreferrer" class="">#335</a></p>]]></content:encoded>
+            <category>Release</category>
+            <category>Runtime</category>
+            <category>skills</category>
+            <category>memory</category>
+            <category>multimedia</category>
+            <category>security</category>
+        </item>
         <item>
             <title><![CDATA[Maturity Hardening: Security Audit and Self-Checks]]></title>
             <link>https://microclaw.ai/blog/maturity-hardening</link>
