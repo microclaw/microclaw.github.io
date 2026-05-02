@@ -17,6 +17,8 @@ Supported channels: Telegram, Discord, Slack, Feishu/Lark, IRC.
 | `/reset memory` | Clear current chat memory (chat AGENTS.md + structured memories) without clearing conversation or tasks. |
 | `/stop` | Abort the active run in the current chat. Does not clear session or chat history. |
 | `/skills` | List all currently available skills discovered by runtime. |
+| `/rewind` | List the most recent filesystem checkpoints for the current chat (newest first). Requires `checkpoints_enabled: true`. |
+| `/rewind <commit>` | Restore the chat's working directory to the given checkpoint hash. Hash must be 4–64 hex chars. |
 | `/reload-skills` | Reload skills from disk and return the reloaded count. |
 | `/archive` | Archive current in-memory session as a markdown conversation file. |
 | `/usage` | Show usage and memory observability summary for current chat. |

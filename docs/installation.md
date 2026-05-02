@@ -6,9 +6,10 @@ sidebar_position: 3
 
 ## System requirements
 
-- Rust 1.70+ (2021 edition)
+- Rust 1.70+ (2021 edition) — only required for building from source; the installer ships prebuilt binaries
 - macOS, Linux, or Windows
 - Internet access for chat + your selected LLM provider API
+- **Minimum hardware: 1 vCPU / 1 GB RAM** — microclaw is a single static Rust binary with embedded SQLite, so it runs comfortably on a $5/month VPS (DigitalOcean, Hetzner, Vultr, etc.). No Python interpreter, no separate vector DB, no service mesh.
 
 ## One-line installer (recommended)
 

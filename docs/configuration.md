@@ -95,6 +95,9 @@ At runtime, at least one channel must be enabled:
 | `plugins.dir` | `<data_dir>/plugins` | Optional plugin manifest directory override |
 | `max_session_messages` | `40` | Message threshold that triggers context compaction |
 | `compact_keep_recent` | `20` | Number of recent messages kept verbatim during compaction |
+| `anthropic_prompt_cache_enabled` | `true` | Add up to 4 `cache_control` breakpoints (system + last 3 messages) to every Anthropic request so multi-turn chats hit the prompt cache. Anthropic-only; OpenAI-compat path is untouched. |
+| `anthropic_prompt_cache_ttl` | `"5m"` | Cache TTL marker for the breakpoints. `"5m"` (default) or `"1h"`; `"1h"` requires extended-cache opt-in on the API key. |
+| `checkpoints_enabled` | `false` | Snapshot the chat's working directory into a shadow git repo under `<data_dir>/checkpoints/<hash>/` at the start of every agent turn. Required for `/rewind`. Needs `git` on PATH. |
 | `reflector_enabled` | `true` | Enable the background memory reflector (see [Memory System](./memory)) |
 | `reflector_interval_mins` | `15` | How often the reflector runs (minutes) |
 | `memory_token_budget` | `1500` | Estimated token budget for layered structured-memory injection (L0+L1+L2) |
