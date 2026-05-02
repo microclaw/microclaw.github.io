@@ -9,11 +9,11 @@
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
         <item>
-            <title><![CDATA[Hermes Catch-up: User Model, Skill Lifecycle, Multimedia, and Defensive Defaults]]></title>
+            <title><![CDATA[Hermes Catch-up: User Model, Skill Lifecycle, Multimedia, Defensive Defaults — and Round 2 (Prompt Cache, Fuzzy Edit, Checkpoints, @-Refs)]]></title>
             <link>https://microclaw.ai/blog/hermes-catchup</link>
             <guid>https://microclaw.ai/blog/hermes-catchup</guid>
             <pubDate>Fri, 01 May 2026 00:00:00 GMT</pubDate>
-            <description><![CDATA[MicroClaw's largest single-branch release adds a per-chat user model, end-to-end skill lifecycle, cross-channel voice, multimedia tools, cross-conversation search, and a defensive-by-default web fetch — inspired by hermes-agent v0.10.0.]]></description>
+            <description><![CDATA[Two consecutive Hermes-inspired releases. Round 1: per-chat user model, end-to-end skill lifecycle, cross-channel voice, multimedia tools, cross-conversation search, defensive-by-default web fetch. Round 2 (PR #342): Anthropic prompt caching, fuzzy edit_file matching, per-turn tool-loop guardrails, filesystem checkpoints + /rewind, @-prefix context references, and lazy subdirectory AGENTS.md hints.]]></description>
             <content:encoded><![CDATA[<p>The Hermes Catch-up release is MicroClaw's largest single-branch update so far: 37 commits, 8400 lines, 53 files. The headline number is misleading, though — what matters is which layers of the agent runtime got filled in.</p>
 <p>The inspiration is <a href="https://github.com/nousresearch/hermes-agent" target="_blank" rel="noopener noreferrer" class="">hermes-agent</a> v0.10.0. Hermes runs on Python; several of its design decisions land more naturally on a Rust + SQLite stack: FTS5 ships with bundled SQLite, <code>cargo audit</code> / <code>cargo deny</code> lock dependency posture at compile time, and the artifact pattern (large tool result on disk, fetch slices by id) costs almost nothing in a single-binary deploy.</p>
 <p>So this isn't a port — it's a re-application of patterns hermes already validated, drawn against MicroClaw's engineering boundaries.</p>
@@ -92,25 +92,85 @@
 <li class=""><strong>Project-level context files</strong> — drop any <code>.md</code> into <code>data_dir/runtime/groups/{channel}/{chat_id}/</code> and it gets concatenated into the system prompt (capped by <code>context_max_chars</code>, default 8000). A first-class home for "things this chat should always know".</li>
 <li class=""><strong>New provider preset: Xiaomi MiMo</strong> — five models (<code>mimo-v2.5-pro</code>, <code>mimo-v2.5</code>, <code>mimo-v2-pro</code>, <code>mimo-v2-flash</code>, <code>mimo-v2-omni</code>), OpenAI-compat protocol.</li>
 </ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="update--2026-05-02-round-2-pr-342">Update — 2026-05-02: round 2 (PR #342)<a href="https://microclaw.ai/blog/hermes-catchup#update--2026-05-02-round-2-pr-342" class="hash-link" aria-label="Direct link to Update — 2026-05-02: round 2 (PR #342)" title="Direct link to Update — 2026-05-02: round 2 (PR #342)" translate="no">​</a></h2>
+<p>Round 1 closed the biggest gaps in memory, skills, and multimedia. Round 2 goes back into hermes-agent and pulls six more patterns that earn their keep on a single-binary Rust runtime: cost control, recovery, and just-in-time context. Six new modules, fifty new tests, all opt-in or non-disruptive by default.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="anthropic-prompt-caching-default-on-free">Anthropic prompt caching (default on, free)<a href="https://microclaw.ai/blog/hermes-catchup#anthropic-prompt-caching-default-on-free" class="hash-link" aria-label="Direct link to Anthropic prompt caching (default on, free)" title="Direct link to Anthropic prompt caching (default on, free)" translate="no">​</a></h3>
+<p>Anthropic's API accepts up to four <code>cache_control</code> breakpoints per request. MicroClaw now places one on the system prompt and one each on the last three messages, so the second turn re-uses the prefix from the first, the third re-uses the second's prefix, etc. On a multi-turn chat, the recurring input cost drops about 75%.</p>
+<p>The implementation is JSON-mutation right before send: serialize <code>MessagesRequest</code> to a <code>serde_json::Value</code>, walk system + last 3 non-system messages, attach <code>cache_control: {"type": "ephemeral"}</code> to the last block of each. The typed <code>Message</code> / <code>ContentBlock</code> shapes stay clean, and the OpenAI-compatible path is untouched.</p>
+<p>Two new config flags: <code>anthropic_prompt_cache_enabled</code> (default <code>true</code>) and <code>anthropic_prompt_cache_ttl</code> (<code>"5m"</code> default or <code>"1h"</code> if your key has extended-cache opt-in).</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="fuzzy-edit_file-matching">Fuzzy <code>edit_file</code> matching<a href="https://microclaw.ai/blog/hermes-catchup#fuzzy-edit_file-matching" class="hash-link" aria-label="Direct link to fuzzy-edit_file-matching" title="Direct link to fuzzy-edit_file-matching" translate="no">​</a></h3>
+<p>LLMs frequently hand <code>edit_file</code> an <code>old_string</code> that is "morally" right but byte-wrong: pasted with a different indent, copied through a tool transport that stripped trailing whitespace, smart-quoted by a doc renderer, or with <code>\n</code> written as the literal two characters instead of a newline. Each failed exact match wasted iterations.</p>
+<p>The tool now retries through eight strategies in order and tells the model which one matched:</p>
+<ol>
+<li class="">exact</li>
+<li class="">line-trimmed (per-line <code>trim()</code>)</li>
+<li class="">whitespace-normalized (collapse runs of spaces/tabs)</li>
+<li class="">indentation-flexible (per-line <code>lstrip()</code>)</li>
+<li class="">escape-normalized (<code>\n</code>/<code>\t</code>/<code>\r</code> → real chars)</li>
+<li class="">trimmed-boundary (only first and last line trimmed)</li>
+<li class="">unicode-normalized (smart quotes, em/en-dash, ellipsis, NBSP)</li>
+<li class="">block-anchor (first/last line + middle similarity)</li>
+</ol>
+<p>When a non-exact strategy matches, the implementation also runs an escape-drift check: if <code>new_string</code> contains literal <code>\'</code> or <code>\"</code> sequences and the matched region of the file does not, the patch is refused — that pattern is almost always a tool-call serialization artifact that would corrupt the source if written verbatim.</p>
+<p>The strategy chain is borrowed from <a href="https://github.com/nousresearch/hermes-agent/blob/main/tools/fuzzy_match.py" target="_blank" rel="noopener noreferrer" class="">hermes-agent's <code>tools/fuzzy_match.py</code></a>, which itself adopted it from OpenCode.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="per-turn-tool-loop-guardrails">Per-turn tool-loop guardrails<a href="https://microclaw.ai/blog/hermes-catchup#per-turn-tool-loop-guardrails" class="hash-link" aria-label="Direct link to Per-turn tool-loop guardrails" title="Direct link to Per-turn tool-loop guardrails" translate="no">​</a></h3>
+<p>The duplicate-call circuit breaker (<code>tool_repeat_window</code> + <code>tool_repeat_limit</code>) already short-circuits identical <code>(tool, args)</code> repeats. Round 2 adds two finer-grained signals as warnings (the result still goes back to the model, just with a hint appended):</p>
+<ul>
+<li class=""><strong>Idempotent no-progress</strong> — when a read-only tool (<code>read_file</code>, <code>grep</code>, <code>web_fetch</code>, <code>web_search</code>, <code>session_search</code>, …) returns the same result hash twice for the same arguments, the result gets a "this won't change, use what you have" suffix.</li>
+<li class=""><strong>Same-tool failure streak</strong> — when any tool fails three times in a turn, even with different arguments, the result gets a "change approach instead of retrying" suffix.</li>
+</ul>
+<p>The new <code>IDEMPOTENT_TOOLS</code> constant in <code>src/tools/mod.rs</code> classifies thirteen read-only tools. The controller is reset per turn — guardrails are about <em>this turn</em>'s loop, not lifetime behavior.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="filesystem-checkpoints--rewind">Filesystem checkpoints + <code>/rewind</code><a href="https://microclaw.ai/blog/hermes-catchup#filesystem-checkpoints--rewind" class="hash-link" aria-label="Direct link to filesystem-checkpoints--rewind" title="Direct link to filesystem-checkpoints--rewind" translate="no">​</a></h3>
+<p>Once per agent turn, MicroClaw can run <code>git add -A &amp;&amp; git commit</code> against a <em>shadow</em> git repo whose <code>GIT_DIR</code> lives outside the user's working tree (under <code>&lt;data_dir&gt;/checkpoints/&lt;sha256(abs_path)[:16]&gt;/</code>). The shadow repo isolates from <code>~/.gitconfig</code> (<code>GIT_CONFIG_GLOBAL=/dev/null</code>, <code>GIT_CONFIG_SYSTEM=/dev/null</code>, <code>GIT_CONFIG_NOSYSTEM=1</code>), so it never triggers signing prompts, hooks, or credential helpers — even if the user has aggressive global git config.</p>
+<p>Two new chat commands:</p>
+<ul>
+<li class=""><code>/rewind</code> — list the most recent 20 snapshots for the current chat, newest first.</li>
+<li class=""><code>/rewind &lt;commit&gt;</code> — restore the chat's working dir to that snapshot. Hashes are validated as 4–64 hex chars to defeat git argument injection (e.g. <code>--patch</code> would otherwise be interpreted as a flag).</li>
+</ul>
+<p>This is <strong>off by default</strong> (<code>checkpoints_enabled: false</code>) because it requires <code>git</code> on PATH and is most useful for code-editing chats. Once on, the agent never sees this — it's transparent infrastructure.</p>
+<p>The pattern is borrowed from <a href="https://github.com/nousresearch/hermes-agent/blob/main/tools/checkpoint_manager.py" target="_blank" rel="noopener noreferrer" class="">hermes-agent's <code>tools/checkpoint_manager.py</code></a>.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="-prefix-context-references"><code>@</code>-prefix context references<a href="https://microclaw.ai/blog/hermes-catchup#-prefix-context-references" class="hash-link" aria-label="Direct link to -prefix-context-references" title="Direct link to -prefix-context-references" translate="no">​</a></h3>
+<p>User messages can now include short references that get expanded server-side, before the LLM sees the message:</p>
+<ul>
+<li class=""><code>@file:src/main.rs</code> — full file contents.</li>
+<li class=""><code>@file:src/llm.rs:920-997</code> — line range.</li>
+<li class=""><code>@folder:src/tools</code> — one-level directory listing.</li>
+<li class=""><code>@diff</code> / <code>@staged</code> — output of <code>git diff</code> or <code>git diff --cached</code> against the chat's working dir.</li>
+<li class=""><code>@url:https://example.com/page</code> — fetched and HTML-stripped, capped at 64 KB.</li>
+</ul>
+<p>The runtime rewrites the user message into <code>(stripped text) + --- Attached Context ---</code>, attaches the resolved blocks below, and passes the result to the agent. URL fetches reuse the SSRF guard from PR #335 (loopback, link-local, private, CGNAT, ULA, cloud-metadata all blocked, every redirect hop validated). File and folder references are gated by a sensitive-path block list — <code>~/.ssh</code>, <code>~/.aws</code>, <code>~/.gnupg</code>, <code>~/.kube</code>, <code>~/.docker</code>, <code>~/.azure</code>, plus dotfiles like <code>~/.bashrc</code>, <code>~/.netrc</code>, <code>~/.npmrc</code>, <code>~/.pgpass</code>. The block list walks <code>Path::components()</code> so it works on Windows too (an early Windows-CI failure surfaced this).</p>
+<p>The pattern saves a <code>read_file</code> / <code>web_fetch</code> round-trip when the user clearly intends to give the agent a specific artifact. It's especially useful in the Web UI and Discord, where typing a path is faster than telling the agent to go look it up.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="lazy-subdirectory-agentsmd-hints">Lazy subdirectory <code>AGENTS.md</code> hints<a href="https://microclaw.ai/blog/hermes-catchup#lazy-subdirectory-agentsmd-hints" class="hash-link" aria-label="Direct link to lazy-subdirectory-agentsmd-hints" title="Direct link to lazy-subdirectory-agentsmd-hints" translate="no">​</a></h3>
+<p>The system prompt loads the project root's <code>AGENTS.md</code> once at session start. But subdirectory-specific guidance (<code>backend/AGENTS.md</code>, <code>frontend/CLAUDE.md</code>, <code>infra/.cursorrules</code>) only mattered if the user mentioned it.</p>
+<p>Now: when a tool call touches a subdirectory (via <code>path</code> / <code>file_path</code> / <code>workdir</code> / <code>cwd</code> arguments, or path-shaped tokens in a <code>bash</code> command), MicroClaw walks up to five ancestor directories looking for <code>AGENTS.md</code>, <code>CLAUDE.md</code>, or <code>.cursorrules</code>. The first hit (capped at 8 KB) is appended to that tool's result. Each directory is emitted at most once per turn, and the chat root is excluded — its hint is already in the system prompt.</p>
+<p>The pattern is from hermes-agent's <code>agent/subdirectory_hints.py</code>, originally inspired by Block/goose's <code>SubdirectoryHintTracker</code>.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="where-this-leaves-us">Where this leaves us<a href="https://microclaw.ai/blog/hermes-catchup#where-this-leaves-us" class="hash-link" aria-label="Direct link to Where this leaves us" title="Direct link to Where this leaves us" translate="no">​</a></h3>
+<p>Round 2 is mostly about the boring qualities of a long-running runtime: cost (prompt cache), reliability (fuzzy edit, guardrails, checkpoints), and just-in-time context (@-refs, subdir hints). None of them are headline features. All of them turn into "we kept it in production for another quarter" — exactly the layer that MicroClaw needs to keep filling in.</p>
+<p>The full PR is <a href="https://github.com/microclaw/microclaw/pull/342" target="_blank" rel="noopener noreferrer" class="">#342</a> — 2,842 lines added, 56 lines deleted, six new modules, fifty new unit tests, and a single static Rust binary that still runs on a $5 VPS.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="upgrade-notes">Upgrade notes<a href="https://microclaw.ai/blog/hermes-catchup#upgrade-notes" class="hash-link" aria-label="Direct link to Upgrade notes" title="Direct link to Upgrade notes" translate="no">​</a></h2>
 <p>A few things to check before merging into your deployment:</p>
 <ol>
-<li class=""><strong>DB schema advances irreversibly to v25</strong> (migrations 21–25 are forward-only). On first start, v21 backfills the FTS5 index — large message tables can take a few minutes. <strong>Back up <code>data_dir/</code>'s SQLite file before upgrade.</strong></li>
+<li class=""><strong>DB schema advances irreversibly to v25</strong> (migrations 21–25 are forward-only, from round 1). On first start, v21 backfills the FTS5 index — large message tables can take a few minutes. <strong>Back up <code>data_dir/</code>'s SQLite file before upgrade.</strong></li>
 <li class=""><strong>If you use <code>web_fetch</code> against intranet services</strong>, add hosts to <code>web_fetch_url_validation.allowlist_hosts</code> or set <code>block_private_ips: false</code>.</li>
 <li class=""><strong>If you have bash workflows that use <code>sudo</code> or <code>rm -rf</code></strong>, either change the workflow or set <code>bash_dangerous_patterns: []</code>.</li>
 <li class=""><strong>Autonomous skill review is on by default</strong> — each turn now incurs an extra LLM call at the end. To disable, set <code>autonomous_skill_review: false</code> or <code>reflector_enabled: false</code>.</li>
+<li class=""><strong>Anthropic prompt caching is on by default</strong> (round 2). If your provider proxy cannot accept <code>cache_control</code> markers in messages, set <code>anthropic_prompt_cache_enabled: false</code>. Real Anthropic and most compatible proxies (LiteLLM, OpenRouter Anthropic passthrough, Cloudflare AI Gateway) handle them transparently.</li>
+<li class=""><strong><code>/rewind</code> and per-turn checkpoints are off by default</strong> (round 2). If you want the safety net, set <code>checkpoints_enabled: true</code> and make sure <code>git</code> is on PATH inside whatever environment runs MicroClaw (containers included).</li>
 </ol>
 <p>Existing <code>microclaw.config.yaml</code> files do not need changes — every new field has <code>#[serde(default)]</code> and the defaults match the descriptions above.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="how-to-think-about-this-release">How to think about this release<a href="https://microclaw.ai/blog/hermes-catchup#how-to-think-about-this-release" class="hash-link" aria-label="Direct link to How to think about this release" title="Direct link to How to think about this release" translate="no">​</a></h2>
-<p>It isn't "we added N tools". It's MicroClaw moving from "a runtime that can call tools" toward "a runtime with a user model, a skill lifecycle, cross-conversation memory, multimedia ingress, and explicit safety defaults."</p>
-<p>A lot of these look like quality-of-life polish (auto-titled sessions, voice ingress, the user model). On long-running bots, they accumulate into the reason an operator is willing to keep MicroClaw in production.</p>
-<p>Source: <a href="https://github.com/microclaw/microclaw" target="_blank" rel="noopener noreferrer" class="">microclaw/microclaw</a> · PR <a href="https://github.com/microclaw/microclaw/pull/335" target="_blank" rel="noopener noreferrer" class="">#335</a></p>]]></content:encoded>
+<p>It isn't "we added N tools". It's MicroClaw moving from "a runtime that can call tools" toward "a runtime with a user model, a skill lifecycle, cross-conversation memory, multimedia ingress, explicit safety defaults — and now prompt-cache economics, edit-tolerance, loop guardrails, filesystem time-travel, and just-in-time context."</p>
+<p>A lot of these look like quality-of-life polish (auto-titled sessions, voice ingress, the user model, the prompt cache, the checkpoint shadow repo). On long-running bots, they accumulate into the reason an operator is willing to keep MicroClaw in production — on a $5 VPS, no less.</p>
+<p>Source: <a href="https://github.com/microclaw/microclaw" target="_blank" rel="noopener noreferrer" class="">microclaw/microclaw</a> · Round 1 PR <a href="https://github.com/microclaw/microclaw/pull/335" target="_blank" rel="noopener noreferrer" class="">#335</a> · Round 2 PR <a href="https://github.com/microclaw/microclaw/pull/342" target="_blank" rel="noopener noreferrer" class="">#342</a></p>]]></content:encoded>
             <category>Release</category>
             <category>Runtime</category>
             <category>skills</category>
             <category>memory</category>
             <category>multimedia</category>
             <category>security</category>
+            <category>performance</category>
+            <category>cost</category>
+            <category>checkpoints</category>
         </item>
         <item>
             <title><![CDATA[Maturity Hardening: Security Audit and Self-Checks]]></title>
