@@ -6,9 +6,9 @@ sidebar_position: 6
 
 MicroClaw exposes built-in tools to LLM through JSON Schema definitions (plus optional MCP-federated tools). LLM selects and calls tools automatically based on your request.
 
-For anti-drift, this page is complemented by the generated source-of-truth at [Generated Tools](./generated-tools), produced from code by `scripts/generate_docs_artifacts.mjs`.
+For anti-drift, this page is complemented by the generated source-of-truth at [Generated Tools](./generated-tools), produced from code by `scripts/generate_docs_artifacts.mjs` (currently **58 built-in tools**). The curated table below highlights the most-used tools; the generated page is authoritative for the full set.
 
-Skill workflows are provided by local `SKILL.md` files (for example `apple-notes`, `apple-reminders`, `apple-calendar`, `weather`) and loaded through `activate_skill`.
+Skill workflows are provided by local `SKILL.md` files — MicroClaw ships **42 factory-ready built-in skills** (see [Skills](./skills)) and loads them through `activate_skill`.
 
 ## Tool List (Curated)
 
@@ -26,6 +26,17 @@ Skill workflows are provided by local `SKILL.md` files (for example `apple-notes
 | 10 | `web_search` | Web | Search via DuckDuckGo (top 8 results) |
 | 11 | `web_fetch` | Web | Fetch a URL and return plain text (max 20KB) |
 | 12 | `send_message` | chat | Send text mid-conversation; supports file attachments for Telegram/Discord/Slack/Weixin |
+| -- | `session_search` | Search | Cross-conversation full-text recall (SQLite FTS5) |
+| -- | `generate_image` | Media | Text-to-image via OpenAI-compatible `/images` |
+| -- | `describe_image` | Media | Vision description via a vision-capable model |
+| -- | `text_to_speech` | Media | TTS via OpenAI-compatible `/audio/speech` |
+| -- | `transcribe_audio` | Media | STT via OpenAI-compatible `/audio/transcriptions` |
+| -- | `fetch_artifact` | Runtime | Slice into an oversized tool result stashed by id |
+| -- | `clarify` | chat | Ask a structured up-to-4-choice clarifying question |
+| -- | `calculate` | Compute | Exact arithmetic without LLM mental math |
+| -- | `osv_check` | Security | Query osv.dev for dependency advisories |
+| -- | `insights` | Observability | Usage summary over a trailing window |
+| -- | `knowledge_graph_query` / `knowledge_graph_add` | Memory | Query / add temporal knowledge-graph triples |
 | 13 | `schedule_task` | Scheduler | Create a recurring or one-time task |
 | 14 | `list_scheduled_tasks` | Scheduler | List active/paused tasks for a chat |
 | 15 | `pause_scheduled_task` | Scheduler | Pause a scheduled task |
@@ -33,10 +44,13 @@ Skill workflows are provided by local `SKILL.md` files (for example `apple-notes
 | 17 | `cancel_scheduled_task` | Scheduler | Cancel a scheduled task |
 | 18 | `get_task_history` | Scheduler | View execution history for a task |
 | 19 | `export_chat` | chat | Export chat history to markdown |
-| 20 | `sessions_spawn` | Agent | Spawn an asynchronous sub-agent run and return immediately |
-| 21 | `subagents_list` | Agent | List sub-agent runs for the current chat |
-| 22 | `subagents_info` | Agent | Inspect one sub-agent run in detail |
-| 23 | `subagents_kill` | Agent | Cancel one run or all active runs in the current chat |
+| 20 | `sessions_spawn` | Agent | Spawn an async sub-agent run; accepts a `specialist` profile and a human `label`, returns immediately |
+| -- | `report_progress` | Agent | Sub-agent-only: emit a throttled `📊 [label] (n%)` mid-run progress update |
+| -- | `consult_specialist` | Agent | Sub-agent-only: get an inline expert opinion from a different specialist (single round, no tools, no recursion) |
+| -- | `subagents_orchestrate` | Agent | Fan out a templated set of worker sub-agents |
+| 21 | `subagents_list` | Agent | List sub-agent runs for the current chat (with labels + latest progress) |
+| 22 | `subagents_info` | Agent | Inspect one sub-agent run by run_id or label |
+| 23 | `subagents_kill` | Agent | Cancel one run (by run_id or label) or all active runs in the chat |
 | 24 | `subagents_focus` | Agent | Focus the chat on a specific sub-agent run |
 | 25 | `subagents_unfocus` | Agent | Clear focused sub-agent binding |
 | 26 | `subagents_focused` | Agent | Show current focused sub-agent run |
@@ -64,6 +78,26 @@ Tool calls are authorized by caller chat:
 - Global memory writes (`write_memory` with `scope = "global"`) require control-chat privileges
 
 This applies to `send_message`, scheduler tools, `export_chat`, `todo_*`, and chat-scoped memory access.
+
+### Specialist sub-agents
+
+`sessions_spawn` can route a task to a **specialist profile** — a preset persona plus a tool subset — instead of a single generic worker. The main agent stays light in the foreground and dispatches the right expert in the background:
+
+```json
+{ "specialist": "mathematician", "label": "prove convergence", "task": "…" }
+```
+
+| Specialist | Focus | Extra tools |
+|---|---|---|
+| `mathematician` | step-by-step derivation, verify with code | code exec |
+| `illustrator` | visual brief, prompt iteration | `generate_image`, `describe_image` |
+| `researcher` | multi-source retrieval, cross-check, cite | `web_search`, `web_fetch` |
+| `coder` | read/write code, run tests, minimal diffs | file tools, `bash` |
+| `writer` | structured writing, tone/length control | memory/context |
+| `analyst` | classify data, statistics, charts | code exec, file tools |
+| `generalist` | default catch-all | restricted set |
+
+Within a run, a sub-agent can call `report_progress` to post a throttled mid-run update, and `consult_specialist` to get an inline opinion from a *different* specialist (single LLM round, no tools, no recursion, no chat side effects). Concurrent runs carry human `label`s, so they can be inspected or cancelled by name. Adding a specialist is one record in the roster — no change to the core loop.
 
 ### bash
 

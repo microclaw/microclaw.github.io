@@ -31,3 +31,9 @@ web:
 reliability:
   label: Reliability
   permalink: /reliability
+skills:
+  label: Skills
+  permalink: /skills
+memory:
+  label: Memory
+  permalink: /memory

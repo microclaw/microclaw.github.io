@@ -10,7 +10,7 @@ MicroClaw memory has three layers of persistence:
 - structured memory in SQLite/MCP (`memories` table)
 - temporal knowledge graph triples (`knowledge_graph` table)
 
-Prompt injection uses the file memory plus a layered subset of structured memory. The knowledge graph is queried on-demand through dedicated tools.
+Prompt injection uses the file memory plus a layered subset of structured memory. The knowledge graph is queried on-demand through dedicated tools, **and is also activated automatically during recall** to inject connected facts (see [Graph-augmented recall](#graph-augmented-recall)).
 
 ## File memory (AGENTS.md)
 
@@ -171,6 +171,26 @@ When `memory_token_budget` is exceeded during prompt construction, MicroClaw sto
 - `knowledge_graph_add`: add triples and optionally invalidate stale ones
 
 Use these when a request needs relationship or time-aware recall beyond the injected memory subset.
+
+## Graph-augmented recall
+
+Beyond on-demand tool queries, the temporal knowledge graph is also activated **during recall itself**, so relationship-aware facts surface automatically without the model having to ask for them.
+
+After the flat L0–L2 structured-memory layers are assembled, recall:
+
+1. Seeds the graph from entities mentioned in the current query (`kg_distinct_entities`).
+2. Expands a **bounded 1–2 hop** neighborhood over the triple store (`kg_neighborhood`, a bounded BFS).
+3. Injects the connected facts as a dedicated `# Connected` block in the prompt.
+
+It is **local-only** — no embeddings and no extra LLM call — bounded by hops, triple count, and token budget, with a redundancy guard so it never repeats facts already injected by L0–L2. If you mention a project, recall can now surface the person who owns it and the deadline attached to it — relationships the flat layers wouldn't have ranked together.
+
+**Configuration (default-on, no added cost):**
+
+```yaml
+memory_graph_recall_enabled: true   # activate KG expansion during recall
+memory_graph_max_hops: 2            # bounded neighborhood radius
+memory_graph_max_triples: 10        # cap on injected connected facts
+```
 
 ## Semantic memory behavior
 

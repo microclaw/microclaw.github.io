@@ -15,20 +15,27 @@ When a request matches a skill, the model can call `activate_skill` to load and 
 
 ## Current bundled skills
 
-MicroClaw currently ships with 10 bundled skills:
+MicroClaw ships **42 factory-ready built-in skills** so a fresh install is already a one-stop assistant — compute, coding, research, planning, writing, diagrams, and document handling — with nothing to wire up.
 
-1. `pdf`
-2. `docx`
-3. `xlsx`
-4. `pptx`
-5. `skill-creator`
-6. `apple-notes`
-7. `apple-reminders`
-8. `apple-calendar`
-9. `weather`
-10. `find-skills`
+Built-in skills live under `skills/built-in/<name>/SKILL.md`, are embedded into the binary at compile time via `include_dir!`, and are auto-installed at runtime by compatibility (incompatible ones — e.g. the Apple skills on Linux — are silently skipped).
 
-## New skills in this release
+| Category | Skills |
+|---|---|
+| Documents | `pdf` · `docx` · `pptx` · `xlsx` |
+| Apple (macOS-only) | `apple-notes` · `apple-reminders` · `apple-calendar` |
+| Tools / platform | `weather` · `github` |
+| Retrieval / tracing | `propagation-trace` |
+| Meta | `skill-creator` · `find-skills` |
+| Compute & data | `calculator` · `unit-converter` · `datetime` · `csv-tools` · `json-tools` · `sql` · `data-analysis` |
+| Coding | `code-review` · `regex` · `debugging` · `shell-scripting` · `api-design` · `testing` · `git` |
+| Research | `research` · `wikipedia` · `define` |
+| Planning | `planning` · `brainstorming` · `decision-matrix` · `meeting-notes` · `goal-setting` |
+| Creative & diagrams | `mermaid` · `color-tools` · `algorithmic-art` · `qrcode` |
+| Writing & productivity | `writing-editor` · `summarize` · `email-drafting` · `translate` |
+
+Skills that need an external command (`git` / `jq` / `curl` / `qrencode` / `sqlite3`) carry fallback logic in their body, so they degrade gracefully rather than failing when the command is missing. Adding a new built-in skill is a "drop a folder in `skills/built-in/`" operation — auto-discovered, auto-embedded, auto-installed, no Rust changes.
+
+## Selected skills in detail
 
 ### `apple-notes`
 

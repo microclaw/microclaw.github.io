@@ -96,16 +96,16 @@ const CAPABILITIES = [
     text: 'The model can chain tools over multiple steps until the task reaches end_turn.',
   },
   {
-    title: 'Native + ACP Subagents',
-    text: 'Run delegated work inside MicroClaw or route it to external ACP workers with durable run state.',
+    title: 'Concurrent Specialist Team',
+    text: 'Route work to specialist sub-agents (mathematician, illustrator, researcher, coder, writer, analyst) that run concurrently with named tasks and colleague-style progress reports — natively or via ACP workers.',
   },
   {
     title: 'Memory With Quality Gates',
     text: 'File memory + structured SQLite memory with reflector extraction and dedupe lifecycle.',
   },
   {
-    title: 'MCP + Skills Federation',
-    text: 'Attach external tool servers and domain-specific skills without rewriting the core loop.',
+    title: 'MCP + 42 Built-in Skills',
+    text: 'Ships 42 factory-ready skills (compute, coding, research, planning, writing, diagrams) and attaches external MCP tool servers without rewriting the core loop.',
   },
   {
     title: 'Operational Visibility',
