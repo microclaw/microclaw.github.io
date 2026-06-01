@@ -18,8 +18,8 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/assets/css/styles.9f7fe150.css">
-<script src="/assets/js/runtime~main.95c16b51.js" defer="defer"></script>
-<script src="/assets/js/main.a23d7922.js" defer="defer"></script>
+<script src="/assets/js/runtime~main.4ff26025.js" defer="defer"></script>
+<script src="/assets/js/main.399d26f9.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -30,8 +30,9 @@
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="what-makes-it-different">What makes it different<a href="#what-makes-it-different" class="hash-link" aria-label="Direct link to What makes it different" title="Direct link to What makes it different" translate="no">​</a></h2>
 <ul>
 <li class="">Channel-agnostic agent loop instead of separate bot implementations per surface</li>
-<li class="">Session-native subagents with both native and ACP-backed external runtimes</li>
-<li class="">Long-lived memory backed by <code>AGENTS.md</code> files plus structured SQLite memory</li>
+<li class="">Humanlike chat surface: short-first / multi-bubble replies, mood-adaptive tone, group etiquette</li>
+<li class="">A concurrent <strong>specialist sub-agent team</strong> (mathematician, illustrator, researcher, coder, writer, analyst) with named tasks and colleague-style progress reports</li>
+<li class="">Long-lived memory backed by <code>AGENTS.md</code> files plus structured SQLite memory, with graph-augmented recall over a temporal knowledge graph</li>
 <li class="">Built-in scheduler for cron and one-time tasks</li>
 <li class="">Multi-chat permission model (<code>control_chat_ids</code>) for cross-chat tool authorization</li>
 <li class="">Skills, MCP tool federation, and a local web operator API</li>
@@ -44,6 +45,9 @@
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="core-capabilities">Core capabilities<a href="#core-capabilities" class="hash-link" aria-label="Direct link to Core capabilities" title="Direct link to Core capabilities" translate="no">​</a></h2>
 <ul>
 <li class="">Agentic tool use (bash, file I/O, glob, grep)</li>
+<li class="">Humanlike chat: short-first / BLUF replies, multi-bubble sends, zero-cost mood detection (<code>&lt;conversation_mood&gt;</code>), group etiquette</li>
+<li class="">Concurrent specialist sub-agent team with named tasks (<code>label</code>), mid-run <code>report_progress</code>, opt-in standup + fan-in summaries, and specialist-to-specialist <code>consult_specialist</code></li>
+<li class="">42 factory-ready built-in skills (compute, coding, research, planning, writing, diagrams, documents)</li>
 <li class="">Web search, fetch, and browser automation (with default-on SSRF guard against private/loopback/cloud-metadata IPs)</li>
 <li class="">Multimedia tools: image generation, vision, text-to-speech, speech-to-text</li>
 <li class="">Cross-channel voice: inbound transcription on Telegram/Discord/Slack/Feishu, opt-in TTS round-trip</li>
@@ -54,6 +58,7 @@
 <li class="">Persistent memory (global + per-chat)</li>
 <li class="">Per-chat user model (USER.md) — curated narrative of who the user is, distinct from volatile memories</li>
 <li class="">Structured memory with reflector extraction, dedupe, per-row TTL, recency decay, and observability</li>
+<li class="">Graph-augmented recall: bounded local expansion over the temporal knowledge graph injects connected facts during recall (default-on, no embeddings)</li>
 <li class="">Skill lifecycle: end-of-turn review with patch-existing support, activation tracking, auto-archive</li>
 <li class="">Tool result truncation + artifact stash with <code>fetch_artifact</code> for slicing oversized outputs</li>
 <li class="">Personality customization via SOUL.md</li>
