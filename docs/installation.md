@@ -9,7 +9,30 @@ sidebar_position: 3
 - Rust 1.70+ (2021 edition) — only required for building from source; the installer ships prebuilt binaries
 - macOS, Linux, or Windows
 - Internet access for chat + your selected LLM provider API
-- **Minimum hardware: 1 vCPU / 1 GB RAM** — microclaw is a single static Rust binary with embedded SQLite, so it runs comfortably on a $5/month VPS (DigitalOcean, Hetzner, Vultr, etc.). No Python interpreter, no separate vector DB, no service mesh.
+- **Minimum hardware: 1 vCPU / 1 GB RAM** — microclaw is a single Rust binary with embedded SQLite, so it runs comfortably on a $5/month VPS (DigitalOcean, Hetzner, Vultr, etc.). No Python interpreter, no separate vector DB, no service mesh.
+
+### Linux: glibc and OpenSSL
+
+The prebuilt Linux binaries are dynamically linked against **glibc 2.39** (the `ubuntu-latest` build toolchain) and **OpenSSL 3** (`libssl.so.3`). They run only on a distribution whose system glibc is **2.39 or newer**. On an older system you will see errors such as:
+
+```
+microclaw: error while loading shared libraries: libssl.so.3: cannot open shared object file
+microclaw: /lib64/libc.so.6: version `GLIBC_2.39' not found (required by microclaw)
+```
+
+| Distribution                 | glibc       | Status      |
+| ---------------------------- | ----------- | ----------- |
+| Ubuntu 24.04 LTS+            | 2.39        | ✅ works      |
+| Debian 13 (trixie)+         | 2.41        | ✅ works      |
+| AlmaLinux / Rocky / RHEL 10+ | 2.39        | ✅ works      |
+| Fedora 40+                  | 2.39        | ✅ works      |
+| Debian 12 (bookworm)        | 2.36        | ❌ too old    |
+| AlmaLinux / RHEL 8–9        | 2.28–2.34   | ❌ too old    |
+| Ubuntu 22.04 / 20.04        | 2.35 / 2.31 | ❌ too old    |
+
+Check your version with `ldd --version`. If you only hit the `libssl.so.3` error (glibc is new enough), just install the OpenSSL 3 runtime — `dnf install openssl3-libs` on RHEL-family, `apt install libssl3` on Debian/Ubuntu.
+
+If glibc is too old, either run on a supported release (Ubuntu 24.04 / AlmaLinux 10), use a newer container base image, or [build from source](#build-from-source). A static build via the `x86_64-unknown-linux-musl` target removes both the glibc and OpenSSL system dependencies.
 
 ## One-line installer (recommended)
 
