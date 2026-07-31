@@ -75,4 +75,4 @@ Pick the one that matches your operations budget and workflow style.
 - OpenClaw: https://github.com/openclaw/openclaw
 - OpenClaw Docs: https://docs.openclaw.ai
 - MicroClaw: https://github.com/microclaw/microclaw
-- MicroClaw Docs: https://microclaw.ai/docs/overview
+- MicroClaw Docs: https://microclaw.org/docs/overview

@@ -2,7 +2,7 @@
 
 Date: 2026-02-15
 Scope: `website/` homepage and global visual system
-Reference baseline: `https://moltis.org/` and current `https://microclaw.ai/`
+Reference baseline: `https://moltis.org/` and current `https://microclaw.org/`
 
 ## Summary
 

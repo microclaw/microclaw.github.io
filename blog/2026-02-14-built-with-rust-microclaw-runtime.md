@@ -10,7 +10,7 @@ MicroClaw is no longer just a channel bot. In its current form, it is a **Rust m
 It supports Telegram, Discord, Slack, Feishu/Lark, IRC, and Web through adapters, while keeping one core execution path for reasoning and tool use.
 
 Source code: https://github.com/microclaw/microclaw
-Quick Start: https://microclaw.ai/docs/quickstart
+Quick Start: https://microclaw.org/docs/quickstart
 
 ![MicroClaw system architecture](/img/blog/microclaw-runtime/01-system-architecture.svg)
 

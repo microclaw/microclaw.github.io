@@ -100,6 +100,6 @@ Rust is used here for operational reliability, not novelty:
 ## References
 
 - MicroClaw repository: https://github.com/microclaw/microclaw
-- Overview docs: https://microclaw.ai/docs/overview
-- Architecture docs: https://microclaw.ai/docs/architecture
-- Tools docs: https://microclaw.ai/docs/tools
+- Overview docs: https://microclaw.org/docs/overview
+- Architecture docs: https://microclaw.org/docs/architecture
+- Tools docs: https://microclaw.org/docs/tools

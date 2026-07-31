@@ -36,4 +36,4 @@ echo "Deploying to GitHub Pages (gh-pages) via SSH..."
 USE_SSH=true npm run deploy
 
 
-echo "Live at https://microclaw.ai"
+echo "Live at https://microclaw.org"

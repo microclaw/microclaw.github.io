@@ -37,13 +37,13 @@ If glibc is too old, either run on a supported release (Ubuntu 24.04 / AlmaLinux
 ## One-line installer (recommended)
 
 ```sh
-curl -fsSL https://microclaw.ai/install.sh | bash
+curl -fsSL https://microclaw.org/install.sh | bash
 ```
 
 For the full variant (adds Matrix channel support):
 
 ```sh
-curl -fsSL https://microclaw.ai/install.sh | bash -s -- --full
+curl -fsSL https://microclaw.org/install.sh | bash -s -- --full
 ```
 
 The installer only installs prebuilt GitHub release binaries.
@@ -55,13 +55,13 @@ It does not fall back to Homebrew or Cargo automatically.
 Install using PowerShell:
 
 ```powershell
-iwr https://microclaw.ai/install.ps1 -UseBasicParsing | iex
+iwr https://microclaw.org/install.ps1 -UseBasicParsing | iex
 ```
 
 For the full variant (adds Matrix channel):
 
 ```powershell
-& ([scriptblock]::Create((iwr https://microclaw.ai/install.ps1 -UseBasicParsing).Content)) -Full
+& ([scriptblock]::Create((iwr https://microclaw.org/install.ps1 -UseBasicParsing).Content)) -Full
 ```
 
 What this script does:
@@ -344,19 +344,19 @@ Installer-script uninstall (recommended):
 macOS/Linux:
 
 ```sh
-curl -fsSL https://microclaw.ai/uninstall.sh | bash
+curl -fsSL https://microclaw.org/uninstall.sh | bash
 ```
 
 Windows PowerShell:
 
 ```powershell
-iwr https://microclaw.ai/uninstall.ps1 -UseBasicParsing | iex
+iwr https://microclaw.org/uninstall.ps1 -UseBasicParsing | iex
 ```
 
 Windows PATH cleanup (optional):
 
 ```powershell
-iwr https://microclaw.ai/uninstall.ps1 -UseBasicParsing | iex -CleanPath
+iwr https://microclaw.org/uninstall.ps1 -UseBasicParsing | iex -CleanPath
 ```
 
 If installed via Homebrew:

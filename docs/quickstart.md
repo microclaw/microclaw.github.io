@@ -24,7 +24,7 @@ Get MicroClaw running in a few minutes.
 ### One-line installer (recommended)
 
 ```sh
-curl -fsSL https://microclaw.ai/install.sh | bash
+curl -fsSL https://microclaw.org/install.sh | bash
 ```
 
 This installer only installs prebuilt GitHub release binaries.

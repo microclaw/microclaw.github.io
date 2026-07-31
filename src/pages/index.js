@@ -16,7 +16,7 @@ const INSTALL_OPTIONS_BY_SYSTEM = {
     {
       id: 'install-script',
       label: 'Install Script',
-      command: 'curl -fsSL https://microclaw.ai/install.sh | bash',
+      command: 'curl -fsSL https://microclaw.org/install.sh | bash',
       hint: 'Recommended for most macOS setups',
     },
     {
@@ -37,7 +37,7 @@ const INSTALL_OPTIONS_BY_SYSTEM = {
     {
       id: 'install-script',
       label: 'PowerShell Script',
-      command: 'iwr https://microclaw.ai/install.ps1 -UseBasicParsing | iex',
+      command: 'iwr https://microclaw.org/install.ps1 -UseBasicParsing | iex',
       hint: 'Recommended for native Windows installs',
     },
     {
@@ -52,7 +52,7 @@ const INSTALL_OPTIONS_BY_SYSTEM = {
     {
       id: 'install-script',
       label: 'Install Script',
-      command: 'curl -fsSL https://microclaw.ai/install.sh | bash',
+      command: 'curl -fsSL https://microclaw.org/install.sh | bash',
       hint: 'Recommended for most Linux setups',
     },
     {

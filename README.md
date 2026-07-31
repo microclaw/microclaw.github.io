@@ -1,6 +1,6 @@
 # MicroClaw Website
 
-This folder contains the MicroClaw docs website (Docusaurus), published at https://microclaw.ai.
+This folder contains the MicroClaw docs website (Docusaurus), published at https://microclaw.org.
 It includes docs + blog content and can be developed/deployed independently from the Rust bot.
 
 ## Install
