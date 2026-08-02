@@ -4,6 +4,7 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import {useEffect, useMemo, useState} from 'react';
 import styles from './index.module.css';
+import {getHomeMessages} from '../home-i18n';
 
 const SYSTEMS = [
   {id: 'macos', label: 'macOS', icon: 'macos'},
@@ -15,52 +16,52 @@ const INSTALL_OPTIONS_BY_SYSTEM = {
   macos: [
     {
       id: 'install-script',
-      label: 'Install Script',
+      labelKey: 'script',
       command: 'curl -fsSL https://microclaw.org/install.sh | bash',
-      hint: 'Recommended for most macOS setups',
+      hintKey: 'macScript',
     },
     {
       id: 'homebrew',
-      label: 'Homebrew',
+      labelKey: 'brew',
       command: 'brew tap microclaw/tap && brew install microclaw',
-      hint: 'Best for Homebrew-based workflows',
+      hintKey: 'brew',
     },
     {
       id: 'cargo',
-      label: 'Cargo',
+      labelKey: 'cargo',
       command:
         'git clone https://github.com/microclaw/microclaw.git && cd microclaw && cargo build --release',
-      hint: 'Build from source with Rust toolchain',
+      hintKey: 'source',
     },
   ],
   windows: [
     {
       id: 'install-script',
-      label: 'PowerShell Script',
+      labelKey: 'powershell',
       command: 'iwr https://microclaw.org/install.ps1 -UseBasicParsing | iex',
-      hint: 'Recommended for native Windows installs',
+      hintKey: 'windowsScript',
     },
     {
       id: 'cargo',
-      label: 'Cargo',
+      labelKey: 'cargo',
       command:
         'git clone https://github.com/microclaw/microclaw.git; cd microclaw; cargo build --release',
-      hint: 'Build from source with Rust toolchain',
+      hintKey: 'source',
     },
   ],
   linux: [
     {
       id: 'install-script',
-      label: 'Install Script',
+      labelKey: 'script',
       command: 'curl -fsSL https://microclaw.org/install.sh | bash',
-      hint: 'Recommended for most Linux setups',
+      hintKey: 'linuxScript',
     },
     {
       id: 'cargo',
-      label: 'Cargo',
+      labelKey: 'cargo',
       command:
         'git clone https://github.com/microclaw/microclaw.git && cd microclaw && cargo build --release',
-      hint: 'Build from source with Rust toolchain',
+      hintKey: 'source',
     },
   ],
 };
@@ -86,82 +87,9 @@ function detectSystem() {
   return 'macos';
 }
 
-const CAPABILITIES = [
-  {
-    title: 'Channel-Agnostic Core',
-    text: 'One shared agent loop drives Telegram, Discord, Slack, Feishu, and Web adapters.',
-  },
-  {
-    title: 'Tool-Using Agent Loop',
-    text: 'The model can chain tools over multiple steps until the task reaches end_turn.',
-  },
-  {
-    title: 'Concurrent Specialist Team',
-    text: 'Route work to specialist sub-agents (mathematician, illustrator, researcher, coder, writer, analyst) that run concurrently with named tasks and colleague-style progress reports — natively or via ACP workers.',
-  },
-  {
-    title: 'Memory With Quality Gates',
-    text: 'File memory + structured SQLite memory with reflector extraction and dedupe lifecycle.',
-  },
-  {
-    title: 'MCP + 42 Built-in Skills',
-    text: 'Ships 42 factory-ready skills (compute, coding, research, planning, writing, diagrams) and attaches external MCP tool servers without rewriting the core loop.',
-  },
-  {
-    title: 'Operational Visibility',
-    text: 'Usage, memory observability, and config self-check endpoints help teams track quality and drift.',
-  },
-  {
-    title: 'Scheduler + Background Tasks',
-    text: 'Cron and one-shot tasks run through the same runtime, not a separate automation stack.',
-  },
-];
-
-const ARCH_STEPS = [
-  {
-    number: '01',
-    title: 'Ingest',
-    text: 'Channel adapters normalize inbound events into a single runtime format.',
-  },
-  {
-    number: '02',
-    title: 'Assemble Context',
-    text: 'Session state, AGENTS.md memory, structured memory, and active skills are injected.',
-  },
-  {
-    number: '03',
-    title: 'Reason + Tool Calls',
-    text: 'Provider layer streams responses, reasoning output, and tool calls in a controlled loop.',
-  },
-  {
-    number: '04',
-    title: 'Persist + Reflect',
-    text: 'Conversations, sessions, and memories are persisted; reflector updates durable facts.',
-  },
-  {
-    number: '05',
-    title: 'Deliver',
-    text: 'Responses are split by channel limits and emitted with consistent delivery semantics.',
-  },
-];
-
-const USE_CASES = [
-  {
-    title: 'Personal Infra Agent',
-    text: 'Run one assistant across your chats with memory, scheduling, and shell/file tooling.',
-  },
-  {
-    title: 'Team Operations Bot',
-    text: 'Use permission-aware tools and session history to support recurring internal workflows.',
-  },
-  {
-    title: 'Product Prototyping Runtime',
-    text: 'Ship new channels and tools quickly on a shared Rust core instead of fragmented bots.',
-  },
-];
-
 function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+  const {i18n} = useDocusaurusContext();
+  const messages = getHomeMessages(i18n.currentLocale);
   const [activeSystem, setActiveSystem] = useState('macos');
   const [activeInstall, setActiveInstall] = useState(
     INSTALL_OPTIONS_BY_SYSTEM.macos[0].id,
@@ -219,36 +147,32 @@ function HomepageHeader() {
       <div className="container">
         <div className={styles.heroLayout}>
           <div className={styles.heroContent}>
-            <div className={styles.eyebrow}>RUST AGENT RUNTIME</div>
+            <div className={styles.eyebrow}>{messages.eyebrow}</div>
             <Heading as="h1" className={styles.heroTitle}>
-              Build one agent core. Deploy it to every chat surface.
+              {messages.heroTitle}
             </Heading>
-            <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
+            <p className={styles.heroSubtitle}>{messages.tagline}</p>
             <p className={styles.heroSubtext}>
-              MicroClaw is optimized for teams that need tool-using automation with durable memory,
-              resumable sessions, native or ACP-backed subagents, and channel adapters that do not
-              fork business logic.
+              {messages.heroText}
             </p>
 
             <div className={styles.heroActions}>
               <Link className="button button--primary button--lg" to="/docs/quickstart">
-                Start in 5 Minutes
+                {messages.start}
               </Link>
               <Link className={styles.darkButton} href="https://github.com/microclaw/microclaw">
-                View GitHub
+                {messages.github}
               </Link>
             </div>
 
             <div className={styles.heroMetaRow}>
-              <span>Single Binary</span>
-              <span>SQLite Persistence</span>
-              <span>ACP + MCP + Skills</span>
+              {messages.meta.map((item) => <span key={item}>{item}</span>)}
             </div>
           </div>
 
           <div className={styles.installPanel}>
             <div className={styles.installHeader}>
-              <span>Quickstart</span>
+              <span>{messages.quickstart}</span>
               <span className={styles.crabLane}>
                 <span className={styles.pulseDot} aria-label="rust">
                   🦀
@@ -294,18 +218,18 @@ function HomepageHeader() {
                   className={`${styles.installTab} ${
                     activeInstall === item.id ? styles.installTabActive : ''
                   }`}>
-                  {item.label}
+                  {messages.installLabels[item.labelKey]}
                 </button>
               ))}
             </div>
-            <p className={styles.installHint}>{activeInstallOption.hint}</p>
+            <p className={styles.installHint}>{messages.installHints[activeInstallOption.hintKey]}</p>
             <div className={styles.installRow}>
               <code className={styles.installCommand}>{activeInstallOption.command}</code>
               <button
                 className={`${styles.copyButton} ${copyStatus === 'copied' ? styles.copyButtonCopied : ''}`}
                 type="button"
                 onClick={copyInstallCommand}>
-                {copyStatus === 'copied' ? 'Copied' : 'Copy'}
+                {copyStatus === 'copied' ? messages.copied : messages.copy}
               </button>
             </div>
           </div>
@@ -316,34 +240,25 @@ function HomepageHeader() {
 }
 
 export default function Home() {
-  const {siteConfig} = useDocusaurusContext();
+  const {siteConfig, i18n} = useDocusaurusContext();
+  const messages = getHomeMessages(i18n.currentLocale);
 
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="MicroClaw is a Rust-first agent runtime for multi-channel chat automation with tools, memory, scheduler, and MCP federation.">
+      description={messages.description}>
       <HomepageHeader />
 
       <main>
         <section className={styles.proofStrip}>
           <div className="container">
             <div className={styles.proofGrid}>
-              <div>
-                <span className={styles.proofLabel}>Architecture</span>
-                <p>Channel-agnostic core with adapter-based delivery</p>
-              </div>
-              <div>
-                <span className={styles.proofLabel}>Memory</span>
-                <p>AGENTS.md + SQLite structured memory with observability</p>
-              </div>
-              <div>
-                <span className={styles.proofLabel}>Execution</span>
-                <p>Tool loop, native and ACP sub-agents, scheduling, and background tasks</p>
-              </div>
-              <div>
-                <span className={styles.proofLabel}>Extensibility</span>
-                <p>Skills catalog plus MCP tool federation</p>
-              </div>
+              {messages.proof.map(([label, text]) => (
+                <div key={label}>
+                  <span className={styles.proofLabel}>{label}</span>
+                  <p>{text}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -351,17 +266,14 @@ export default function Home() {
         <section className={styles.section}>
           <div className="container">
             <div className={styles.sectionHeader}>
-              <Heading as="h2">Why teams pick MicroClaw</Heading>
-              <p>
-                A runtime-centered stack that keeps your logic stable while channels, models, and tools
-                evolve.
-              </p>
+              <Heading as="h2">{messages.whyTitle}</Heading>
+              <p>{messages.whyText}</p>
             </div>
             <div className={styles.capabilityGrid}>
-              {CAPABILITIES.map((item) => (
-                <article key={item.title} className={styles.capabilityCard}>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
+              {messages.capabilities.map(([title, text]) => (
+                <article key={title} className={styles.capabilityCard}>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
                 </article>
               ))}
             </div>
@@ -371,24 +283,22 @@ export default function Home() {
         <section className={styles.sectionAlt}>
           <div className="container">
             <div className={styles.sectionHeader}>
-              <Heading as="h2">Runtime architecture at a glance</Heading>
-              <p>
-                The same engine powers every conversation, regardless of where users talk to your agent.
-              </p>
+              <Heading as="h2">{messages.architectureTitle}</Heading>
+              <p>{messages.architectureText}</p>
             </div>
             <div className={styles.archLayout}>
               <div className={styles.archVisualCard}>
                 <img
                   src="/img/blog/microclaw-runtime/01-system-architecture.svg"
-                  alt="MicroClaw architecture overview"
+                  alt={messages.architectureAlt}
                 />
               </div>
               <div className={styles.archSteps}>
-                {ARCH_STEPS.map((step) => (
-                  <article key={step.number} className={styles.stepCard}>
-                    <span>{step.number}</span>
-                    <h3>{step.title}</h3>
-                    <p>{step.text}</p>
+                {messages.architectureSteps.map(([title, text], index) => (
+                  <article key={title} className={styles.stepCard}>
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                    <h3>{title}</h3>
+                    <p>{text}</p>
                   </article>
                 ))}
               </div>
@@ -399,15 +309,15 @@ export default function Home() {
         <section className={styles.section}>
           <div className="container">
             <div className={styles.sectionHeader}>
-              <Heading as="h2">Use MicroClaw for real workloads</Heading>
-              <p>From solo operators to platform teams, one core runtime can cover multiple paths.</p>
+              <Heading as="h2">{messages.useCasesTitle}</Heading>
+              <p>{messages.useCasesText}</p>
             </div>
             <div className={styles.useCaseGrid}>
-              {USE_CASES.map((useCase) => (
-                <article key={useCase.title} className={styles.useCaseCard}>
-                  <h3>{useCase.title}</h3>
-                  <p>{useCase.text}</p>
-                  <Link to="/docs/overview">Read implementation details</Link>
+              {messages.useCases.map(([title, text]) => (
+                <article key={title} className={styles.useCaseCard}>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                  <Link to="/docs/overview">{messages.readDetails}</Link>
                 </article>
               ))}
             </div>
@@ -418,21 +328,18 @@ export default function Home() {
           <div className="container">
             <div className={styles.ctaCard}>
               <div>
-                <Heading as="h2">Ship a production-grade Rust agent stack.</Heading>
-                <p>
-                  Follow Quickstart for setup, then move into tools, permissions, memory, and channel
-                  deployment.
-                </p>
+                <Heading as="h2">{messages.ctaTitle}</Heading>
+                <p>{messages.ctaText}</p>
               </div>
               <div className={styles.ctaActions}>
                 <Link className="button button--primary button--lg" to="/docs/quickstart">
-                  Quickstart
+                  {messages.quickstartCta}
                 </Link>
                 <Link className="button button--secondary button--lg" to="/docs/architecture">
-                  Architecture Docs
+                  {messages.architectureDocs}
                 </Link>
                 <Link className={styles.inlineLink} to="/docs/generated-tools">
-                  Generated Tools Reference
+                  {messages.toolsReference}
                 </Link>
               </div>
             </div>

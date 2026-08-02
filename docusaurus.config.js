@@ -34,12 +34,21 @@ const config = {
 
   onBrokenLinks: 'throw',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'zh-CN', 'hi', 'es', 'ar', 'fr', 'bn', 'pt', 'id', 'ur'],
+    localeConfigs: {
+      en: {label: 'English', htmlLang: 'en'},
+      'zh-CN': {label: '简体中文', htmlLang: 'zh-CN'},
+      hi: {label: 'हिन्दी', htmlLang: 'hi'},
+      es: {label: 'Español', htmlLang: 'es'},
+      ar: {label: 'العربية', htmlLang: 'ar', direction: 'rtl'},
+      fr: {label: 'Français', htmlLang: 'fr'},
+      bn: {label: 'বাংলা', htmlLang: 'bn'},
+      pt: {label: 'Português', htmlLang: 'pt'},
+      id: {label: 'Bahasa Indonesia', htmlLang: 'id'},
+      ur: {label: 'اردو', htmlLang: 'ur', direction: 'rtl'},
+    },
   },
 
   presets: [
@@ -150,6 +159,7 @@ const config = {
           },
           {to: '/docs/quickstart', label: 'Quickstart', position: 'left'},
           {to: '/blog', label: 'Blog', position: 'left'},
+          {type: 'localeDropdown', position: 'right'},
           {type: 'search', position: 'right'},
           {
             href: 'https://github.com/microclaw/microclaw',
