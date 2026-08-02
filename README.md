@@ -45,3 +45,24 @@ as the single source of truth unless a translation is actively maintained.
 ```sh
 npm run serve
 ```
+
+## Deploy
+
+Commit website changes, then run:
+
+```sh
+./deploy_pages.sh
+```
+
+The script syncs the installer artifacts from the parent repository, pushes the
+website source branch, builds once, and deploys `build/` to `gh-pages`. The
+Pages push uses SSH keepalive settings and retries up to three times by default.
+
+To use HTTPS credentials instead of SSH, run:
+
+```sh
+USE_SSH=false GIT_USER=microclaw ./deploy_pages.sh
+```
+
+`DEPLOY_ATTEMPTS` and `DEPLOY_RETRY_DELAY_SECONDS` can be set to override the
+retry count and delay.
