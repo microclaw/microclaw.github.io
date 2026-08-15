@@ -294,7 +294,7 @@
 </ul>
 <p>That gives release automation a better contract: if the preconditions are not green, release packaging does not pretend otherwise.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="docs-builds-are-part-of-the-path-now">Docs builds are part of the path now<a href="https://microclaw.org/es/blog/maturity-hardening#docs-builds-are-part-of-the-path-now" class="hash-link" aria-label="Enlace directo al Docs builds are part of the path now" title="Enlace directo al Docs builds are part of the path now" translate="no">​</a></h2>
-<p>Another practical change: the website docs build is now checked alongside the embedded Web UI build when the <code>website/</code> workspace is present.</p>
+<p>Another practical change: the site docs build is now checked alongside the embedded Web UI build from the <code>site/</code> workspace.</p>
 <p>That sounds small, but it closes a common repo gap. Projects often keep runtime code and docs in the same repo, then accidentally validate only one of them in CI. The result is predictable:</p>
 <ul>
 <li class="">source docs drift from website docs</li>

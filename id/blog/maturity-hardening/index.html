@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest"><link rel="stylesheet" href="/id/assets/css/styles.9f7fe150.css">
-<script src="/id/assets/js/runtime~main.383347ca.js" defer="defer"></script>
+<script src="/id/assets/js/runtime~main.7cedd644.js" defer="defer"></script>
 <script src="/id/assets/js/main.b3db0420.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -55,7 +55,7 @@
 </ul>
 <p>That gives release automation a better contract: if the preconditions are not green, release packaging does not pretend otherwise.</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="docs-builds-are-part-of-the-path-now">Docs builds are part of the path now<a href="#docs-builds-are-part-of-the-path-now" class="hash-link" aria-label="Taut langsung ke Docs builds are part of the path now" title="Taut langsung ke Docs builds are part of the path now" translate="no">​</a></h2>
-<p>Another practical change: the website docs build is now checked alongside the embedded Web UI build when the <code>website/</code> workspace is present.</p>
+<p>Another practical change: the site docs build is now checked alongside the embedded Web UI build from the <code>site/</code> workspace.</p>
 <p>That sounds small, but it closes a common repo gap. Projects often keep runtime code and docs in the same repo, then accidentally validate only one of them in CI. The result is predictable:</p>
 <ul>
 <li class="">source docs drift from website docs</li>
