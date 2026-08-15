@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmicroclaw_site=self.webpackChunkmicroclaw_site||[]).push([["4449"],{4059(e){e.exports=JSON.parse('{"metadata":{"permalink":"/ur/blog","page":1,"postsPerPage":10,"totalPages":2,"totalCount":11,"nextPage":"/ur/blog/page/2","blogDescription":"Blog","blogTitle":"Blog"}}')}}]);

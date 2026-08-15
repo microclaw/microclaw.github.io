@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmicroclaw_site=self.webpackChunkmicroclaw_site||[]).push([["3220"],{1912(s){s.exports=JSON.parse('{"blogBasePath":"/fr/blog","blogTitle":"Blog","authorsListPath":"/fr/blog/authors"}')}}]);
